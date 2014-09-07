@@ -26,6 +26,7 @@ cdef extern from "csympy_rcp.h" namespace "CSymPy":
         T& operator*() nogil except +
 
     RCP[const Symbol] rcp_static_cast_Symbol "CSymPy::rcp_static_cast<const CSymPy::Symbol>"(RCP[const Basic] &b) nogil
+    RCP[const Integer] rcp_static_cast_Integer "CSymPy::rcp_static_cast<const CSymPy::Integer>"(RCP[const Basic] &b) nogil
     RCP[const Add] rcp_static_cast_Add "CSymPy::rcp_static_cast<const CSymPy::Add>"(RCP[const Basic] &b) nogil
     RCP[const Mul] rcp_static_cast_Mul "CSymPy::rcp_static_cast<const CSymPy::Mul>"(RCP[const Basic] &b) nogil
     RCP[const Pow] rcp_static_cast_Pow "CSymPy::rcp_static_cast<const CSymPy::Pow>"(RCP[const Basic] &b) nogil
@@ -157,3 +158,7 @@ cdef extern from "matrix.h" namespace "CSymPy":
 
     bool is_a_DenseMatrix "CSymPy::is_a<CSymPy::DenseMatrix>"(const MatrixBase &b) nogil
     DenseMatrix* static_cast_DenseMatrix "static_cast<CSymPy::DenseMatrix*>"(const MatrixBase *a)
+
+cdef extern from "ntheory.h" namespace "CSymPy":
+    RCP[const Integer] nextprime "CSymPy::nextprime"(const Integer &a) nogil
+

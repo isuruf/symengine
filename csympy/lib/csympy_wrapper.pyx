@@ -436,6 +436,11 @@ def sqrt(x):
 def densematrix(row, col, l):
     return DenseMatrix(row, col, l)
 
+def nextprime(n):
+    cdef Integer N = Integer(n)
+    N.thisptr = <RCP[const csympy.Basic]>(csympy.nextprime(deref(csympy.rcp_static_cast_Integer(N.thisptr))))
+    return N
+
 I = c2py(csympy.I)
 
 # Turn on nice stacktraces:
