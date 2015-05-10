@@ -96,5 +96,43 @@ RCP<const Basic> coeff(const Basic &b, const RCP<const Symbol> &x,
     return v.apply(b, x, n);
 }
 
+class FreeSymbolsVisitor : public BaseVisitor<FreeSymbolsVisitor> {
+private:
+    set_basic &s;
+public:
+    FreeSymbolsVisitor(set_basic &set) : BaseVisitor(this), s{set} { };
+
+    void bvisit(const Symbol &x) {
+        s.insert(rcp(&x));
+    }
+
+    void bvisit(const Subs &x) {
+        set_basic set_;
+        free_symbols(set_, *x.get_arg());
+        for (auto &p: x.get_variables()) {
+            set_.erase(p);
+        }
+        s.insert(set_.begin(), set_.end());
+        for (auto &p: x.get_point()) {
+            p->accept(*this);
+        }
+    }
+
+    void bvisit(const Basic &x) {
+        for (auto &p: x.get_args()) {
+            p->accept(*this);
+        }
+    }
+
+    void apply(const Basic &b) {
+        b.accept(*this);
+    }
+};
+
+void free_symbols(set_basic &s, const Basic &b) {
+    FreeSymbolsVisitor visitor(s);
+    visitor.apply(b);
+}
+
 } // SymEngine
 
