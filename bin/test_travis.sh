@@ -10,7 +10,6 @@ set -x
 # we need to do it ourselves.
 git clean -dfx
 
-export SOURCE_DIR=`pwd`
 if [[ "${TEST_IN_TREE}" != "yes" ]]; then
     mkdir build
     cd build
@@ -20,7 +19,6 @@ pwd
 echo "Running cmake:"
 # We build the command line here. If the variable is empty, we skip it,
 # otherwise we pass it to cmake.
-our_install_dir="$SOURCE_DIR/our_usr"
 cmake_line="-DCMAKE_INSTALL_PREFIX=$our_install_dir"
 if [[ "${BUILD_TYPE}" != "" ]]; then
     cmake_line="$cmake_line -DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
