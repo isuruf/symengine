@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Exit on error
+set -e
+# Echo each command
+set -x
+
 if [[ "${CC}" == "" ]]; then
     export CC=gcc
     export CXX=g++
@@ -15,7 +20,7 @@ if [[ "${TRAVIS_OS_NAME}" != "osx" ]]; then
 else
     brew install cmake
     brew uninstall gmp --force
-    brew install --build-from-source gmp
+    brew install --build-from-source --prefix=/usr/local gmp
 fi
 
 if [[ "${WITH_BFD}" == "yes" ]]; then
