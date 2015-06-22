@@ -270,7 +270,7 @@ if (WITH_PYTHON)
     # files (as opposed to just subset of cmake files).
     find_package(Python REQUIRED)
     find_package(Cython REQUIRED)
-    add_subdirectory(symengine)
+    add_subdirectory(src/python)
 endif ()
 
 
@@ -369,4 +369,4 @@ endif()
 message("WITH_OPENMP: ${WITH_OPENMP}")
 
 message("Copying source of python wrappers into: ${CMAKE_CURRENT_BINARY_DIR}")
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/symengine DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY src/python DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
