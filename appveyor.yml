@@ -2,7 +2,7 @@ version: '{build}'
 environment:
   global:
     PLATFORMTOOLSET: "v90"
-    PLATFORM: "Win32"
+    PLATFORM: "x64"
 
 install:
 - cinst cmake
