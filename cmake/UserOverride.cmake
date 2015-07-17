@@ -34,7 +34,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES Clang)
     set(CMAKE_CXX_FLAGS_DEBUG_INIT   "${common} -g")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     # msvc
-    set(CMAKE_CXX_FLAGS_RELEASE_INIT "/w")
-    set(CMAKE_CXX_FLAGS_DEBUG_INIT   "/w")
+    set(CMAKE_CXX_FLAGS_RELEASE_INIT "/w /MT")
+    set(CMAKE_CXX_FLAGS_DEBUG_INIT   "/w /MT")
 endif ()
 
