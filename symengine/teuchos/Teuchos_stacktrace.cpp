@@ -56,9 +56,6 @@
 #  include <execinfo.h>
 #endif
 
-// For demangling function names
-#include <cxxabi.h>
-
 #ifdef HAVE_TEUCHOS_LINK
 // For dl_iterate_phdr() functionality
 #include <link.h>
@@ -156,7 +153,6 @@ std::string demangle_function_name(std::string name)
   } else {
     int status = 0;
     char *d = 0;
-    d = abi::__cxa_demangle(name.c_str(), 0, 0, &status);
     if (d) {
       s = d;
       free(d);
