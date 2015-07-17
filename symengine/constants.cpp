@@ -8,7 +8,7 @@
 namespace SymEngine {
 
 Constant::Constant(const std::string &name)
-    : name_{name}
+    : name_(name)
 {
 }
 
