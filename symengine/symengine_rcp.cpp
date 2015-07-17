@@ -11,7 +11,9 @@ namespace SymEngine {
 
 void print_stack_on_segfault()
 {
+#if defined(WITH_SYMENGINE_STACKTRACE)
     Teuchos::print_stack_on_segfault();
+#endif
 }
 
 #endif

@@ -285,6 +285,14 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(WITH_SYMENGINE_ASSERT yes) # Also enable assertions
 endif()
 
+# Stacktrace
+set(WITH_SYMENGINE_STACKTRACE yes
+    CACHE BOOL "Build with stacktrace")
+
+if (MSVC)
+    set(WITH_SYMENGINE_STACKTRACE no)
+endif()
+
 enable_testing()
 add_subdirectory(symengine)
 if (BUILD_BENCHMARKS)

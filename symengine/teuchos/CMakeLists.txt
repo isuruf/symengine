@@ -5,9 +5,14 @@ set(SRC
     Teuchos_Ptr.cpp
     Teuchos_RCPNode.cpp
     Teuchos_TestForException.cpp
-    Teuchos_TypeNameTraits.cpp
-    Teuchos_stacktrace.cpp
 )
+
+if (WITH_SYMENGINE_STACKTRACE)
+    set(SRC ${SRC}
+        Teuchos_TypeNameTraits.cpp
+        Teuchos_stacktrace.cpp
+	)
+endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
   # Must suppress strick aliasing warnings for this file!
