@@ -1,5 +1,6 @@
 version: '{build}'
 environment:
+  VisualStudioVersion: 14
   global:
     PLATFORMTOOLSET: "v90"
     PLATFORM: "Win32"
