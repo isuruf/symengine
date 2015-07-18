@@ -12,6 +12,11 @@ environment:
   matrix:
     - BUILD_TYPE: "Debug"
       COMPILER: MinGW
+      WITH_PYTHON: yes
+      WITH_MPC: yes
+    - BUILD_TYPE: "Debug"
+      COMPILER: MinGW
+      WITH_MPFR: yes
     - BUILD_TYPE: "Release"
       COMPILER: MinGW
     - BUILD_TYPE: "Debug"
@@ -31,13 +36,27 @@ install:
 - if [%COMPILER%]==[MinGW] mingw-get update
 - if [%COMPILER%]==[MinGW] rename "C:\Program Files (x86)\Git\bin\sh.exe" "sh2.exe"
 - if [%COMPILER%]==[MinGW] mingw-get install mingw32-gmp
+- if [%COMPILER%]==[MinGW] if [%WITH_MPFR%]==[yes] mingw-get install mingw32-mpfr
+- if [%COMPILER%]==[MinGW] if [%WITH_MPC%]==[yes] mingw-get install mingw32-mpfr
+- if [%COMPILER%]==[MinGW] if [%WITH_MPC%]==[yes] mingw-get install mingw32-mpc
+
+- if [%WITH_PYTHON%]==[yes] set PATH=C:\Python27\Scripts;%PATH%
+- if [%WITH_PYTHON%]==[yes] pip install cython nose
 
 build_script:
 - mkdir build
 - cd build
+- set cmake_line="-DCMAKE_BUILD_TYPE=%BUILD_TYPE%"
+- if [%WITH_PYTHON%]==[yes] set cmake_line="%cmake_line% -DWITH_PYTHON=yes"
+- if [%WITH_MPFR%]==[yes] set cmake_line="%cmake_line% -DWITH_MPFR=yes"
+- if [%WITH_MPC%]==[yes] set cmake_line="%cmake_line% -DWITH_MPC=yes"
+
 - if [%COMPILER%]==[MSVC15] cmake -G "Visual Studio 14 2015" -DGMP_DIR=mpir-2.7.0/lib/%PLATFORM%/Debug;mpir-2.7.0/build.vc14/lib_mpir_gc/%PLATFORM%/Debug;mpir-2.7.0/build.vc14/lib_mpir_cxx/%PLATFORM%/Debug -DCMAKE_CXX_FLAGS_DEBUG="/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1 /W1" ..
-- if [%COMPILER%]==[MinGW] cmake -G "MinGW Makefiles" -DCOMMON_DIR=C:\MinGW -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
+- if [%COMPILER%]==[MinGW] cmake -G "MinGW Makefiles" -DCOMMON_DIR=C:\MinGW ..
+- if [%WITH_PYTHON%]==[yes] cmake -DWITH_PYTHON=yes ..
 - cmake --build . --config %BUILD_TYPE%
+
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 test_script:
 - ctest --output-on-failure
