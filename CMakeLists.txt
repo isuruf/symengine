@@ -41,6 +41,14 @@ if (NOT(MSVC))
     endif()
 endif()
 
+set(HAVE_GCC_ABI_DEMANGLE yes
+    CACHE BOOL "Build with C++ name demangling support")
+
+# MSVC doesn't have cxxabi.h
+if (MSVC)
+    set(HAVE_GCC_ABI_DEMANGLE no)
+endif()
+
 if ((CMAKE_CXX_COMPILER_ID MATCHES Clang) AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
     try_compile(CHECK_CLANG "${CMAKE_CURRENT_BINARY_DIR}/cxx" "${CMAKE_SOURCE_DIR}/cmake/checkclang.cpp")
     if (NOT ${CHECK_CLANG})
@@ -328,6 +336,7 @@ if (NOT WITH_SYMENGINE_RCP)
     message("HAVE_TEUCHOS_DEBUG: ${HAVE_TEUCHOS_DEBUG}")
     message("HAVE_TEUCHOS_DEBUG_RCP_NODE_TRACING: ${HAVE_TEUCHOS_DEBUG_RCP_NODE_TRACING}")
 endif ()
+message("HAVE_GCC_ABI_DEMANGLE: ${HAVE_GCC_ABI_DEMANGLE}")
 message("WITH_SYMENGINE_THREAD_SAFE: ${WITH_SYMENGINE_THREAD_SAFE}")
 message("BUILD_TESTS: ${BUILD_TESTS}")
 message("BUILD_BENCHMARKS: ${BUILD_BENCHMARKS}")
