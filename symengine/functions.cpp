@@ -1395,13 +1395,13 @@ RCP<const Basic> lambertw(const RCP<const Basic> &arg)
 }
 
 FunctionSymbol::FunctionSymbol(std::string name, const RCP<const Basic> &arg)
-    : name_(name), arg_(vec_basic{arg})
+    : name_{name}, arg_{{arg}}
 {
     SYMENGINE_ASSERT(is_canonical(arg_))
 }
 
 FunctionSymbol::FunctionSymbol(std::string name, const vec_basic &arg)
-    : name_(name), arg_(arg)
+    : name_{name}, arg_{arg}
 {
     SYMENGINE_ASSERT(is_canonical(arg_))
 }
@@ -1549,7 +1549,7 @@ RCP<const Basic> FunctionWrapper::diff(const RCP<const Symbol> &x) const
 /* ---------------------------- */
 
 Derivative::Derivative(const RCP<const Basic> &arg, const vec_basic &x)
-    : arg_(arg), x_(x)
+    : arg_{arg}, x_{x}
 {
     SYMENGINE_ASSERT(is_canonical(arg, x))
 }
@@ -1674,7 +1674,7 @@ RCP<const Basic> Derivative::subs(const map_basic_basic &subs_dict) const
 
 // Subs class
 Subs::Subs(const RCP<const Basic> &arg, const map_basic_basic &dict)
-    : arg_(arg), dict_(dict)
+    : arg_{arg}, dict_{dict}
 {
     SYMENGINE_ASSERT(is_canonical(arg, dict))
 }
@@ -2475,7 +2475,7 @@ bool has_dup(const vec_basic &arg)
 }
 
 LeviCivita::LeviCivita(const vec_basic&& arg)
-    :arg_(std::move(arg))
+    :arg_{std::move(arg)}
 {
     SYMENGINE_ASSERT(is_canonical(arg_))
 }

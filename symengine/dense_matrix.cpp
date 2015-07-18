@@ -17,7 +17,7 @@ DenseMatrix::DenseMatrix(unsigned row, unsigned col)
 }
 
 DenseMatrix::DenseMatrix(unsigned row, unsigned col, const vec_basic &l)
-        : MatrixBase(row, col), m_(l)
+        : MatrixBase(row, col), m_{l}
 {
     SYMENGINE_ASSERT(m_.size() == row*col)
 }

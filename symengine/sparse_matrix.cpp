@@ -20,7 +20,7 @@ CSRMatrix::CSRMatrix(unsigned row, unsigned col)
 
 CSRMatrix::CSRMatrix(unsigned row, unsigned col, std::vector<unsigned>&& p,
     std::vector<unsigned>&& j, vec_basic&& x)
-        : MatrixBase(row, col), p_(std::move(p)), j_(std::move(j)), x_(std::move(x))
+        : MatrixBase(row, col), p_{std::move(p)}, j_{std::move(j)}, x_{std::move(x)}
 {
     SYMENGINE_ASSERT(is_canonical());
 }
