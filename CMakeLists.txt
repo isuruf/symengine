@@ -288,12 +288,20 @@ if (WITH_OPENMP)
     endif()
 endif()
 
+if (WITH_PYTHON)
+    # We need to execute the find_package() commands here, so that the
+    # variables like ${PYTHON_INSTALL_PATH} are defined here and in all cmake
+    # files (as opposed to just subset of cmake files).
+    find_package(Python REQUIRED)
+    find_package(Cython REQUIRED)
+    set(LIBS ${LIBS} ${PYTHON_LIBRARY})
+endif()
 
 if (WITH_RUBY)
     find_package(Ruby REQUIRED)
     include_directories(${RUBY_INCLUDE_DIRS})
     set(LIBS ${LIBS} ${RUBY_LIBRARY})
-endif ()
+endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     # In Debug mode we use Teuchos::RCP and enable debugging checks that make
@@ -310,15 +318,9 @@ add_subdirectory(symengine)
 if (BUILD_BENCHMARKS)
     add_subdirectory(benchmarks)
 endif()
-
 if (WITH_PYTHON)
-    # We need to execute the find_package() commands here, so that the
-    # variables like ${PYTHON_INSTALL_PATH} are defined here and in all cmake
-    # files (as opposed to just subset of cmake files).
-    find_package(Python REQUIRED)
-    find_package(Cython REQUIRED)
     add_subdirectory(symengine/python)
-endif ()
+endif()
 
 if (WITH_PYTHON)
     message("Copying source of python wrappers into: ${CMAKE_CURRENT_BINARY_DIR}/symengine/python/symengine")

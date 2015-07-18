@@ -13,20 +13,19 @@ environment:
     - BUILD_TYPE: "Debug"
       COMPILER: MinGW
       WITH_PYTHON: yes
+    - BUILD_TYPE: "Debug"
+      COMPILER: MinGW
       WITH_MPC: yes
     - BUILD_TYPE: "Debug"
-      COMPILER: MinGW
-      WITH_MPFR: yes
+      COMPILER: MSVC15
+      WITH_PYTHON: yes
     - BUILD_TYPE: "Release"
       COMPILER: MinGW
-    - BUILD_TYPE: "Debug"
-      COMPILER: MSVC15
 
 install:
 - if [%COMPILER%]==[MSVC15] set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 - if [%COMPILER%]==[MSVC15] appveyor DownloadFile http://mpir.org/mpir-2.7.0.zip
 - if [%COMPILER%]==[MSVC15] 7z x mpir-2.7.0.zip > NUL
-- if [%COMPILER%]==[MSVC15] set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 - if [%COMPILER%]==[MSVC15] msbuild mpir-2.7.0/build.vc14/lib_mpir_gc/lib_mpir_gc.vcxproj /p:Configuration=Debug /p:Platform=%PLATFORM% /p:PlatformToolset=%PLATFORMTOOLSET% /verbosity:normal
 - if [%COMPILER%]==[MSVC15] msbuild mpir-2.7.0/build.vc14/lib_mpir_cxx/lib_mpir_cxx.vcxproj /p:Configuration=Debug /p:Platform=%PLATFORM% /p:PlatformToolset=%PLATFORMTOOLSET% /verbosity:normal
 - if [%COMPILER%]==[MSVC15] copy mpir-2.7.0\build.vc14\lib_mpir_gc\%PLATFORM%\Debug\mpir.lib mpir-2.7.0\build.vc14\lib_mpir_gc\%PLATFORM%\Debug\gmp.lib
@@ -57,8 +56,8 @@ build_script:
 - if [%WITH_MPFR%]==[yes] cmake -DWITH_MPFR=yes ..
 - if [%WITH_MPC%]==[yes] cmake -DWITH_MPC=yes ..
 - cmake --build . --config %BUILD_TYPE%
-
 - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 
 test_script:
 - ctest --output-on-failure
