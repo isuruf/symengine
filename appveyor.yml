@@ -5,6 +5,9 @@ environment:
     PLATFORMTOOLSET: "v90"
     PLATFORM: "Win32"
 
+init:
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
 - cinst cmake
 - appveyor DownloadFile http://mpir.org/mpir-2.7.0.zip
@@ -20,3 +23,6 @@ build_script:
 - cmake -DGMP_DIR=mpir-2.7.0/lib/%PLATFORM%/Release;mpir-2.7.0/build.vc10/lib_mpir_gc/%PLATFORM%/Release;mpir-2.7.0/build.vc10/lib_mpir_cxx/%PLATFORM%/Release ..
 - cmake --build .
 - ctest
+
+on_finish:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
