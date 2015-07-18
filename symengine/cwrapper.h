@@ -14,7 +14,7 @@ extern "C" {
 { \
 if (0 == (cond)) { \
     printf("SYMENGINE_C_ASSERT failed: %s \nfunction %s (), line number %d at\n%s\n",\
-            __FILE__, __func__, __LINE__, #cond); \
+            __FILE__, "func", __LINE__, #cond); \
     abort(); \
     } \
 }
