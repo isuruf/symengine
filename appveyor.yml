@@ -10,15 +10,15 @@ environment:
 install:
 - appveyor DownloadFile http://mpir.org/mpir-2.7.0.zip
 - 7z x mpir-2.7.0.zip > NUL
-- msbuild mpir-2.7.0/build.vc10/lib_mpir_gc/lib_mpir_gc.vcxproj /p:Configuration=Release /p:Platform=%PLATFORM% /p:PlatformToolset=%PLATFORMTOOLSET% /verbosity:normal
-- msbuild mpir-2.7.0/build.vc10/lib_mpir_cxx/lib_mpir_cxx.vcxproj /p:Configuration=Release /p:Platform=%PLATFORM% /p:PlatformToolset=%PLATFORMTOOLSET% /verbosity:normal
-- copy mpir-2.7.0\build.vc10\lib_mpir_gc\%PLATFORM%\Release\mpir.lib mpir-2.7.0\build.vc10\lib_mpir_gc\%PLATFORM%\Release\gmp.lib
-- copy mpir-2.7.0\build.vc10\lib_mpir_cxx\%PLATFORM%\Release\mpirxx.lib mpir-2.7.0\build.vc10\lib_mpir_cxx\%PLATFORM%\Release\gmpxx.lib
+- msbuild mpir-2.7.0/build.vc14/lib_mpir_gc/lib_mpir_gc.vcxproj /p:Configuration=Release /p:Platform=%PLATFORM% /p:PlatformToolset=%PLATFORMTOOLSET% /verbosity:normal
+- msbuild mpir-2.7.0/build.vc14/lib_mpir_cxx/lib_mpir_cxx.vcxproj /p:Configuration=Release /p:Platform=%PLATFORM% /p:PlatformToolset=%PLATFORMTOOLSET% /verbosity:normal
+- copy mpir-2.7.0\build.vc14\lib_mpir_gc\%PLATFORM%\Release\mpir.lib mpir-2.7.0\build.vc14\lib_mpir_gc\%PLATFORM%\Release\gmp.lib
+- copy mpir-2.7.0\build.vc14\lib_mpir_cxx\%PLATFORM%\Release\mpirxx.lib mpir-2.7.0\build.vc14\lib_mpir_cxx\%PLATFORM%\Release\gmpxx.lib
 
 build_script:
 - mkdir build
 - cd build
-- cmake -G "Visual Studio 14 2015" -DGMP_DIR=mpir-2.7.0/lib/%PLATFORM%/Release;mpir-2.7.0/build.vc10/lib_mpir_gc/%PLATFORM%/Release;mpir-2.7.0/build.vc10/lib_mpir_cxx/%PLATFORM%/Release -DCMAKE_CXX_FLAGS_DEBUG="/D_DEBUG /MDd /Zi /Ob0 /Od /RTC1 /W1" ..
+- cmake -G "Visual Studio 14 2015" -DGMP_DIR=mpir-2.7.0/lib/%PLATFORM%/Release;mpir-2.7.0/build.vc14/lib_mpir_gc/%PLATFORM%/Release;mpir-2.7.0/build.vc14/lib_mpir_cxx/%PLATFORM%/Release -DCMAKE_CXX_FLAGS_DEBUG="/D_DEBUG /MDd /Zi /Ob0 /Od /RTC1 /W1" ..
 # To build in Release mode:
 #- cmake --build . --config Release
 - cmake --build . --config Debug
