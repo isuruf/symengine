@@ -4,7 +4,7 @@ version: '{build}'
 
 environment:
   global:
-    PLATFORMTOOLSET: "v90"
+    PLATFORMTOOLSET: "v140"
     PLATFORM: "Win32"
 
 install:
