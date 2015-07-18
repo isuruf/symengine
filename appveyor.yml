@@ -1,5 +1,7 @@
 version: '{build}'
 
+# Comment this out to enable the fast build environment if your account
+# supports it:
 #os: Visual Studio 2015 RC
 
 environment:
