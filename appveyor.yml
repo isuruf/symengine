@@ -23,7 +23,7 @@ build_script:
 # To build in Release mode:
 #- cmake --build . --config Release
 - cmake --build . --config Debug
-- ctest
+- ctest --output-on-failure
 
 # Enable this to be able to login to the build worker
 #on_finish:
