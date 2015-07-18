@@ -27,10 +27,12 @@ using SymEngine::set_basic;
 
 namespace SymEngine {
 
+/*
 template< typename T >
-inline bool is_aligned( T*p, size_t n = alignof(T) ){
+inline bool is_aligned( T*p, size_t n = __alignof(T) ){
     return 0 == reinterpret_cast<uintptr_t>(p) % n ;
 }
+*/
 
 }
 
@@ -241,7 +243,7 @@ int vectorint_placement_new_check(void *data, size_t size)
 {
     CVectorInt *self = (CVectorInt*)data;
     if (size < sizeof(CVectorInt)) return 1;
-    if (!SymEngine::is_aligned(self)) return 2;
+//    if (!SymEngine::is_aligned(self)) return 2;
     return 0;
 }
 
@@ -250,7 +252,7 @@ CVectorInt* vectorint_placement_new(void *data)
 #if defined(WITH_SYMENGINE_ASSERT)
     // if (size < sizeof(CVectorInt)) return 1; // Requires the 'size' argument
     CVectorInt *self = (CVectorInt*)data;
-    SYMENGINE_ASSERT(SymEngine::is_aligned(self));
+//    SYMENGINE_ASSERT(SymEngine::is_aligned(self));
 #endif
     new(data) CVectorInt;
     return (CVectorInt*)data;

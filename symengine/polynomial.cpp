@@ -7,7 +7,7 @@
 namespace SymEngine {
 
 UnivariatePolynomial::UnivariatePolynomial(const RCP<const Symbol> &var, const unsigned int &degree, map_uint_mpz&& dict) :
-     degree_{degree}, var_{var}, dict_{std::move(dict)} {
+     degree_(degree), var_(var), dict_(std::move(dict)) {
 
     SYMENGINE_ASSERT(is_canonical(degree_, dict_))
 }
