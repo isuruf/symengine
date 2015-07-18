@@ -19,7 +19,7 @@ install:
 build_script:
 - mkdir build
 - cd build
-- cmake -G "Visual Studio 14 2015" -DGMP_DIR=mpir-2.7.0/lib/%PLATFORM%/Debug;mpir-2.7.0/build.vc14/lib_mpir_gc/%PLATFORM%/Debug;mpir-2.7.0/build.vc14/lib_mpir_cxx/%PLATFORM%/Debug -DCMAKE_CXX_FLAGS_DEBUG="/D_DEBUG /MDd /Zi /Ob0 /Od /RTC1 /W1" ..
+- cmake -G "Visual Studio 14 2015" -DGMP_DIR=mpir-2.7.0/lib/%PLATFORM%/Debug;mpir-2.7.0/build.vc14/lib_mpir_gc/%PLATFORM%/Debug;mpir-2.7.0/build.vc14/lib_mpir_cxx/%PLATFORM%/Debug -DCMAKE_CXX_FLAGS_DEBUG="/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1 /W1" ..
 # To build in Release mode:
 #- cmake --build . --config Release
 - cmake --build . --config Debug
