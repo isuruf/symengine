@@ -7,9 +7,6 @@ environment:
     PLATFORMTOOLSET: "v90"
     PLATFORM: "Win32"
 
-init:
-- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-
 install:
 - cinst cmake
 - appveyor DownloadFile http://mpir.org/mpir-2.7.0.zip
@@ -26,5 +23,6 @@ build_script:
 - cmake --build .
 - ctest
 
-on_finish:
-- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# Enable this to be able to login to the build worker
+#on_finish:
+#- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
