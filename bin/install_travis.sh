@@ -90,6 +90,10 @@ if [[ "${WITH_PYTHON}" == "yes" && "${WITH_SAGE}" != "yes" || "${PYTHON_INSTALL}
     source activate test-environment;
 fi
 if [[ "${WITH_SAGE}" == "yes" ]]; then
+    sudo apt-get install lrzip;
+    curl http://mirrors.mit.edu/sage/linux/64bit/Ubuntu_12.04_LTS_sage-6.8-x86_64-Linux.tar.lrz;
+    lrzuntar Ubuntu_12.04_LTS_sage-6.8-x86_64-Linux.tar.lrz;
+    ls;
     sudo apt-add-repository -y ppa:aims/sagemath;
     sudo apt-get update;
     set +e;
