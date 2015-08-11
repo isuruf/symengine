@@ -223,6 +223,10 @@ public:
         mpfr_abs(result_, result_, rnd_);
     };
 
+    void bvisit(const NumberWrapper &x) {
+        x.eval(mpfr_get_prec(result_))->accept(*this);
+    }
+
     // Classes not implemented are
     // Subs, UpperGamma, LowerGamma, Dirichlet_eta, Zeta
     // LeviCivita, KroneckerDelta, FunctionSymbol, LambertW

@@ -210,6 +210,10 @@ public:
     void bvisit(const Basic &) {
         throw std::runtime_error("Not implemented.");
     };
+
+    void bvisit(const NumberWrapper &x) {
+        apply(*x.eval(53));
+    }
 };
 
 class EvalRealDoubleVisitor : public EvalDoubleVisitor<double, EvalRealDoubleVisitor> {

@@ -17,12 +17,12 @@
 
 namespace SymEngine {
 
-class EvalArbVisitor : public Visitor {
+class EvalArbVisitor : public BaseVisitor<EvalArbVisitor> {
 private:
     long prec_;
     arb_ptr result_;
 public:
-    EvalArbVisitor(long precision) : prec_{precision} { }
+    EvalArbVisitor(long precision) : BaseVisitor(this), prec_{precision} { }
 
     void apply(arb_ptr result, const Basic &b) {
         arb_ptr tmp = result_;
@@ -31,7 +31,7 @@ public:
         result_ = tmp;
     }
 
-    virtual void visit(const Integer &x) {
+    virtual void bvisit(const Integer &x) {
         fmpz_t z_;
         fmpz_init(z_);
         fmpz_set_mpz(z_, x.i.get_mpz_t());
@@ -39,7 +39,7 @@ public:
         fmpz_clear(z_);
     }
 
-    virtual void visit(const Rational &x) {
+    virtual void bvisit(const Rational &x) {
         fmpq_t q_;
         fmpq_init(q_);
         fmpq_set_mpq(q_, x.i.get_mpq_t());
@@ -47,7 +47,7 @@ public:
         fmpq_clear(q_);
     }
 
-    virtual void visit(const RealDouble &x) {
+    virtual void bvisit(const RealDouble &x) {
         arf_t f_;
         arf_init(f_);
         arf_set_d(f_, x.i);
@@ -55,7 +55,7 @@ public:
         arf_clear(f_);
     }
 
-    virtual void visit(const Add &x) {
+    virtual void bvisit(const Add &x) {
         arb_t t;
         arb_init(t);
 
@@ -73,7 +73,7 @@ public:
         arb_clear(t);
     }
 
-    virtual void visit(const Mul &x) {
+    virtual void bvisit(const Mul &x) {
         arb_t t;
         arb_init(t);
 
@@ -91,7 +91,7 @@ public:
         arb_clear(t);
     }
 
-    virtual void visit(const Pow &x) {
+    virtual void bvisit(const Pow &x) {
         if (eq(*x.get_base(), *E)) {
             apply(result_, *(x.exp_));
             arb_exp(result_, result_, prec_);
@@ -107,105 +107,105 @@ public:
         }
     }
 
-    virtual void visit(const Sin &x) {
+    virtual void bvisit(const Sin &x) {
         apply(result_, *(x.get_arg()));
         arb_sin(result_, result_, prec_);
     }
 
-    virtual void visit(const Cos &x) {
+    virtual void bvisit(const Cos &x) {
         apply(result_, *(x.get_arg()));
         arb_cos(result_, result_, prec_);
     }
 
-    virtual void visit(const Tan &x) {
+    virtual void bvisit(const Tan &x) {
         apply(result_, *(x.get_arg()));
         arb_tan(result_, result_, prec_);
     }
 
-    virtual void visit(const Symbol &x) {
+    virtual void bvisit(const Symbol &x) {
         throw std::runtime_error("Symbol cannot be evaluated as an arb type.");
     }
 
-    virtual void visit(const UnivariatePolynomial &x) {
+    virtual void bvisit(const UnivariatePolynomial &x) {
         throw std::runtime_error("Not implemented.");
     }
 
-    virtual void visit(const Complex &) {
+    virtual void bvisit(const Complex &) {
         throw std::runtime_error("Not implemented.");
     }
 
-    virtual void visit(const ComplexDouble &x) {
+    virtual void bvisit(const ComplexDouble &x) {
         throw std::runtime_error("Not implemented.");
     }
 
-    virtual void visit(const RealMPFR &x) {
+    virtual void bvisit(const RealMPFR &x) {
         throw std::runtime_error("Not implemented.");
     }
 #ifdef HAVE_SYMENGINE_MPC
-    virtual void visit(const ComplexMPC &) {
+    virtual void bvisit(const ComplexMPC &) {
         throw std::runtime_error("Not implemented.");
     };
 #endif
-    virtual void visit(const Log &x) {
+    virtual void bvisit(const Log &x) {
         apply(result_, *(x.get_arg()));
         arb_log(result_, result_, prec_);
     }
 
-    virtual void visit(const Derivative &) {
+    virtual void bvisit(const Derivative &) {
         throw std::runtime_error("Not implemented.");
     }
 
-    virtual void visit(const Cot &x) {
+    virtual void bvisit(const Cot &x) {
         apply(result_, *(x.get_arg()));
         arb_cot(result_, result_, prec_);
     }
 
-    virtual void visit(const Csc &x) {
+    virtual void bvisit(const Csc &x) {
         apply(result_, *(x.get_arg()));
         arb_sin(result_, result_, prec_);
         arb_inv(result_, result_, prec_);
     }
 
-    virtual void visit(const Sec &x) {
+    virtual void bvisit(const Sec &x) {
         apply(result_, *(x.get_arg()));
         arb_cos(result_, result_, prec_);
         arb_inv(result_, result_, prec_);
     }
 
-    virtual void visit(const ASin &x) {
+    virtual void bvisit(const ASin &x) {
         apply(result_, *(x.get_arg()));
         arb_asin(result_, result_, prec_);
     }
 
-    virtual void visit(const ACos &x) {
+    virtual void bvisit(const ACos &x) {
         apply(result_, *(x.get_arg()));
         arb_acos(result_, result_, prec_);
     }
 
-    virtual void visit(const ASec &x) {
+    virtual void bvisit(const ASec &x) {
         apply(result_, *(x.get_arg()));
         arb_inv(result_, result_, prec_);
         arb_acos(result_, result_, prec_);
     }
 
-    virtual void visit(const ACsc &x) {
+    virtual void bvisit(const ACsc &x) {
         apply(result_, *(x.get_arg()));
         arb_inv(result_, result_, prec_);
         arb_asin(result_, result_, prec_);
     }
 
-    virtual void visit(const ATan &x) {
+    virtual void bvisit(const ATan &x) {
         apply(result_, *(x.get_arg()));
         arb_atan(result_, result_, prec_);
     }
 
-    virtual void visit(const ACot &x) {
+    virtual void bvisit(const ACot &x) {
         apply(result_, *(x.get_arg()));
         arb_inv(result_, result_, prec_);
         arb_atan(result_, result_, prec_);
     }
 
-    virtual void visit(const ATan2 &x) {
+    virtual void bvisit(const ATan2 &x) {
         arb_t t;
         arb_init(t);
 
@@ -216,75 +216,75 @@ public:
         arb_clear(t);
     }
 
-    virtual void visit(const LambertW &) {
+    virtual void bvisit(const LambertW &) {
         throw std::runtime_error("Not implemented.");
     }
 
-    virtual void visit(const FunctionSymbol &) {
+    virtual void bvisit(const FunctionSymbol &) {
         throw std::runtime_error("Not implemented.");
     }
 
-    virtual void visit(const Sinh &x) {
+    virtual void bvisit(const Sinh &x) {
         apply(result_, *(x.get_arg()));
         arb_sinh(result_, result_, prec_);
     }
 
-    virtual void visit(const Cosh &x) {
+    virtual void bvisit(const Cosh &x) {
         apply(result_, *(x.get_arg()));
         arb_cosh(result_, result_, prec_);
     }
 
-    virtual void visit(const Tanh &x) {
+    virtual void bvisit(const Tanh &x) {
         apply(result_, *(x.get_arg()));
         arb_tanh(result_, result_, prec_);
     }
 
-    virtual void visit(const Coth &x) {
+    virtual void bvisit(const Coth &x) {
         apply(result_, *(x.get_arg()));
         arb_coth(result_, result_, prec_);
     }
 
-    virtual void visit(const ASinh &) {
+    virtual void bvisit(const ASinh &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const ACosh &) {
+    virtual void bvisit(const ACosh &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const ATanh &) {
+    virtual void bvisit(const ATanh &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const ACoth &) {
+    virtual void bvisit(const ACoth &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const ASech &) {
+    virtual void bvisit(const ASech &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const KroneckerDelta &) {
+    virtual void bvisit(const KroneckerDelta &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const LeviCivita &) {
+    virtual void bvisit(const LeviCivita &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const Zeta &) {
+    virtual void bvisit(const Zeta &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const Dirichlet_eta &) {
+    virtual void bvisit(const Dirichlet_eta &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const Gamma &) {
+    virtual void bvisit(const Gamma &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const LowerGamma &) {
+    virtual void bvisit(const LowerGamma &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const UpperGamma &) {
+    virtual void bvisit(const UpperGamma &) {
         throw std::runtime_error("Not implemented.");
     };
-    virtual void visit(const FunctionWrapper &) {
+    virtual void bvisit(const FunctionWrapper &) {
         throw std::runtime_error("Not implemented.");
     };
 
-    virtual void visit(const Constant &x) {
+    virtual void bvisit(const Constant &x) {
         if (x.__eq__(*pi)) {
             arb_const_pi(result_, prec_);
         } else if (x.__eq__(*E)) {
@@ -294,11 +294,11 @@ public:
         }
     }
 
-    virtual void visit(const Abs &) {
+    virtual void bvisit(const Abs &) {
         throw std::runtime_error("Not implemented.");
     };
 
-    virtual void visit(const Subs &) {
+    virtual void bvisit(const Basic &) {
         throw std::runtime_error("Not implemented.");
     };
 };

@@ -109,6 +109,15 @@ inline bool is_a_Number(const Basic &b)
     return b.get_type_code() <= REAL_DOUBLE;
 }
 
+class NumberWrapper : public Number {
+public:
+    IMPLEMENT_TYPEID(NUMBER_WRAPPER)
+    virtual std::string __str__() const { throw std::runtime_error("Not Implemented."); };
+    virtual RCP<const Basic> eval(long bits)  const { throw std::runtime_error("Not Implemented."); };
+    virtual RCP<const Basic> diff(const RCP<const Symbol> &x) const { throw std::runtime_error("Not Implemented."); };
+    virtual void accept(Visitor &v) const;
+};
+
 //! A class that will evaluate functions numerically.
 class Evaluate {
 public:
