@@ -60,9 +60,6 @@ fi
 if [[ "${BUILD_SHARED_LIBS}" != "" ]]; then
     cmake_line="$cmake_line -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}"
 fi
-if [[ "${WITH_RUBY}" != "" ]]; then
-    cmake_line="$cmake_line -DWITH_RUBY=${WITH_RUBY}"
-fi
 if [[ "${WITH_SAGE}" != "" ]]; then
     cmake_line="$cmake_line -DPYTHON_INSTALL_PATH=$python_install_dir"
 fi
@@ -104,14 +101,14 @@ if [[ "${WITH_PYTHON}" == "yes" ]] && [[ "${WITH_SAGE}" != "yes" ]]; then
 fi
 # Ruby
 if [[ "${WITH_RUBY}" == "yes" ]]; then
-    cd $SOURCE_DIR
+    cd $SOURCE_DIR/symengine/ruby
     echo "Installing dependent gems"
-    bundle install --gemfile=symengine/ruby/Gemfile
+    bundle install
     echo "Building and installing gems"
-    gem build symengine/ruby/symengine.gemspec
-    gem install symengine-0.1.0.gem --verbose
+    gem build symengine.gemspec
+    gem install symengine-0.1.0.gem --verbose -- -DSymEngine_DIR=$our_install_dir
     echo "Running RSpec tests for Ruby extension"
-    rspec symengine/ruby/spec
+    rspec spec
     cd $BUILD_DIR
 fi
 echo "Running tests using installed SymEngine:"
