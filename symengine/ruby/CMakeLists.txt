@@ -13,3 +13,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 find_package(Ruby REQUIRED)
 
 add_subdirectory(ext/symengine)
+
+install(DIRECTORY lib notebooks spec bin DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES .rspec DESTINATION ${CMAKE_INSTALL_PREFIX})

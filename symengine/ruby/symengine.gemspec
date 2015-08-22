@@ -6,10 +6,10 @@ Gem::Specification.new do |gem|
     gem.authors = ['Abinash Meher']
     gem.email = ["abinashdakshana999@gmail.com"]
     gem.homepage = 'https://github.com/sympy/symengine'
-    gem.files = Dir["lib/**/*", "bin/*", "LICENSE", "*.md", "ext/**/*", "CMakeLists.txt"]
+    gem.files = Dir["symengine/**/*", "symengine/ruby/.rspec", "cmake/**/*", "LICENSE", "*.md", "CMakeLists.txt"]
     gem.require_paths = ["lib"]
     gem.license = 'MIT'
-    gem.extensions = ['ext/symengine/extconf.rb']
+    gem.extensions = ['symengine/ruby/ext/symengine/extconf.rb']
 
     gem.add_development_dependency 'bundler', '~> 1.7'
     gem.add_development_dependency 'rspec', '~> 3.0'

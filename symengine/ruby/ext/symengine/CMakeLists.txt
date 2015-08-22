@@ -18,7 +18,7 @@ set_target_properties(symengine_ruby PROPERTIES
 
 # Ruby gems require a install target.
 install(TARGETS symengine_ruby
-            RUNTIME DESTINATION ${ruby_wrapper_BINARY_DIR}/lib/symengine
-            ARCHIVE DESTINATION ${ruby_wrapper_BINARY_DIR}/lib/symengine
-            LIBRARY DESTINATION ${ruby_wrapper_BINARY_DIR}/lib/symengine
+            RUNTIME DESTINATION lib/symengine
+            ARCHIVE DESTINATION lib/symengine
+            LIBRARY DESTINATION lib/symengine
         )
