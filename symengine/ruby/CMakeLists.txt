@@ -15,4 +15,4 @@ find_package(Ruby REQUIRED)
 add_subdirectory(ext/symengine)
 
 install(DIRECTORY lib notebooks spec bin DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES .rspec DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES .rspec Gemfile symengine.gemspec DESTINATION ${CMAKE_INSTALL_PREFIX})

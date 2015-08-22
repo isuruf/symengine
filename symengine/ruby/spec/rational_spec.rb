@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe SymEngine do
   describe SymEngine::Rational do
