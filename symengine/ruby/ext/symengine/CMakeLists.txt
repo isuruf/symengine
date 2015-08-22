@@ -14,5 +14,11 @@ target_link_libraries(symengine_ruby ${SYMENGINE_LIBRARIES} ${RUBY_LIBRARIES})
 set_target_properties(symengine_ruby PROPERTIES
                         PREFIX ""
                         OUTPUT_NAME "symengine"
-                        LIBRARY_OUTPUT_DIRECTORY "${ruby_wrapper_BINARY_DIR}/lib/symengine"
                      )
+
+# Ruby gems require a install target.
+install(TARGETS symengine_ruby
+            RUNTIME DESTINATION ${ruby_wrapper_BINARY_DIR}/lib/symengine
+            ARCHIVE DESTINATION ${ruby_wrapper_BINARY_DIR}/lib/symengine
+            LIBRARY DESTINATION ${ruby_wrapper_BINARY_DIR}/lib/symengine
+        )

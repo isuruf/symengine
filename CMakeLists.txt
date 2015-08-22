@@ -375,8 +375,9 @@ endif()
 if (WITH_RUBY)
     # Copies LICENSE from root directory to gem directory
     file(COPY ${symengine_SOURCE_DIR}/LICENSE DESTINATION symengine/ruby)
-    add_subdirectory(symengine/ruby)
-endif ()
+    message("Copying source of ruby wrappers into: ${CMAKE_CURRENT_BINARY_DIR}/symengine/ruby")
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/symengine/ruby/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/symengine/ruby)
+endif()
 
 if (WITH_PYTHON)
     add_subdirectory(symengine/python)

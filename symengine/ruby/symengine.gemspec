@@ -1,14 +1,15 @@
 Gem::Specification.new do |gem|
     gem.name = 'symengine'
-    gem.version = '0.0.0'
+    gem.version = '0.1.0'
     gem.summary = "Ruby interface for SymEngine, a fast C++ library for symbolic manipulation"
     gem.description = "This gem provides a Ruby interface for SymEngine, a fast C++ library for symbolic manipulation, so that the you can use the features of SymEngine in ruby."
     gem.authors = ['Abinash Meher']
     gem.email = ["abinashdakshana999@gmail.com"]
     gem.homepage = 'https://github.com/sympy/symengine'
-    gem.files = Dir["lib/**/*", "bin/*", "LICENSE", "*.md"]
+    gem.files = Dir["lib/**/*", "bin/*", "LICENSE", "*.md", "ext/**/*", "CMakeLists.txt"]
     gem.require_paths = ["lib"]
     gem.license = 'MIT'
+    gem.extensions = ['ext/symengine/extconf.rb']
 
     gem.add_development_dependency 'bundler', '~> 1.7'
     gem.add_development_dependency 'rspec', '~> 3.0'
