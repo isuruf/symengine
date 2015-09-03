@@ -1553,7 +1553,6 @@ Derivative::Derivative(const RCP<const Basic> &arg, const vec_basic &x)
     : arg_{arg}, x_{x}
 {
     // TODO: use a multi-set for x_ instead of vector
-    std::sort(x_.begin(), x_.end(), RCPBasicKeyLessCmp());
     SYMENGINE_ASSERT(is_canonical(arg, x))
 }
 
@@ -1563,6 +1562,8 @@ bool Derivative::is_canonical(const RCP<const Basic> &arg,
     // Check that 'x' are Symbols:
     for(auto &a: x)
         if (!is_a<Symbol>(*a)) return false;
+    // Check that they are sorted
+    if (!std::is_sorted(x.begin(), x.end(), RCPBasicKeyLess())) return false;
     if (is_a<FunctionSymbol>(*arg)) {
         RCP<const Symbol> s = rcp_static_cast<const Symbol>(x[0]);
         RCP<const FunctionSymbol> f = rcp_static_cast<const FunctionSymbol>(arg);
@@ -1626,6 +1627,7 @@ RCP<const Basic> Derivative::diff(const RCP<const Symbol> &x) const
         if (eq(*u[i], *x)) {
             vec_basic t = x_;
             t.push_back(x);
+            std::sort(t.begin(), t.end(), RCPBasicKeyLess());
             return Derivative::create(arg_, t);
         }
     }
@@ -1635,6 +1637,7 @@ RCP<const Basic> Derivative::diff(const RCP<const Symbol> &x) const
     if (is_a<Derivative>(*ret) && eq(*static_cast<const Derivative &>(*ret).arg_, *arg_)) {
         vec_basic t = x_;
         t.push_back(x);
+        std::sort(t.begin(), t.end(), RCPBasicKeyLess());
         return Derivative::create(arg_, t);
     }
 
@@ -1687,6 +1690,7 @@ RCP<const Basic> Derivative::subs(const map_basic_basic &subs_dict) const
     for (unsigned i = 0; i < sym.size(); i++) {
         sym[i] = sym[i]->subs(n);
     }
+    std::sort(sym.begin(), sym.end(), RCPBasicKeyLess());
     if (m.empty()) {
         return Derivative::create(arg_->subs(n), sym);
     } else {
@@ -1788,6 +1792,9 @@ RCP<const Basic> Subs::diff(const RCP<const Symbol> &x) const
 
 RCP<const Basic> Subs::subs(const map_basic_basic &subs_dict) const
 {
+    auto it = subs_dict.find(rcp_from_this());
+    if (it != subs_dict.end())
+        return it->second;
     map_basic_basic m, n;
     for (auto &p: subs_dict) {
         bool found = false;
