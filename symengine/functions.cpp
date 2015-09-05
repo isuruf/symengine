@@ -1441,6 +1441,11 @@ int FunctionSymbol::compare(const Basic &o) const
 
 RCP<const Basic> FunctionSymbol::diff(const RCP<const Symbol> &x) const
 {
+    return _diff(x);
+}
+
+RCP<const Basic> FunctionSymbol::_diff(const RCP<const Symbol> &x) const
+{
     RCP<const Basic> diff = zero, t;
     RCP<const Basic> self = rcp_from_this();
     RCP<const Symbol> s;
@@ -1470,10 +1475,15 @@ RCP<const Basic> FunctionSymbol::diff(const RCP<const Symbol> &x) const
             v[i] = s;
             map_basic_basic m;
             insert(m, v[i], arg_[i]);
-            diff = add(diff, mul(t, make_rcp<const Subs>(Derivative::create(make_rcp<const FunctionSymbol>(name_, v), {v[i]}), m)));
+            diff = add(diff, mul(t, make_rcp<const Subs>(Derivative::create(create(v), {v[i]}),
+                                                         m)));
         }
     }
     return diff;
+}
+
+RCP<const FunctionSymbol> FunctionSymbol::create(const vec_basic &x) const {
+    return make_rcp<const FunctionSymbol>(name_, x);
 }
 
 RCP<const Basic> FunctionSymbol::subs(const map_basic_basic &subs_dict) const
