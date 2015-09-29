@@ -543,7 +543,7 @@ public:
     virtual RCP<const Basic> subs(const map_basic_basic &subs_dict) const;
 
     virtual void accept(Visitor &v) const;
-    virtual RCP<const FunctionSymbol> create(const vec_basic &x) const;
+    virtual RCP<const Basic> create(const vec_basic &x) const;
 
 protected:
     //! Protected method to differentiate w.r.t Symbol `x`
@@ -590,7 +590,7 @@ public:
     inline void* get_object() const { return obj_; }
 
     virtual void accept(Visitor &v) const;
-    virtual RCP<const FunctionSymbol> create(const vec_basic &x) const {
+    virtual RCP<const Basic> create(const vec_basic &x) const {
         throw std::runtime_error("Not Implmented.");
     }
 };

@@ -1482,7 +1482,7 @@ RCP<const Basic> FunctionSymbol::_diff(const RCP<const Symbol> &x) const
     return diff;
 }
 
-RCP<const FunctionSymbol> FunctionSymbol::create(const vec_basic &x) const {
+RCP<const Basic> FunctionSymbol::create(const vec_basic &x) const {
     return make_rcp<const FunctionSymbol>(name_, x);
 }
 
@@ -1495,7 +1495,7 @@ RCP<const Basic> FunctionSymbol::subs(const map_basic_basic &subs_dict) const
     for (unsigned i = 0; i < v.size(); i++) {
         v[i] = v[i]->subs(subs_dict);
     }
-    return make_rcp<const FunctionSymbol>(name_, v);
+    return create(v);
 }
 
 RCP<const Basic> function_symbol(std::string name, const vec_basic &arg)
