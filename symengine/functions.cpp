@@ -1498,6 +1498,11 @@ RCP<const Basic> FunctionSymbol::subs(const map_basic_basic &subs_dict) const
     return create(v);
 }
 
+RCP<const Number> FunctionSymbol::eval(long bits) const
+{
+    throw std::runtime_error("Not Implemented/Defined");
+}
+
 RCP<const Basic> function_symbol(std::string name, const vec_basic &arg)
 {
     return make_rcp<const FunctionSymbol>(name, arg);
@@ -1508,7 +1513,7 @@ RCP<const Basic> function_symbol(std::string name, const RCP<const Basic> &arg)
     return make_rcp<const FunctionSymbol>(name, arg);
 }
 
-FunctionWrapper::FunctionWrapper(void* obj, std::string name, std::string hash, const vec_basic &arg, 
+FunctionWrapper::FunctionWrapper(void* obj, std::string name, std::string hash, const vec_basic &arg,
     void(*dec_ref)(void *), int(*comp)(void *, void *))
     : FunctionSymbol(name, arg)
 {

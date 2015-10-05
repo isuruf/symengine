@@ -212,7 +212,11 @@ public:
     };
 
     void bvisit(const NumberWrapper &x) {
-        apply(*x.eval(53));
+        apply(*(x.eval(53)));
+    }
+
+    void bvisit(const FunctionSymbol &x) {
+        apply(*(x.eval(53)));
     }
 };
 
@@ -222,7 +226,7 @@ public:
 
     // Classes not implemented are
     // Subs, UpperGamma, LowerGamma, Dirichlet_eta, Zeta
-    // LeviCivita, KroneckerDelta, FunctionSymbol, LambertW
+    // LeviCivita, KroneckerDelta, LambertW
     // Derivative, Complex, ComplexDouble, ComplexMPC
 
     using EvalDoubleVisitor::bvisit;
@@ -245,7 +249,7 @@ public:
 
     // Classes not implemented are
     // Subs, UpperGamma, LowerGamma, Dirichlet_eta, Zeta
-    // LeviCivita, KroneckerDelta, FunctionSymbol, LambertW
+    // LeviCivita, KroneckerDelta, LambertW
     // Derivative, ATan2, Gamma
 
     using EvalDoubleVisitor::bvisit;

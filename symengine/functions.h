@@ -544,6 +544,7 @@ public:
 
     virtual void accept(Visitor &v) const;
     virtual RCP<const Basic> create(const vec_basic &x) const;
+    virtual RCP<const Number> eval(long bits) const;
 
 protected:
     //! Protected method to differentiate w.r.t Symbol `x`
