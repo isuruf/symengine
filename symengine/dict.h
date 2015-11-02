@@ -8,6 +8,8 @@
 #ifndef SYMENGINE_DICT_H
 #define SYMENGINE_DICT_H
 
+// Enable C++11 support for gmpxx
+#define __GMPXX_USE_CXX11 1
 #include <gmpxx.h>
 
 namespace SymEngine {
