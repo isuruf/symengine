@@ -105,6 +105,31 @@ std::ostream& operator<<(std::ostream& out, const SymEngine::set_basic& d)
 }
 
 
+std::ostream& operator<<(std::ostream& out, const mpz_class& d)
+{
+    out << d.get_str();
+    return out;
+}
+
+std::ostream& operator<<(std::ostream& out, const mpq_class& d)
+{
+    out << d.get_str();
+    return out;
+}
+
+std::ostream& operator<<(std::ostream& out, mpz_srcptr d)
+{
+    out << mpz_class(d).get_str();
+    return out;
+}
+
+std::ostream& operator<<(std::ostream& out, mpq_srcptr d)
+{
+    out << mpq_class(d).get_str();
+    return out;
+}
+
+
 namespace SymEngine {
 
 bool vec_basic_eq(const vec_basic &a, const vec_basic &b)

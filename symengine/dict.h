@@ -150,6 +150,10 @@ std::ostream& operator<<(std::ostream& out, const SymEngine::map_basic_basic& d)
 std::ostream& operator<<(std::ostream& out, const SymEngine::umap_basic_basic& d);
 std::ostream& operator<<(std::ostream& out, const SymEngine::vec_basic& d);
 std::ostream& operator<<(std::ostream& out, const SymEngine::set_basic& d);
+std::ostream& operator<<(std::ostream& out, const mpz_class& d);
+std::ostream& operator<<(std::ostream& out, const mpq_class& d);
+std::ostream& operator<<(std::ostream& out, mpz_srcptr d);
+std::ostream& operator<<(std::ostream& out, mpq_srcptr d);
 
 #endif
 
