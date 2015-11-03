@@ -104,19 +104,6 @@ std::ostream& operator<<(std::ostream& out, const SymEngine::set_basic& d)
     return print_vec_rcp(out, d);
 }
 
-
-std::ostream& operator<<(std::ostream& out, const mpz_class& d)
-{
-    out << d.get_str();
-    return out;
-}
-
-std::ostream& operator<<(std::ostream& out, const mpq_class& d)
-{
-    out << d.get_str();
-    return out;
-}
-
 std::ostream& operator<<(std::ostream& out, mpz_srcptr d)
 {
     out << mpz_class(d).get_str();
