@@ -13,6 +13,7 @@ using SymEngine::pi;
 using SymEngine::mul;
 using SymEngine::sub;
 using SymEngine::eval_mpfr;
+using SymEngine::integer_class;
 using SymEngine::print_stack_on_segfault;
 
 TEST_CASE("precision: eval_mpfr", "[eval_mpfr]")
@@ -20,7 +21,7 @@ TEST_CASE("precision: eval_mpfr", "[eval_mpfr]")
     mpfr_t a;
     mpfr_init2(a, 53);
     RCP<const Basic> s = mul(pi, integer(1963319607));
-    RCP<const Basic> t = integer(mpz_class(6167950454));
+    RCP<const Basic> t = integer(integer_class(6167950454));
     RCP<const Basic> r = sub(s, t);
     // value of `r` is approximately 0.000000000149734291
 

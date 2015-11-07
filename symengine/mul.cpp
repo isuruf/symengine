@@ -182,15 +182,15 @@ void Mul::dict_add_term_new(const Ptr<RCP<const Number>> &coef, map_basic_basic 
             } else if (is_a<Rational>(*exp)) {
                 // Here we make the exponent postive and a fraction between
                 // 0 and 1.
-                mpz_class q, r, num, den;
-                num = rcp_static_cast<const Rational>(exp)->i.get_num();
-                den = rcp_static_cast<const Rational>(exp)->i.get_den();
-                mpz_fdiv_qr(q.get_mpz_t(), r.get_mpz_t(), num.get_mpz_t(),
-                    den.get_mpz_t());
+                integer_class q, r, num, den;
+                num = get_num(rcp_static_cast<const Rational>(exp)->i);
+                den = get_den(rcp_static_cast<const Rational>(exp)->i);
+                mpz_fdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(num),
+                    get_mpz_t(den));
 
-                insert(d, t, Rational::from_mpq(mpq_class(r, den)));
+                insert(d, t, Rational::from_mpq(rational_class(r, den)));
                 imulnum(outArg(*coef), pownum(rcp_static_cast<const Number>(t),
-                    rcp_static_cast<const Number>(integer(q))));
+                    rcp_static_cast<const Number>(integer(std::move(q)))));
             } else {
                 insert(d, t, exp);
             }
@@ -240,18 +240,18 @@ void Mul::dict_add_term_new(const Ptr<RCP<const Number>> &coef, map_basic_basic 
             }
         } else if (is_a<Rational>(*it->second)) {
             if (is_a_Number(*t)) {
-                mpz_class q, r, num, den;
-                num = rcp_static_cast<const Rational>(it->second)->i.get_num();
-                den = rcp_static_cast<const Rational>(it->second)->i.get_den();
+                integer_class q, r, num, den;
+                num = get_num(rcp_static_cast<const Rational>(it->second)->i);
+                den = get_den(rcp_static_cast<const Rational>(it->second)->i);
                 // Here we make the exponent postive and a fraction between
                 // 0 and 1.
                 if (num > den or num < 0) {
-                    mpz_fdiv_qr(q.get_mpz_t(), r.get_mpz_t(), num.get_mpz_t(),
-                                den.get_mpz_t());
+                    mpz_fdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(num),
+                                get_mpz_t(den));
 
-                    it->second = Rational::from_mpq(mpq_class(r, den));
+                    it->second = Rational::from_mpq(rational_class(r, den));
                     imulnum(outArg(*coef), pownum(rcp_static_cast<const Number>(t),
-                                                  rcp_static_cast<const Number>(integer(q))));
+                                                  rcp_static_cast<const Number>(integer(std::move(q)))));
                 }
                 return;
             }
@@ -292,7 +292,7 @@ void Mul::as_base_exp(const RCP<const Basic> &self, const Ptr<RCP<const Basic>> 
         // in case of Integers den = 1
         if (is_a<Rational>(*self)) {
             RCP<const Rational> self_new = rcp_static_cast<const Rational>(self);
-            if (abs(self_new->i.get_num()) < abs(self_new->i.get_den())) {
+            if (abs(get_num(self_new->i)) < abs(get_den(self_new->i))) {
                 *exp = minus_one;
                 *base = self_new->rdiv(*rcp_static_cast<const Number>(one));
             } else {

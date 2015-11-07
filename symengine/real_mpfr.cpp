@@ -53,7 +53,7 @@ int RealMPFR::compare(const Basic &o) const
  * */
 RCP<const Number> RealMPFR::addreal(const Integer &other) const {
     mpfr_class t(get_prec());
-    mpfr_add_z(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpfr_add_z(t.get_mpfr_t(), i.get_mpfr_t(), get_mpz_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -62,7 +62,7 @@ RCP<const Number> RealMPFR::addreal(const Integer &other) const {
  * */
 RCP<const Number> RealMPFR::addreal(const Rational &other) const {
     mpfr_class t(get_prec());
-    mpfr_add_q(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_add_q(t.get_mpfr_t(), i.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -72,7 +72,7 @@ RCP<const Number> RealMPFR::addreal(const Rational &other) const {
 RCP<const Number> RealMPFR::addreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_add_fr(t.get_mpc_t(), t.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));
 #else
@@ -117,7 +117,7 @@ RCP<const Number> RealMPFR::addreal(const RealMPFR &other) const {
  * */
 RCP<const Number> RealMPFR::subreal(const Integer &other) const {
     mpfr_class t(get_prec());
-    mpfr_sub_z(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpfr_sub_z(t.get_mpfr_t(), i.get_mpfr_t(), get_mpz_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -126,7 +126,7 @@ RCP<const Number> RealMPFR::subreal(const Integer &other) const {
  * */
 RCP<const Number> RealMPFR::subreal(const Rational &other) const {
     mpfr_class t(get_prec());
-    mpfr_sub_q(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_sub_q(t.get_mpfr_t(), i.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -136,7 +136,7 @@ RCP<const Number> RealMPFR::subreal(const Rational &other) const {
 RCP<const Number> RealMPFR::subreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_sub_fr(t.get_mpc_t(), t.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));
 #else
@@ -181,7 +181,7 @@ RCP<const Number> RealMPFR::subreal(const RealMPFR &other) const {
  * */
 RCP<const Number> RealMPFR::rsubreal(const Integer &other) const {
     mpfr_class t(get_prec());
-    mpfr_z_sub(t.get_mpfr_t(), other.i.get_mpz_t(), i.get_mpfr_t(), MPFR_RNDN);
+    mpfr_z_sub(t.get_mpfr_t(), get_mpz_t(other.i), i.get_mpfr_t(), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -190,7 +190,7 @@ RCP<const Number> RealMPFR::rsubreal(const Integer &other) const {
  * */
 RCP<const Number> RealMPFR::rsubreal(const Rational &other) const {
     mpfr_class t(get_prec());
-    mpfr_sub_q(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_sub_q(t.get_mpfr_t(), i.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpfr_neg(t.get_mpfr_t(), t.get_mpfr_t(), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
@@ -201,7 +201,7 @@ RCP<const Number> RealMPFR::rsubreal(const Rational &other) const {
 RCP<const Number> RealMPFR::rsubreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_fr_sub(t.get_mpc_t(), this->i.get_mpfr_t(), t.get_mpc_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));
 #else
@@ -237,7 +237,7 @@ RCP<const Number> RealMPFR::rsubreal(const ComplexDouble &other) const {
  * */
 RCP<const Number> RealMPFR::mulreal(const Integer &other) const {
     mpfr_class t(get_prec());
-    mpfr_mul_z(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpfr_mul_z(t.get_mpfr_t(), i.get_mpfr_t(), get_mpz_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -246,7 +246,7 @@ RCP<const Number> RealMPFR::mulreal(const Integer &other) const {
  * */
 RCP<const Number> RealMPFR::mulreal(const Rational &other) const {
     mpfr_class t(get_prec());
-    mpfr_mul_q(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_mul_q(t.get_mpfr_t(), i.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -256,7 +256,7 @@ RCP<const Number> RealMPFR::mulreal(const Rational &other) const {
 RCP<const Number> RealMPFR::mulreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_mul_fr(t.get_mpc_t(), t.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));
 #else
@@ -301,7 +301,7 @@ RCP<const Number> RealMPFR::mulreal(const RealMPFR &other) const {
  * */
 RCP<const Number> RealMPFR::divreal(const Integer &other) const {
     mpfr_class t(get_prec());
-    mpfr_div_z(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpfr_div_z(t.get_mpfr_t(), i.get_mpfr_t(), get_mpz_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -310,7 +310,7 @@ RCP<const Number> RealMPFR::divreal(const Integer &other) const {
  * */
 RCP<const Number> RealMPFR::divreal(const Rational &other) const {
     mpfr_class t(get_prec());
-    mpfr_div_q(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_div_q(t.get_mpfr_t(), i.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -320,7 +320,7 @@ RCP<const Number> RealMPFR::divreal(const Rational &other) const {
 RCP<const Number> RealMPFR::divreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_div_fr(t.get_mpc_t(), t.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));
 #else
@@ -365,7 +365,7 @@ RCP<const Number> RealMPFR::divreal(const RealMPFR &other) const {
  * */
 RCP<const Number> RealMPFR::rdivreal(const Integer &other) const {
     mpfr_class t(get_prec());
-    mpfr_div_z(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpfr_div_z(t.get_mpfr_t(), i.get_mpfr_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpfr_pow_si(t.get_mpfr_t(), t.get_mpfr_t(), -1, MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
@@ -375,7 +375,7 @@ RCP<const Number> RealMPFR::rdivreal(const Integer &other) const {
  * */
 RCP<const Number> RealMPFR::rdivreal(const Rational &other) const {
     mpfr_class t(get_prec());
-    mpfr_div_q(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_div_q(t.get_mpfr_t(), i.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpfr_pow_si(t.get_mpfr_t(), t.get_mpfr_t(), -1, MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
@@ -386,7 +386,7 @@ RCP<const Number> RealMPFR::rdivreal(const Rational &other) const {
 RCP<const Number> RealMPFR::rdivreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_fr_div(t.get_mpc_t(), this->i.get_mpfr_t(), t.get_mpc_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));
 #else
@@ -422,7 +422,7 @@ RCP<const Number> RealMPFR::rdivreal(const ComplexDouble &other) const {
  * */
 RCP<const Number> RealMPFR::powreal(const Integer &other) const {
     mpfr_class t(get_prec());
-    mpfr_pow_z(t.get_mpfr_t(), i.get_mpfr_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpfr_pow_z(t.get_mpfr_t(), i.get_mpfr_t(), get_mpz_t(other.i), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
 
@@ -433,7 +433,7 @@ RCP<const Number> RealMPFR::powreal(const Rational &other) const {
     if (mpfr_cmp_si(i.get_mpfr_t(), 0) < 0) {
 #ifdef HAVE_SYMENGINE_MPC
         mpc_class t(get_prec()), s(get_prec());
-        mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+        mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
         mpc_set_fr(s.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
         mpc_pow(t.get_mpc_t(), s.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
         return complex_mpc(std::move(t));
@@ -442,7 +442,7 @@ RCP<const Number> RealMPFR::powreal(const Rational &other) const {
 #endif
     }
     mpfr_class t(get_prec());
-    mpfr_set_q(t.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_set_q(t.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpfr_pow(t.get_mpfr_t(), i.get_mpfr_t(), t.get_mpfr_t(), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
@@ -453,7 +453,7 @@ RCP<const Number> RealMPFR::powreal(const Rational &other) const {
 RCP<const Number> RealMPFR::powreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_pow_fr(t.get_mpc_t(), t.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));
 #else
@@ -522,7 +522,7 @@ RCP<const Number> RealMPFR::rpowreal(const Integer &other) const {
     if (other.is_negative()) {
 #ifdef HAVE_SYMENGINE_MPC
         mpc_class t(get_prec()), s(get_prec());
-        mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+        mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
         mpc_set_fr(s.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
         mpc_pow(t.get_mpc_t(), t.get_mpc_t(), s.get_mpc_t(), MPFR_RNDN);
         return complex_mpc(std::move(t));
@@ -531,7 +531,7 @@ RCP<const Number> RealMPFR::rpowreal(const Integer &other) const {
 #endif
     }
     mpfr_class t(get_prec());
-    mpfr_set_z(t.get_mpfr_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpfr_set_z(t.get_mpfr_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpfr_pow(t.get_mpfr_t(), t.get_mpfr_t(), i.get_mpfr_t(), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
@@ -543,7 +543,7 @@ RCP<const Number> RealMPFR::rpowreal(const Rational &other) const {
     if (other.is_negative()) {
 #ifdef HAVE_SYMENGINE_MPC
         mpc_class t(get_prec()), s(get_prec());
-        mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+        mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
         mpc_set_fr(s.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
         mpc_pow(t.get_mpc_t(), t.get_mpc_t(), s.get_mpc_t(), MPFR_RNDN);
         return complex_mpc(std::move(t));
@@ -552,7 +552,7 @@ RCP<const Number> RealMPFR::rpowreal(const Rational &other) const {
 #endif
     }
     mpfr_class t(get_prec());
-    mpfr_set_q(t.get_mpfr_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpfr_set_q(t.get_mpfr_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpfr_pow(t.get_mpfr_t(), t.get_mpfr_t(), i.get_mpfr_t(), MPFR_RNDN);
     return rcp(new RealMPFR(std::move(t)));
 }
@@ -563,7 +563,7 @@ RCP<const Number> RealMPFR::rpowreal(const Rational &other) const {
 RCP<const Number> RealMPFR::rpowreal(const Complex &other) const {
 #ifdef HAVE_SYMENGINE_MPC
     mpc_class t(get_prec()), s(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_set_fr(s.get_mpc_t(), this->i.get_mpfr_t(), MPFR_RNDN);
     mpc_pow(t.get_mpc_t(), s.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return complex_mpc(std::move(t));

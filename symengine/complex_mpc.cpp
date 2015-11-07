@@ -63,7 +63,7 @@ RCP<const Number> ComplexMPC::imaginary_part() const {
  * */
 RCP<const Number> ComplexMPC::add(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_add(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -73,7 +73,7 @@ RCP<const Number> ComplexMPC::add(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::add(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_add(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -83,7 +83,7 @@ RCP<const Number> ComplexMPC::add(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::add(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_add(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -131,7 +131,7 @@ RCP<const Number> ComplexMPC::add(const ComplexMPC &other) const {
  * */
 RCP<const Number> ComplexMPC::sub(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_sub(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -141,7 +141,7 @@ RCP<const Number> ComplexMPC::sub(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::sub(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_sub(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -151,7 +151,7 @@ RCP<const Number> ComplexMPC::sub(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::sub(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_sub(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -200,7 +200,7 @@ RCP<const Number> ComplexMPC::sub(const ComplexMPC &other) const {
  * */
 RCP<const Number> ComplexMPC::rsub(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_sub(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -210,7 +210,7 @@ RCP<const Number> ComplexMPC::rsub(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::rsub(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_sub(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -220,7 +220,7 @@ RCP<const Number> ComplexMPC::rsub(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::rsub(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_sub(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -259,7 +259,7 @@ RCP<const Number> ComplexMPC::rsub(const RealMPFR &other) const {
  * */
 RCP<const Number> ComplexMPC::mul(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_mul(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -269,7 +269,7 @@ RCP<const Number> ComplexMPC::mul(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::mul(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_mul(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -279,7 +279,7 @@ RCP<const Number> ComplexMPC::mul(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::mul(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_mul(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -327,7 +327,7 @@ RCP<const Number> ComplexMPC::mul(const ComplexMPC &other) const {
  * */
 RCP<const Number> ComplexMPC::div(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_div(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -337,7 +337,7 @@ RCP<const Number> ComplexMPC::div(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::div(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_div(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -347,7 +347,7 @@ RCP<const Number> ComplexMPC::div(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::div(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_div(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -395,7 +395,7 @@ RCP<const Number> ComplexMPC::div(const ComplexMPC &other) const {
  * */
 RCP<const Number> ComplexMPC::rdiv(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_div(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -405,7 +405,7 @@ RCP<const Number> ComplexMPC::rdiv(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::rdiv(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_div(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -415,7 +415,7 @@ RCP<const Number> ComplexMPC::rdiv(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::rdiv(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_div(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -454,7 +454,7 @@ RCP<const Number> ComplexMPC::rdiv(const RealMPFR &other) const {
  * */
 RCP<const Number> ComplexMPC::pow(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_pow(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -464,7 +464,7 @@ RCP<const Number> ComplexMPC::pow(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::pow(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_pow(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -474,7 +474,7 @@ RCP<const Number> ComplexMPC::pow(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::pow(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_pow(t.get_mpc_t(), i.get_mpc_t(), t.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -522,7 +522,7 @@ RCP<const Number> ComplexMPC::pow(const ComplexMPC &other) const {
  * */
 RCP<const Number> ComplexMPC::rpow(const Integer &other) const {
     mpc_class t(get_prec());
-    mpc_set_z(t.get_mpc_t(), other.i.get_mpz_t(), MPFR_RNDN);
+    mpc_set_z(t.get_mpc_t(), get_mpz_t(other.i), MPFR_RNDN);
     mpc_pow(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -532,7 +532,7 @@ RCP<const Number> ComplexMPC::rpow(const Integer &other) const {
  * */
 RCP<const Number> ComplexMPC::rpow(const Rational &other) const {
     mpc_class t(get_prec());
-    mpc_set_q(t.get_mpc_t(), other.i.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q(t.get_mpc_t(), get_mpq_t(other.i), MPFR_RNDN);
     mpc_pow(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }
@@ -542,7 +542,7 @@ RCP<const Number> ComplexMPC::rpow(const Rational &other) const {
  * */
 RCP<const Number> ComplexMPC::rpow(const Complex &other) const {
     mpc_class t(get_prec());
-    mpc_set_q_q(t.get_mpc_t(), other.real_.get_mpq_t(), other.imaginary_.get_mpq_t(), MPFR_RNDN);
+    mpc_set_q_q(t.get_mpc_t(), get_mpq_t(other.real_), get_mpq_t(other.imaginary_), MPFR_RNDN);
     mpc_pow(t.get_mpc_t(), t.get_mpc_t(), i.get_mpc_t(), MPFR_RNDN);
     return rcp(new ComplexMPC(std::move(t)));
 }

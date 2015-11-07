@@ -103,8 +103,8 @@ RCP<const Basic> pow(const RCP<const Basic> &a, const RCP<const Basic> &b)
         if (is_a<Integer>(*b)) {
             return is_a<Integer>(*div(b, integer(2))) ? one : minus_one;
         } else if (is_a<Rational>(*b) and
-                    (rcp_static_cast<const Rational>(b)->i.get_num() == 1) and
-                    (rcp_static_cast<const Rational>(b)->i.get_den() == 2)) {
+                    (get_num(rcp_static_cast<const Rational>(b)->i) == 1) and
+                    (get_den(rcp_static_cast<const Rational>(b)->i) == 2)) {
             return I;
         }
     }
@@ -126,13 +126,13 @@ RCP<const Basic> pow(const RCP<const Basic> &a, const RCP<const Basic> &b)
                 return rcp_static_cast<const Number>(a)->pow(*rcp_static_cast<const Number>(b));
             }
         } else if (is_a<Rational>(*b)) {
-            mpz_class q, r, num, den;
-            num = rcp_static_cast<const Rational>(b)->i.get_num();
-            den = rcp_static_cast<const Rational>(b)->i.get_den();
+            integer_class q, r, num, den;
+            num = get_num(rcp_static_cast<const Rational>(b)->i);
+            den = get_den(rcp_static_cast<const Rational>(b)->i);
 
             if (num > den or num < 0) {
-                mpz_fdiv_qr(q.get_mpz_t(), r.get_mpz_t(), num.get_mpz_t(),
-                    den.get_mpz_t());
+                mpz_fdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(num),
+                    get_mpz_t(den));
             } else {
                 if (is_a_Number(*a) and not rcp_static_cast<const Number>(a)->is_exact()) {
                     return rcp_static_cast<const Number>(a)->pow(*rcp_static_cast<const Number>(b));
@@ -145,10 +145,10 @@ RCP<const Basic> pow(const RCP<const Basic> &a, const RCP<const Basic> &b)
             if (is_a<Rational>(*a)) {
                 RCP<const Rational> exp_new = rcp_static_cast<const Rational>(a);
                 RCP<const Basic> frac =
-                    div(exp_new->powrat(Integer(q)), integer(exp_new->i.get_den()));
+                    div(exp_new->powrat(Integer(q)), integer(get_den(exp_new->i)));
                 RCP<const Basic> surds =
-                    mul(make_rcp<const Pow>(integer(exp_new->i.get_num()), div(integer(r), integer(den))),
-                        make_rcp<const Pow>(integer(exp_new->i.get_den()), sub(one, div(integer(r), integer(den)))));
+                    mul(make_rcp<const Pow>(integer(get_num(exp_new->i)), div(integer(r), integer(den))),
+                        make_rcp<const Pow>(integer(get_den(exp_new->i)), sub(one, div(integer(r), integer(den)))));
                 return mul(frac, surds);
             } else if (is_a<Integer>(*a)) {
                 RCP<const Integer> exp_new = rcp_static_cast<const Integer>(a);
@@ -242,7 +242,7 @@ void multinomial_coefficients_mpz(int m, int n, map_vec_mpz &r)
 {
     vec_int t;
     int j, tj, start, k;
-    mpz_class v;
+    integer_class v;
     if (m < 2)
         throw std::runtime_error("multinomial_coefficients: m >= 2 must hold.");
     if (n < 0)
@@ -289,7 +289,7 @@ RCP<const Basic> pow_expand(const RCP<const Pow> &self)
     if (is_a<Integer>(*self->get_exp()) and is_a<UnivariatePolynomial>(*_base)) {
         int q = rcp_static_cast<const Integer>(self->get_exp())->as_int();
         RCP<const UnivariatePolynomial> p = rcp_static_cast<const UnivariatePolynomial>(_base);
-        RCP<const UnivariatePolynomial> r = univariate_polynomial(p->var_, 0, {{0, 1}});
+        RCP<const UnivariatePolynomial> r = univariate_polynomial(p->var_, 0, {{0, integer_class(1)}});
         while (q != 0) {
             if (q % 2 == 1) {
                 r = mul_uni_poly(r, p);

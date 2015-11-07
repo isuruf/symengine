@@ -2672,7 +2672,7 @@ bool Gamma::is_canonical(const RCP<const Basic> &arg)
 {
     if (is_a<Integer>(*arg)) return false;
     if (is_a<Rational>(*arg) and
-        (rcp_static_cast<const Rational>(arg)->i.get_den()) == 2) {
+        (get_den(rcp_static_cast<const Rational>(arg)->i)) == 2) {
         return false;
     }
     if (is_a_Number(*arg) and not static_cast<const Number &>(*arg).is_exact()) {
@@ -2713,10 +2713,10 @@ RCP<const Basic> gamma(const RCP<const Basic> &arg)
         }
     } else if (is_a<Rational>(*arg)) {
         RCP<const Rational> arg_ = rcp_static_cast<const Rational>(arg);
-        if ((arg_->i.get_den()) == 2) {
+        if ((get_den(arg_->i)) == 2) {
             RCP<const Integer> n, k;
             RCP<const Number> coeff;
-            n = quotient_f(*(integer(abs(arg_->i.get_num()))), *(integer(arg_->i.get_den())));
+            n = quotient_f(*(integer(std::move(abs(get_num(arg_->i))))), *(integer(get_den(arg_->i))));
             if (arg_->is_positive()) {
                 k = n;
                 coeff = one;

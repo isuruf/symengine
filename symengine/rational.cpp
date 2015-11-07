@@ -2,29 +2,29 @@
 
 namespace SymEngine {
 
-Rational::Rational(mpq_class i)
+Rational::Rational(rational_class i)
     : i{i}
 {
     SYMENGINE_ASSERT(is_canonical(this->i))
 }
 
-bool Rational::is_canonical(const mpq_class &i)
+bool Rational::is_canonical(const rational_class &i)
 {
-    mpq_class x = i;
-    x.canonicalize();
+    rational_class x = i;
+    canonicalize(x);
     // If 'x' is an integer, it should not be Rational:
-    if (x.get_den() == 1) return false;
+    if (get_den(x) == 1) return false;
     // if 'i' is not in canonical form:
-    if (x.get_num() != i.get_num()) return false;
-    if (x.get_den() != i.get_den()) return false;
+    if (get_num(x) != get_num(i)) return false;
+    if (get_den(x) != get_den(i)) return false;
     return true;
 }
 
-RCP<const Number> Rational::from_mpq(const mpq_class i)
+RCP<const Number> Rational::from_mpq(const rational_class i)
 {
     // If the result is an Integer, return an Integer:
-    if (i.get_den() == 1) {
-        return integer(i.get_num());
+    if (get_den(i) == 1) {
+        return integer(get_num(i));
     } else {
         return make_rcp<const Rational>(i);
     }
@@ -35,11 +35,11 @@ RCP<const Number> Rational::from_two_ints(const Integer &n,
 {
     if (d.i == 0)
         throw std::runtime_error("Rational: Division by zero.");
-    mpq_class q(n.i, d.i);
+    rational_class q(n.i, d.i);
 
     // This is potentially slow, but has to be done, since 'n/d' might not be
     // in canonical form.
-    q.canonicalize();
+    canonicalize(q);
 
     return Rational::from_mpq(q);
 }
@@ -49,8 +49,8 @@ std::size_t Rational::__hash__() const
     // only the least significant bits that fit into "signed long int" are
     // hashed:
     std::size_t seed = RATIONAL;
-    hash_combine<long long int>(seed, this->i.get_num().get_si());
-    hash_combine<long long int>(seed, this->i.get_den().get_si());
+    hash_combine<long long int>(seed, get_si(get_num(this->i)));
+    hash_combine<long long int>(seed, get_si(get_den(this->i)));
     return seed;
 }
 
@@ -75,7 +75,7 @@ void get_num_den(const Rational &rat,
             const Ptr<RCP<const Integer>> &num,
             const Ptr<RCP<const Integer>> &den)
 {
-    *num = integer((rat.i).get_num());
-    *den = integer((rat.i).get_den());
+    *num = integer(get_num(rat.i));
+    *den = integer(get_den(rat.i));
 }
 } // SymEngine
