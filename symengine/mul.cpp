@@ -188,7 +188,7 @@ void Mul::dict_add_term_new(const Ptr<RCP<const Number>> &coef, map_basic_basic 
                 mpz_fdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(num),
                     get_mpz_t(den));
 
-                insert(d, t, Rational::from_mpq(rational_class(r, den)));
+                insert(d, t, Rational::from_mpq(std::move(rational_class(r, den))));
                 imulnum(outArg(*coef), pownum(rcp_static_cast<const Number>(t),
                     rcp_static_cast<const Number>(integer(std::move(q)))));
             } else {
@@ -249,7 +249,7 @@ void Mul::dict_add_term_new(const Ptr<RCP<const Number>> &coef, map_basic_basic 
                     mpz_fdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(num),
                                 get_mpz_t(den));
 
-                    it->second = Rational::from_mpq(rational_class(r, den));
+                    it->second = Rational::from_mpq(std::move(rational_class(r, den)));
                     imulnum(outArg(*coef), pownum(rcp_static_cast<const Number>(t),
                                                   rcp_static_cast<const Number>(integer(std::move(q)))));
                 }

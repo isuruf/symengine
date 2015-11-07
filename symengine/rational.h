@@ -25,7 +25,7 @@ public:
     /*! \param `i` must already be in rational_class canonical form
     *   \return Integer or Rational depending on denumerator.
     * */
-    static RCP<const Number> from_mpq(const rational_class i);
+    static RCP<const Number> from_mpq(rational_class i);
     //! \return size of the hash
     virtual std::size_t __hash__() const;
     /*! Equality comparator
@@ -65,40 +65,40 @@ public:
      * \param other of type Rational
      * */
     inline RCP<const Number> addrat(const Rational &other) const {
-        return from_mpq(this->i + other.i);
+        return from_mpq(std::move(this->i + other.i));
     }
     /*! Add Rationals
      * \param other of type Integer
      * */
     inline RCP<const Number> addrat(const Integer &other) const {
-        return from_mpq(this->i + other.i);
+        return from_mpq(std::move(this->i + other.i));
     }
     /*! Subtract Rationals
      * \param other of type Rational
      * */
     inline RCP<const Number> subrat(const Rational &other) const {
-        return from_mpq(this->i - other.i);
+        return from_mpq(std::move(this->i - other.i));
     }
     /*! Subtract Rationals
      * \param other of type Integer
      * */
     inline RCP<const Number> subrat(const Integer &other) const {
-        return from_mpq(this->i - other.i);
+        return from_mpq(std::move(this->i - other.i));
     }
     inline RCP<const Number> rsubrat(const Integer &other) const {
-        return from_mpq(other.i - this->i);
+        return from_mpq(std::move(other.i - this->i));
     }
     /*! Multiply Rationals
      * \param other of type Rational
      * */
     inline RCP<const Number> mulrat(const Rational &other) const {
-        return from_mpq(this->i * other.i);
+        return from_mpq(std::move(this->i * other.i));
     }
     /*! Multiply Rationals
      * \param other of type Integer
      * */
     inline RCP<const Number> mulrat(const Integer &other) const {
-        return from_mpq(this->i * other.i);
+        return from_mpq(std::move(this->i * other.i));
     }
     /*! Divide Rationals
      * \param other of type Rational
@@ -107,7 +107,7 @@ public:
         if (other.i == 0) {
             throw std::runtime_error("Division by zero");
         } else {
-            return from_mpq(this->i / other.i);
+            return from_mpq(std::move(this->i / other.i));
         }
     }
     /*! Divide Rationals
@@ -117,14 +117,14 @@ public:
         if (other.i == 0) {
             throw std::runtime_error("Division by zero");
         } else {
-            return from_mpq(this->i / other.i);
+            return from_mpq(std::move(this->i / other.i));
         }
     }
     inline RCP<const Number> rdivrat(const Integer &other) const {
         if (this->i == 0) {
             throw std::runtime_error("Division by zero");
         } else {
-            return from_mpq(other.i / this->i);
+            return from_mpq(std::move(other.i / this->i));
         }
     }
     /*! Raise Rationals to power `other`
@@ -147,14 +147,14 @@ public:
         // pass num/den into the constructor directly:
         if (not neg)
             if (abs(den) == one->i)
-                return integer(num*sign(den));
+                return integer(std::move(num*sign(den)));
             else
-                return make_rcp<const Rational>(rational_class(num*sign(den), abs(den)));
+                return make_rcp<const Rational>(rational_class(std::move(num*sign(den)), std::move(abs(den))));
         else
             if (abs(num) == one->i)
-                return integer(den*sign(num));
+                return integer(std::move(den*sign(num)));
             else
-                return make_rcp<const Rational>(rational_class(den*sign(num), abs(num)));
+                return make_rcp<const Rational>(rational_class(std::move(den*sign(num)), std::move(abs(num))));
     }
 
     //! Converts the param `other` appropriately and then calls `addrat`
