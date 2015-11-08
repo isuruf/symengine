@@ -151,7 +151,7 @@ integer_class UnivariatePolynomial::eval_bit(const int &x) const {
     integer_class ans(0);
     for (const auto &p : dict_) {
         // TODO: change mpz_class to integer_class
-        mpz_class t = 1 << x * p.first;
+        mpz_class t = mpz_class(1) << x * p.first;
         ans += p.second * integer_class(get_mpz_t(t));
     }
     return ans;
