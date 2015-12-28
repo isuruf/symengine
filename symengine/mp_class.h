@@ -1,6 +1,9 @@
 #ifndef SYMENGINE_INTEGER_CLASS_H
 #define SYMENGINE_INTEGER_CLASS_H
 
+#include <symengine/symengine_rcp.h>
+
+#include <piranha/mp_integer.hpp>
 #if SYMENGINE_INTEGER_CLASS == SYMENGINE_PIRANHA
 #include <piranha/mp_integer.hpp>
 #include <piranha/mp_rational.hpp>
@@ -103,7 +106,7 @@ inline piranha::integer sqrt(const piranha::integer &i) {
 }
 
 inline mpz_ptr get_mpz_t(piranha::integer &i) {
-    return i.get_mpz_ptr();
+    return i._get_mpz_ptr();
 }
 
 inline auto get_mpz_t(const piranha::integer &i) -> decltype(i.get_mpz_view())  {

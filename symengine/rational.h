@@ -139,9 +139,9 @@ public:
         bool neg = other.is_negative();
         integer_class exp_ = other.i;
         if (neg) exp_ = -exp_;
-        if (not (exp_.fits_ulong_p()))
+        if (not fits_ulong_p(exp_))
             throw std::runtime_error("powrat: 'exp' does not fit ulong.");
-        unsigned long exp = exp_.get_ui();
+        unsigned long exp = get_ui(exp_);
         rational_class val;
         mpz_pow_ui(get_mpz_t(get_num(val)), get_mpz_t(get_num(i)), exp);
         mpz_pow_ui(get_mpz_t(get_den(val)), get_mpz_t(get_num(i)), exp);
