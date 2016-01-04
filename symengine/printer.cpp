@@ -396,12 +396,12 @@ std::string StrPrinter::parenthesizeLE(const RCP<const Basic> &x, PrecedenceEnum
 }
 
 std::string StrPrinter::apply(const RCP<const Basic> &b) {
-    b->accept(*this);
+    b->accept_StrPrinter(*this);
     return str_;
 }
 
 std::string StrPrinter::apply(const Basic &b) {
-    b.accept(*this);
+    b.accept_StrPrinter(*this);
     return str_;
 }
 
@@ -442,5 +442,13 @@ std::vector<std::string> init_str_printer_names() {
 }
 
 const std::vector<std::string> StrPrinter::names_ = init_str_printer_names();
+
+#define ACCEPT(CLASS) void CLASS::accept_StrPrinter(StrPrinter &v) const { \
+    v.bvisit(*this); \
+}
+
+#define SYMENGINE_ENUM(TypeID, Class) ACCEPT(Class)
+#include "symengine/type_codes.inc"
+#undef SYMENGINE_ENUM
 
 }
