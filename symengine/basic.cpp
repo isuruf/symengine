@@ -28,7 +28,7 @@ int Basic::__cmp__(const Basic &o) const
 
 std::string Basic::__str__() const
 {
-    StrPrinter strPrinter;
+    StrPrinterFinal strPrinter;
     return strPrinter.apply(*this);
 }
 

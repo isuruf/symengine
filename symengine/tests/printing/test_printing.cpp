@@ -44,7 +44,7 @@ using SymEngine::StrPrinter;
 using SymEngine::Sin;
 
 namespace SymEngine {
-class MyStrPrinter : public BaseVisitor<MyStrPrinter, StrPrinter> {
+class MyStrPrinter : public StrPrinter<MyStrPrinter> {
 public:
     using StrPrinter::bvisit;
 
