@@ -13,7 +13,7 @@
 #include <stack>
 #include <map>
 #include <set>
-#include <string>
+#include <cstring>
 
 namespace SymEngine {
 
