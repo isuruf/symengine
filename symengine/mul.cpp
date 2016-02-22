@@ -12,6 +12,14 @@ namespace SymEngine {
 Mul::Mul(const RCP<const Number> &coef, map_basic_basic&& dict)
     : coef_{coef}, dict_{std::move(dict)}
 {
+    if (!is_canonical(coef_, dict_)) {
+        std::cout << coef_->__str__() << std::endl;
+        for (auto &p:dict_) {
+    
+        std::cout << p.first->__str__() << " " << p.second->__str__() << std::endl;
+        }
+        
+    }
     SYMENGINE_ASSERT(is_canonical(coef, dict_))
 }
 

@@ -317,7 +317,7 @@ int factor_pollard_pm1_method(const Ptr<RCP<const Integer>> &f, const Integer &n
     gmp_randseed_ui(state, retries);
     nm4 = n.as_mpz() - 4;
 
-    for (unsigned i = 0; i < retries and ret_val == 0; i++) {
+    for (unsigned i = 0; i < retries and ret_val == 0; ++i) {
         mpz_urandomm(get_mpz_t(c), state, get_mpz_t(nm4));
         c = c + 2;
         ret_val = _factor_pollard_pm1_method(rop, n.as_mpz(), c, B);
@@ -340,7 +340,7 @@ int _factor_pollard_rho_method(integer_class &rop, const integer_class &n,
     u = s;
     v = s;
 
-    for (unsigned i = 0; i < steps; i++) {
+    for (unsigned i = 0; i < steps; ++i) {
         u = (u*u + a) % n;
         v = (v*v + a) % n;
         v = (v*v + a) % n;
@@ -369,7 +369,7 @@ int factor_pollard_rho_method(const Ptr<RCP<const Integer>> &f,
     nm1 = n.as_mpz() - 1;
     nm4 = n.as_mpz() - 4;
 
-    for (unsigned i = 0; i < retries and ret_val == 0; i++) {
+    for (unsigned i = 0; i < retries and ret_val == 0; ++i) {
         mpz_urandomm(get_mpz_t(a), state, get_mpz_t(nm1));
         mpz_urandomm(get_mpz_t(s), state, get_mpz_t(nm4));
         s = s + 1;
@@ -399,7 +399,7 @@ int factor(const Ptr<RCP<const Integer>> &f, const Integer &n, double B1)
         m = 2; // set `m` to 2**i, i = 1 at the begining
 
         // calculate log2n, this can be improved
-        for (; m < _n; i++)
+        for (; m < _n; ++i)
             m = m * 2;
 
         // eventually `rem` = 0 zero as `n` is a perfect power. `f_t` will
@@ -419,7 +419,7 @@ int factor(const Ptr<RCP<const Integer>> &f, const Integer &n, double B1)
         }
         else {
 
-            for (int i = 0; i < 10 and not ret_val; i++)
+            for (int i = 0; i < 10 and not ret_val; ++i)
                 ret_val = ecm_factor(get_mpz_t(_f), get_mpz_t(_n), B1,
                         nullptr);
             if (not ret_val)
@@ -487,7 +487,7 @@ void prime_factor_multiplicities(map_integer_uint &primes_mul, const Integer &n)
     while ((p = pi.next_prime()) <= limit) {
         count = 0;
         while (_n % p == 0) { // when a prime factor is found, we divide
-            count++;                     // _n by that prime as much as we can
+            ++count;                     // _n by that prime as much as we can
             _n = _n / p;
         }
         if (count > 0) {
@@ -637,7 +637,7 @@ bool crt(const Ptr<RCP<const Integer>> &R, const std::vector<RCP<const Integer>>
     m = mod[0]->as_mpz();
     r = rem[0]->as_mpz();
 
-    for (unsigned i = 1; i < mod.size(); i++) {
+    for (unsigned i = 1; i < mod.size(); ++i) {
         mpz_gcdext(get_mpz_t(g), get_mpz_t(s), get_mpz_t(t), get_mpz_t(m), get_mpz_t(mod[i]->as_mpz()));
         // g = s * m + t * mod[i]
         t = rem[i]->as_mpz() - r;
@@ -663,7 +663,7 @@ void _crt_cartesian(std::vector<RCP<const Integer>> &R, const std::vector<std::v
     m = mod[0]->as_mpz();
     R = rem[0];
 
-    for (unsigned i = 1; i < mod.size(); i++) {
+    for (unsigned i = 1; i < mod.size(); ++i) {
         std::vector<RCP<const Integer>> rem2;
         mpz_invert(get_mpz_t(s), get_mpz_t(m), get_mpz_t(mod[i]->as_mpz()));
         _m = m;
@@ -693,7 +693,7 @@ bool _prime_power(integer_class &p, integer_class &e, const integer_class &n)
             mpz_mul_ui(get_mpz_t(e), get_mpz_t(e), i);
             _n = temp;
         } else {
-            i++;
+            ++i;
         }
     }
     if (mpz_probab_prime_p(get_mpz_t(_n), 25)) {
@@ -726,7 +726,7 @@ void _primitive_root(integer_class &g, const integer_class &p, const integer_cla
         }
         if (root)
             break;
-        g++;
+        ++g;
     }
 
     if (e > 1) {
@@ -783,7 +783,7 @@ void _primitive_root_list(std::vector<RCP<const Integer>> &roots, const integer_
     pm1 = p - 1;
     // Generate other primitive roots for p. h = g**i and gcd(i, p-1) = 1. Ref[2]
     mpz_pow_ui(get_mpz_t(n), get_mpz_t(p), get_ui(e));
-    for (unsigned long i = 1; i < p; i++) {
+    for (unsigned long i = 1; i < p; ++i) {
         h *= g;
         h %= p;
         mpz_gcd_ui(get_mpz_t(d), get_mpz_t(pm1), i);
@@ -804,8 +804,8 @@ void _primitive_root_list(std::vector<RCP<const Integer>> &roots, const integer_
                 t = h;
                 // t = h + i * p + j * p * p and i != d
                 mpz_pow_ui(get_mpz_t(pe2), get_mpz_t(p), get_ui(e) - 2);
-                for (unsigned long j = 0; j < pe2; j++) {
-                    for (unsigned long i = 0; i < p; i++) {
+                for (unsigned long j = 0; j < pe2; ++j) {
+                    for (unsigned long i = 0; i < p; ++i) {
                         if (i != d) {
                             if (even and t % 2 == 0)
                                 roots.push_back(integer(t + n));
@@ -961,7 +961,7 @@ bool _sqrt_mod_tonelli_shanks(integer_class &rop, const integer_class &a, const 
         t = b;
         while (t != 1) {
             mpz_powm_ui(get_mpz_t(t), get_mpz_t(t), 2, get_mpz_t(p));
-            m++;                                                            //t = t**2 = b**2**(m)
+            ++m;                                                            //t = t**2 = b**2**(m)
         }
         if(m == e)
             return false;
@@ -1007,7 +1007,7 @@ bool _sqrt_mod_prime(integer_class &rop, const integer_class &a, const integer_c
         if(p < 10000) { // If p < 10000, brute force is faster.
             integer_class sq = integer_class(1), _a;
             mpz_fdiv_r(get_mpz_t(_a), get_mpz_t(a), get_mpz_t(p));
-            for(unsigned i = 1; i < p; i++) {
+            for(unsigned i = 1; i < p; ++i) {
                 if (sq == _a) {
                     rop = i;
                     return true;
@@ -1034,23 +1034,23 @@ void _discrete_log(integer_class &log, const integer_class &a, const integer_cla
     mpz_powm(get_mpz_t(alpha), get_mpz_t(g), get_mpz_t(_n), get_mpz_t(p));
     mpz_sqrtrem(get_mpz_t(m), get_mpz_t(t), get_mpz_t(q));
     if (t != 0)
-        m++;    // m = ceiling(sqrt(q)).
+        ++m;    // m = ceiling(sqrt(q)).
     map_integer_uint table; // Table for lookup in baby-step giant-step algorithm
     integer_class alpha_j(1), d, s;
     s = -m;
     mpz_powm(get_mpz_t(s), get_mpz_t(alpha), get_mpz_t(s), get_mpz_t(p));
 
-    for (unsigned j = 0; j < m; j++) {
+    for (unsigned j = 0; j < m; ++j) {
         insert(table, integer(alpha_j), j);
         alpha_j = (alpha_j * alpha) % p;
     }
 
-    for (unsigned long j = 0; j < k; j++) { // Pohlig-Hellman
+    for (unsigned long j = 0; j < k; ++j) { // Pohlig-Hellman
         mpz_powm(get_mpz_t(beta), get_mpz_t(gamma), get_mpz_t(_n), get_mpz_t(p));
         // Baby-step giant-step algorithm for l = log_alpha(beta)
         d = beta;
         bool found = false;
-        for (unsigned i = 0; not found &&i < m; i++) {
+        for (unsigned i = 0; not found &&i < m; ++i) {
             if (table.find(integer(d)) != table.end()) {
                 l = i * m + table[integer(d)];
                 found = true;
@@ -1105,7 +1105,7 @@ bool _nthroot_mod1(std::vector<RCP<const Integer>> &roots, const integer_class &
             h = (p - 1) / q;
             c = 1;
             while (h % q == 0) {
-                c++;
+                ++c;
                 h /= q;
             }
             mpz_invert(get_mpz_t(t), get_mpz_t(h), get_mpz_t(qt));
@@ -1134,7 +1134,7 @@ bool _nthroot_mod1(std::vector<RCP<const Integer>> &roots, const integer_class &
     unsigned c = 0;
     while(r % p == 0) {
         mpz_divexact(get_mpz_t(r), get_mpz_t(r), get_mpz_t(p));
-        c++;
+        ++c;
     }
 
     // Solve s == x**r mod p**k where (x**r)**(p**c)) == a mod p**k
@@ -1142,7 +1142,7 @@ bool _nthroot_mod1(std::vector<RCP<const Integer>> &roots, const integer_class &
     if (c >= 1) {
         mpz_powm(get_mpz_t(s), get_mpz_t(root), get_mpz_t(r), get_mpz_t(p));
         // s == root**r mod p. Since s**(p**c) == 1 == a mod p**(c + 1), lift until p**k.
-        for (unsigned d = c + 2; d <= k; d++) {
+        for (unsigned d = c + 2; d <= k; ++d) {
             t = 1 - pc;
             pd *= p;
             mpz_powm(get_mpz_t(t), get_mpz_t(s), get_mpz_t(t), get_mpz_t(pd));
@@ -1177,7 +1177,7 @@ bool _nthroot_mod1(std::vector<RCP<const Integer>> &roots, const integer_class &
             t = phi / m;
             mpz_powm(get_mpz_t(t), get_mpz_t(g), get_mpz_t(t), get_mpz_t(pk));
         }
-        for (unsigned j = 0; j < m; j++) {
+        for (unsigned j = 0; j < m; ++j) {
             roots.push_back(integer(root));
             root *= t;
             mpz_fdiv_r(get_mpz_t(root), get_mpz_t(root), get_mpz_t(pk));
@@ -1241,7 +1241,7 @@ bool _nthroot_mod_prime_power(std::vector<RCP<const Integer>> &roots, const inte
             root = 1;
             pj = pc * 4;
             // 1 is a root of x**2**c == 1 mod 2**(c + 2). Lift till 2**k.
-            for (unsigned j = c + 2; j < k; j++) {
+            for (unsigned j = c + 2; j < k; ++j) {
                 pj *= 2;
                 mpz_powm(get_mpz_t(t), get_mpz_t(root), get_mpz_t(pc), get_mpz_t(pj));
                 t -= a;
@@ -1255,8 +1255,8 @@ bool _nthroot_mod_prime_power(std::vector<RCP<const Integer>> &roots, const inte
             if (all_roots) {
                 // All roots are generated by, root * (j * (2**(k - c) +/- 1)).
                 t = pk / pc * root;
-                for (unsigned i = 0 ; i < 2; i++) {
-                    for (unsigned long j = 0; j < pc; j++) {
+                for (unsigned i = 0 ; i < 2; ++i) {
+                    for (unsigned long j = 0; j < pc; ++j) {
                         roots.push_back(integer(root));
                         root += t;
                     }
@@ -1291,7 +1291,7 @@ bool _nthroot_mod_prime_power(std::vector<RCP<const Integer>> &roots, const inte
             mpz_divexact(get_mpz_t(_a), get_mpz_t(_a), get_mpz_t(p));
             while (_a % p == 0) {
                 mpz_divexact(get_mpz_t(_a), get_mpz_t(_a), get_mpz_t(p));
-                r++;
+                ++r;
             }
             if (r < n or r % n != 0 or not _nthroot_mod_prime_power(_roots, _a, n, p, k - r, all_roots)) {
                 return false;
@@ -1313,7 +1313,7 @@ bool _nthroot_mod_prime_power(std::vector<RCP<const Integer>> &roots, const inte
 
         for (const auto &it : _roots) {
             root = it->as_mpz();
-            for (unsigned long i = 0; i < pm; i++) {
+            for (unsigned long i = 0; i < pm; ++i) {
                 roots.push_back(integer(root));
                 root += pkm;
             }
@@ -1472,7 +1472,7 @@ int mobius(const Integer &a)
 long mertens(const unsigned long a)
 {
     long mertens = 0;
-    for (unsigned long i = 1; i<= a; i++) {
+    for (unsigned long i = 1; i<= a; ++i) {
         mertens += mobius(*(integer(i)));
     }
     return mertens;

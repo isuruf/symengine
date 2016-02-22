@@ -40,6 +40,7 @@ set(SRC
     numer_denom.cpp
     derivative.cpp
     parser.cpp
+    mp_class.cpp
 )
 
 if (WITH_MPFR)
