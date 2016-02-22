@@ -29,6 +29,10 @@ class fmpz_wrapper;
 class fmpq_wrapper;
 typedef fmpz_wrapper integer_class;
 typedef fmpq_wrapper rational_class;
+}
+std::ostream &operator<<(std::ostream &os, const SymEngine::fmpq_wrapper &f);
+std::ostream &operator<<(std::ostream &os, const SymEngine::fmpz_wrapper &f);
+namespace SymEngine {
 #else
 typedef mpz_class integer_class;
 typedef mpq_class rational_class;
@@ -404,7 +408,7 @@ inline mpz_view_flint get_mpz_t(const fmpz_wrapper &i) {
 }
 
 inline mpz_ptr get_mpz_t(fmpz_wrapper &i) {
-    return _fmpz_promote(i.get_fmpz_t());
+    return _fmpz_promote_val(i.get_fmpz_t());
 }
 
 inline int sign(const fmpz_wrapper &i) {
@@ -640,8 +644,5 @@ inline fmpq_wrapper abs(const fmpq_wrapper &i) {
 #endif
 
 } // SymEngine namespace
-
-std::ostream &operator<<(std::ostream &os, const SymEngine::fmpq_wrapper &f);
-std::ostream &operator<<(std::ostream &os, const SymEngine::fmpz_wrapper &f);
 
 #endif //SYMENGINE_INTEGER_CLASS_H

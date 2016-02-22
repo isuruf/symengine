@@ -172,6 +172,10 @@ RCP<const Basic> Rational::rpowrat(const Integer &other) const {
 
     mpz_fdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(num),
                 get_mpz_t(den));
+#if SYMENGINE_INTEGER_CLASS == SYMENGINE_FLINT
+    _fmpz_demote_val(q.get_fmpz_t());
+    _fmpz_demote_val(r.get_fmpz_t());
+#endif
     // Here we make the exponent postive and a fraction between
     // 0 and 1. We multiply numerator and denominator appropriately
     // to achieve this

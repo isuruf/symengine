@@ -75,6 +75,9 @@ public:
         }
         integer_class tmp;
         mpz_pow_ui(get_mpz_t(tmp), get_mpz_t(this->i), get_ui(other.i));
+#if SYMENGINE_INTEGER_CLASS == SYMENGINE_FLINT
+        _fmpz_demote_val(tmp.get_fmpz_t());
+#endif
         return make_rcp<const Integer>(std::move(tmp));
     }
     //! \return negative of self.
