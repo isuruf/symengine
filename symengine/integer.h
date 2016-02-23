@@ -74,10 +74,7 @@ public:
                 return pow_negint(other);
         }
         integer_class tmp;
-        mpz_pow_ui(get_mpz_t(tmp), get_mpz_t(this->i), get_ui(other.i));
-#if SYMENGINE_INTEGER_CLASS == SYMENGINE_FLINT
-        _fmpz_demote_val(tmp.get_fmpz_t());
-#endif
+        mp_pow_ui(tmp, i, get_ui(other.i));
         return make_rcp<const Integer>(std::move(tmp));
     }
     //! \return negative of self.
@@ -171,9 +168,9 @@ RCP<const Integer> isqrt(const Integer &n);
 int i_nth_root(const Ptr<RCP<const Integer>> &r, const Integer &a,
         unsigned long int n);
 //! Perfect Square
-int perfect_square(const Integer &n);
+bool perfect_square(const Integer &n);
 //! Perfect Square
-int perfect_power(const Integer &n);
+bool perfect_power(const Integer &n);
 //! Integer Absolute value
 RCP<const Integer> iabs(const Integer &n);
 

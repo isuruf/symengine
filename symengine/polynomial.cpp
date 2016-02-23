@@ -125,10 +125,9 @@ integer_class UnivariatePolynomial::max_coef() const {
 
 integer_class UnivariatePolynomial::eval(const integer_class &x) const {
     //TODO: Use Horner's Scheme
-    integer_class ans(0);
+    integer_class ans(0), temp;
     for (const auto &p : dict_) {
-        integer_class temp;
-        mpz_pow_ui(get_mpz_t(temp), get_mpz_t(x), p.first);
+        mp_pow_ui(temp, x, p.first);
         ans += p.second * temp;
     }
     return ans;
