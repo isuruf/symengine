@@ -120,6 +120,10 @@ inline void mp_tdiv_qr(integer_class &q, integer_class &r, const integer_class &
     mpz_tdiv_qr(q.get_mpz_t(), r.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
 }
 
+inline void mp_addmul(integer_class &r, const integer_class &a, const integer_class &b) {
+    mpz_addmul(r.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
+}
+
 // Helper functions for rational_class
 inline const integer_class& get_den(const rational_class &i) {
     return i.get_den();
@@ -167,7 +171,15 @@ inline void mp_demote(piranha::integer &i) {
 
 }
 
-inline void pow_ui(piranha::integer &res, const piranha::integer &i, unsigned long n) {
+inline mpz_ptr get_mpz_t(piranha::integer &i) {
+    return i._get_mpz_ptr();
+}
+
+inline auto get_mpz_t(const piranha::integer &i) -> decltype(i.get_mpz_view())  {
+    return i.get_mpz_view();
+}
+
+inline void mp_pow_ui(piranha::integer &res, const piranha::integer &i, unsigned long n) {
     res = i.pow(n);
 }
 
@@ -190,35 +202,27 @@ inline void mp_gcdext(piranha::integer &g, piranha::integer &r, piranha::integer
     mpz_gcdext(get_mpz_t(g), get_mpz_t(r), get_mpz_t(s), get_mpz_t(a), get_mpz_t(b));
 }
 
-inline mpz_ptr get_mpz_t(piranha::integer &i) {
-    return i._get_mpz_ptr();
-}
-
-inline auto get_mpz_t(const piranha::integer &i) -> decltype(i.get_mpz_view())  {
-    return i.get_mpz_view();
-}
-
-inline void mp_fdiv_r(mpz_class &res, const mpz_class &a, const mpz_class &b) {
+inline void mp_fdiv_r(piranha::integer &res, const piranha::integer &a, const piranha::integer &b) {
     mpz_fdiv_r(get_mpz_t(res), get_mpz_t(a), get_mpz_t(b));
 }
 
-inline void mp_fdiv_q(mpz_class &res, const mpz_class &a, const mpz_class &b) {
+inline void mp_fdiv_q(piranha::integer &res, const piranha::integer &a, const piranha::integer &b) {
     mpz_fdiv_q(get_mpz_t(res), get_mpz_t(a), get_mpz_t(b));
 }
 
-inline void mp_fdiv_qr(mpz_class &q, mpz_class &r, const mpz_class &a, const mpz_class &b) {
+inline void mp_fdiv_qr(piranha::integer &q, piranha::integer &r, const piranha::integer &a, const piranha::integer &b) {
     mpz_fdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(a), get_mpz_t(b));
 }
 
-inline void mp_divexact(mpz_class &q, const mpz_class &a, const mpz_class &b) {
+inline void mp_divexact(piranha::integer &q, const piranha::integer &a, const piranha::integer &b) {
     mpz_divexact(get_mpz_t(q), get_mpz_t(a), get_mpz_t(b));
 }
 
-inline void mp_lcm(mpz_class &q, const mpz_class &a, const mpz_class &b) {
+inline void mp_lcm(piranha::integer &q, const piranha::integer &a, const piranha::integer &b) {
     mpz_lcm(get_mpz_t(q), get_mpz_t(a), get_mpz_t(b));
 }
 
-inline void mp_tdiv_qr(mpz_class &q, mpz_class &r, const mpz_class &a, const mpz_class &b) {
+inline void mp_tdiv_qr(piranha::integer &q, piranha::integer &r, const piranha::integer &a, const piranha::integer &b) {
     mpz_tdiv_qr(get_mpz_t(q), get_mpz_t(r), get_mpz_t(a), get_mpz_t(b));
 }
 
@@ -227,23 +231,27 @@ inline int sign(const piranha::integer &i) {
 }
 
 inline long get_si(const piranha::integer &i) {
-    return ::mpz_get_si(i.get_mpz_view());
+    return mpz_get_si(i.get_mpz_view());
 }
 
 inline unsigned long get_ui(const piranha::integer &i) {
-    return ::mpz_get_ui(i.get_mpz_view());
+    return mpz_get_ui(i.get_mpz_view());
 }
 
 inline double get_d(const piranha::integer &i) {
-    return ::mpz_get_d(i.get_mpz_view());
+    return mpz_get_d(i.get_mpz_view());
 }
 
 inline bool fits_ulong_p(const piranha::integer &i) {
-    return ::mpz_fits_ulong_p(i.get_mpz_view()) != 0;
+    return mpz_fits_ulong_p(i.get_mpz_view()) != 0;
 }
 
 inline bool fits_slong_p(const piranha::integer &i) {
-    return ::mpz_fits_slong_p(i.get_mpz_view()) != 0;
+    return mpz_fits_slong_p(i.get_mpz_view()) != 0;
+}
+
+inline void mp_addmul(integer_class &r, const integer_class &a, const integer_class &b) {
+    piranha::math::multiply_accumulate(r, a, b);
 }
 
 // Helper functions for piranha::rational
@@ -377,6 +385,10 @@ inline void mp_lcm(fmpz_wrapper &q, const fmpz_wrapper &a, const fmpz_wrapper &b
 
 inline void mp_tdiv_qr(fmpz_wrapper &q, fmpz_wrapper &r, const fmpz_wrapper &a, const fmpz_wrapper &b) {
     fmpz_tdiv_qr(q.get_fmpz_t(), r.get_fmpz_t(), a.get_fmpz_t(), b.get_fmpz_t());
+}
+
+inline void mp_addmul(fmpz_wrapper &r, const fmpz_wrapper &a, const fmpz_wrapper &b) {
+    fmpz_addmul(r, a, b);
 }
 
 inline const fmpz_wrapper& get_den(const fmpq_wrapper &i) {

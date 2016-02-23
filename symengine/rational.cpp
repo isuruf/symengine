@@ -112,7 +112,7 @@ bool Rational::is_perfect_power(bool is_expected) const
         return mp_perfect_power_p(SymEngine::get_den(i));
 
     const integer_class &den = SymEngine::get_den(i);
-
+    // TODO: fix this
     if (not is_expected) {
         if (mpz_cmpabs(get_mpz_t(num), get_mpz_t(den)) > 0) {
             if (!mp_perfect_power_p(den))

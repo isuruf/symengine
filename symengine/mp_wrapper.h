@@ -9,6 +9,71 @@
 #include <flint/fmpq.h>
 #endif
 
+#define SYMENGINE_UI(f) f ## _ui
+#define SYMENGINE_SI(f) f ## _si 
+
+#define SYMENGINE_MPZ_WRAPPER_IMPLEMENT_RELATIONAL(op, func, val, rev_op) \
+template <typename T, typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value,int>::type = 0> \
+inline friend bool operator op (const mpz_wrapper &a, const T b) \
+{ \
+    return SYMENGINE_UI(func)(a.get_mpz_t(), b) op val; \
+} \
+template <typename T, typename std::enable_if<std::is_integral<T>::value,int>::type = 0> \
+inline friend bool operator op (const T a, const mpz_wrapper &b) \
+{ \
+    return b rev_op a; \
+} \
+template <typename T, typename std::enable_if<std::is_integral<T>::value && std::is_signed<T>::value,int>::type = 0> \
+inline friend bool operator op (const mpz_wrapper &a, const T b) \
+{ \
+    return SYMENGINE_SI(func)(a.get_mpz_t(), b) op val; \
+} \
+inline friend bool operator op (const mpz_wrapper &a, const mpz_wrapper &b) \
+{ \
+    return func(a.get_mpz_t(), b.get_mpz_t()) op val; \
+}
+
+
+#define SYMENGINE_MPZ_WRAPPER_IMPLEMENT_IN_PLACE(op, func) \
+inline mpz_wrapper operator op (const mpz_wrapper &a) \
+{ \
+    func(get_mpz_t(), get_mpz_t(), a.get_mpz_t()); \
+    return *this; \
+} \
+template <typename T, typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value,int>::type = 0> \
+inline mpz_wrapper operator op (const T a) \
+{ \
+    SYMENGINE_UI(func)(get_mpz_t(), get_mpz_t(), a); \
+    return *this; \
+} \
+
+
+#define SYMENGINE_MPZ_WRAPPER_IMPLEMENT_NON_COMMUTATIVE(op, func, op_eq) \
+template <typename T, typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value,int>::type = 0> \
+inline friend mpz_wrapper operator op (const mpz_wrapper &a, const T b) \
+{ \
+    mpz_wrapper res; \
+    SYMENGINE_UI(func)(res.get_mpz_t(), a.get_mpz_t(), b); \
+    return res; \
+} \
+inline friend mpz_wrapper operator op (const mpz_wrapper &a, const mpz_wrapper &b) \
+{ \
+    mpz_wrapper res; \
+    func(res.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t()); \
+    return res; \
+} \
+SYMENGINE_MPZ_WRAPPER_IMPLEMENT_IN_PLACE(op_eq, func)
+
+
+#define SYMENGINE_MPZ_WRAPPER_IMPLEMENT_COMMUTATIVE(op, func, op_eq) \
+SYMENGINE_MPZ_WRAPPER_IMPLEMENT_NON_COMMUTATIVE(op, func, op_eq) \
+template <typename T, typename std::enable_if<std::is_integral<T>::value,int>::type = 0> \
+inline friend mpz_wrapper operator op (const T a, mpz_wrapper &b) \
+{ \
+    return b op a; \
+} \
+
+
 namespace SymEngine {
 
 #if SYMENGINE_INTEGER_CLASS == SYMENGINE_FLINT
@@ -406,73 +471,48 @@ public:
         mpz_swap(mp, other.get_mpz_t());
         return *this;
     }
+    template <typename T, typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value,int>::type = 0>
+    inline mpz_wrapper& operator=(T other) {
+        mpz_set_ui(mp, other);
+        return *this;
+    }
+    template <typename T, typename std::enable_if<std::is_integral<T>::value && std::is_signed<T>::value,int>::type = 0>
+    inline mpz_wrapper& operator=(T other) {
+        mpz_set_si(mp, other);
+        return *this;
+    }
     inline ~mpz_wrapper() {
         mpz_clear(mp);
     }
     inline mpz_ptr get_mpz_t() { return mp; }
     inline mpz_srcptr get_mpz_t() const { return mp; }
-    inline friend mpz_wrapper operator+(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
+
+    //! + operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_COMMUTATIVE(+, mpz_add, +=)
+    //! * operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_COMMUTATIVE(*, mpz_mul, *=)
+    //! - operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_NON_COMMUTATIVE(-, mpz_sub, -=)
+
+    template <typename T, typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value,int>::type = 0>
+    inline friend mpz_wrapper operator-(const T b, const mpz_wrapper &a)
+    { 
         mpz_wrapper res;
-        mpz_add(res.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
+        mpz_ui_sub(res.get_mpz_t(), b, a.get_mpz_t());
         return res;
     }
-    inline mpz_wrapper operator+=(const mpz_wrapper &a)
-    {
-        mpz_add(mp, mp, a.get_mpz_t());
-        return *this;
-    }
-    inline friend mpz_wrapper operator-(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        mpz_wrapper res;
-        mpz_sub(res.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
-        return res;
-    }
-    inline mpz_wrapper operator-=(const mpz_wrapper &a)
-    {
-        mpz_sub(mp, mp, a.get_mpz_t());
-        return *this;
-    }
+    //! / operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_NON_COMMUTATIVE(/, mpz_tdiv_q, /=)
+    //! % operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_NON_COMMUTATIVE(%, mpz_tdiv_r, %=)
+
     inline mpz_wrapper operator-() const
     {
         mpz_wrapper res;
         mpz_neg(res.get_mpz_t(), mp);
         return res;
     }
-    inline friend mpz_wrapper operator*(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        mpz_wrapper res;
-        mpz_mul(res.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
-        return res;
-    }
-    inline mpz_wrapper operator*=(const mpz_wrapper &a)
-    {
-        mpz_mul(mp, mp, a.get_mpz_t());
-        return *this;
-    }
-    inline friend mpz_wrapper operator/(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        mpz_wrapper res;
-        mpz_tdiv_q(res.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
-        return res;
-    }
-    inline mpz_wrapper operator/=(const mpz_wrapper &a)
-    {
-        mpz_tdiv_q(mp, mp, a.get_mpz_t());
-        return *this;
-    }
-    inline friend mpz_wrapper operator%(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        mpz_wrapper res;
-        mpz_tdiv_r(res.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
-        return res;
-    }
-    inline mpz_wrapper operator%=(const mpz_wrapper &a)
-    {
-        mpz_wrapper tmp;
-        mpz_tdiv_qr(tmp.get_mpz_t(), mp, mp, a.get_mpz_t());
-        return *this;
-    }
+    
     inline mpz_wrapper operator++()
     {
         mpz_add_ui(mp, mp, 1);
@@ -495,30 +535,20 @@ public:
         --(*this);
         return orig;
     }
-    inline friend bool operator==(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        return mpz_cmp(a.get_mpz_t(), b.get_mpz_t()) == 0;
-    }
-    inline friend bool operator!=(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        return mpz_cmp(a.get_mpz_t(), b.get_mpz_t()) != 0;
-    }
-    inline friend bool operator<(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        return mpz_cmp(a.get_mpz_t(), b.get_mpz_t()) < 0;
-    }
-    inline friend bool operator<=(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        return mpz_cmp(a.get_mpz_t(), b.get_mpz_t()) <= 0;
-    }
-    inline friend bool operator>(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        return mpz_cmp(a.get_mpz_t(), b.get_mpz_t()) > 0;
-    }
-    inline friend bool operator>=(const mpz_wrapper &a, const mpz_wrapper &b)
-    {
-        return mpz_cmp(a.get_mpz_t(), b.get_mpz_t()) >= 0;
-    }
+    
+    //! < operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_RELATIONAL(<, mpz_cmp, 0, >)
+    //! <= operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_RELATIONAL(<=, mpz_cmp, 0, >=)
+    //! > operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_RELATIONAL(>, mpz_cmp, 0, <)
+    //! >= operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_RELATIONAL(>=, mpz_cmp, 0, <=)
+    //! == operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_RELATIONAL(==, mpz_cmp, 0, ==)
+    //! != operator
+    SYMENGINE_MPZ_WRAPPER_IMPLEMENT_RELATIONAL(!=, mpz_cmp, 0, !=)
+
     inline mpz_wrapper operator<<=(unsigned long u)
     {
         mpz_mul_2exp(mp, mp, u);
