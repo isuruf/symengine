@@ -7,13 +7,13 @@
 #include <symengine/real_double.h>
 #include <symengine/complex_double.h>
 #include <symengine/complex_mpc.h>
-
+ 
 #ifdef HAVE_SYMENGINE_MPC
 namespace SymEngine {
 
-ComplexMPC::ComplexMPC(mpc_class i) : i{std::move(i)} {
+ComplexMPC::ComplexMPC(mpc_class i) : i{std::move(i)} {  
 
-}
+}  
 
 std::size_t ComplexMPC::__hash__() const
 {
