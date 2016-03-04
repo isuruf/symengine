@@ -55,7 +55,6 @@ bool UnivariateIntPolynomial::__eq__(const Basic &o) const
     if (eq(*var_, *(static_cast<const UnivariateIntPolynomial &>(o).var_)) and
         map_uint_mpz_eq(dict_, static_cast<const UnivariateIntPolynomial &>(o).dict_))
         return true;
-
     return false;
 }
 
