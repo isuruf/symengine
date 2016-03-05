@@ -74,7 +74,10 @@ RCP<const UnivariatePolynomial> UnivariatePolynomial::from_dict(const RCP<const 
         if(0_z == itter->second)
   	    d.erase(itter);
     }
-    return make_rcp<const UnivariatePolynomial>(var, (--(d.end()))->first, std::move(d));
+    unsigned int degree = 0;
+    if(!d.empty())
+        degree =  (--(d.end()))->first;
+    return make_rcp<const UnivariatePolynomial>(var,degree, std::move(d));
 }
 
 RCP<const UnivariateIntPolynomial> from_vec(const RCP<const Symbol> &var, const std::vector<integer_class> &v){
