@@ -95,10 +95,9 @@ RCP<const UnivariateIntPolynomial> sub_poly(const UnivariateIntPolynomial &a, co
 //! Multiplying two UnivariateIntPolynomial a and b
 RCP<const UnivariateIntPolynomial> mul_poly(RCP<const UnivariateIntPolynomial> a, RCP<const UnivariateIntPolynomial> b);
 
-<<<<<<< HEAD
 inline RCP<const UnivariateIntPolynomial> univariate_int_polynomial(RCP<const Symbol> i, map_uint_mpz&& dict)
 {
-    return UnivariateintPolynomial::from_dict(i, std::move(dict));
+    return UnivariateIntPolynomial::from_dict(i, std::move(dict));
 }
 
 }  //SymEngine

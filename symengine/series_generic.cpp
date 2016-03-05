@@ -16,7 +16,6 @@ UnivariateSeries::UnivariateSeries(const RCP<const Symbol> &var, const unsigned 
 UnivariateSeries::UnivariateSeries(const RCP<const Symbol> &var, const unsigned int &precision, const unsigned int &max, map_uint_mpz&& dict) :
         var_{var}, prec_{precision} {
 
-    poly_ = univariate_polynomial(var_, std::move(dict));
     poly_ = univariate_int_polynomial(var_, std::move(dict));
 }
 
