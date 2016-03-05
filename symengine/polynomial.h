@@ -27,13 +27,6 @@ public:
     IMPLEMENT_TYPEID(UNIVARIATEPOLYNOMIAL)
     //! Constructor of UnivariatePolynomial class
     UnivariatePolynomial(const RCP<const Symbol> &var, const unsigned int &degree, map_uint_mpz&& dict);
-    //! Constructor using a dense vector of integer_class coefficients
-    UnivariatePolynomial(const RCP<const Symbol> &var, const std::vector<integer_class> &v);
-
-    static RCP<const UnivariatePolynomial> create(const RCP<const Symbol> &var,
-            const std::vector<integer_class> &v) {
-        return make_rcp<const UnivariatePolynomial>(var, v);
-    }
 
     //! \return true if canonical
     bool is_canonical(const unsigned int &degree, const map_uint_mpz& dict) const;
@@ -46,10 +39,16 @@ public:
     bool __eq__(const Basic &o) const;
     int compare(const Basic &o) const;
 
-    /*! Creates appropriate instance (i.e Symbol, Integer,
-    * Mul, Pow, UnivariatePolynomial) depending on the size of dictionary `d`.
-    */
+    //creates a UnivariatePolynomial in cannonical form based on the dictionary.
     static RCP<const UnivariatePolynomial> from_dict(const RCP<const Symbol> &var, map_uint_mpz &&d);
+    //create a UnivariatePolynomial from a dense vector of integer_class coefficients
+    static RCP<const UnivariatePolynomial> from_vec(const RCP<const Symbol> &var, const std::vector<integer_class> &v);
+
+    static RCP<const UnivariatePolynomial> create(const RCP<const Symbol> &var,
+						  const std::vector<integer_class> &v) {
+      return UnivariatePolynomial::from_vec(var, v);
+    }
+    
     /*!
     * Adds coef*var_**n to the dict_
     */
@@ -96,9 +95,9 @@ RCP<const UnivariatePolynomial> sub_uni_poly(const UnivariatePolynomial &a, cons
 //! Multiplying two UnivariatePolynomial a and b
 RCP<const UnivariatePolynomial> mul_uni_poly(RCP<const UnivariatePolynomial> a, RCP<const UnivariatePolynomial> b);
 
-inline RCP<const UnivariatePolynomial> univariate_polynomial(RCP<const Symbol> i, unsigned int deg, map_uint_mpz&& dict)
+inline RCP<const UnivariatePolynomial> univariate_polynomial(RCP<const Symbol> i, map_uint_mpz&& dict)
 {
-    return make_rcp<const UnivariatePolynomial>(i, deg, std::move(dict));
+    return UnivariatePolynomial::from_dict(i, std::move(dict));
 }
 
 }  //SymEngine

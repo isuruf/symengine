@@ -412,8 +412,6 @@ static RCP<const Basic> diff(const CLASS &self, \
                 d[p.first - 1] = p.second * p.first;
             }
             return UnivariatePolynomial::from_dict(self.get_var(), std::move(d));
-	    //	      make_rcp<const UnivariatePolynomial>(self.get_var(),
-	    //      (--(d.end()))->first, std::move(d));
         } else {
             return zero;
         }
