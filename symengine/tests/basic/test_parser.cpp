@@ -39,6 +39,8 @@ using SymEngine::E;
 using SymEngine::parse;
 using SymEngine::max;
 using SymEngine::min;
+using SymEngine::loggamma;
+using SymEngine::gamma;
 
 TEST_CASE("Parsing: integers, basic operations", "[parser]")
 {
@@ -178,6 +180,14 @@ TEST_CASE("Parsing: functions", "[parser]")
     s = "log(x, gamma(y))*sin(3)";
     res = parse(s);
     REQUIRE(eq(*res, *mul(log(x, gamma(y)), sin(integer(3)))));
+
+    s = "loggamma(x)*gamma(y)";
+    res = parse(s);
+    REQUIRE(eq(*res, *mul(loggamma(x), gamma(y))));
+
+    s = "loggamma(x)+loggamma(x)";
+    res = parse(s);
+    REQUIRE(eq(*res, *mul(integer(2), loggamma(x))));
 
     s = "max(x, x, y)";
     res = parse(s);
