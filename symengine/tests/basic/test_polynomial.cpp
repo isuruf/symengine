@@ -120,15 +120,15 @@ TEST_CASE("Derivative of UnivariateIntPolynomial", "[UnivariateIntPolynomial]")
 TEST_CASE("Bool checks specific UnivariateIntPolynomial cases", "[UnivariateIntPolynomial]")
 {
     RCP<const Symbol> x  = symbol("x");
-    RCP<const UnivariatePolynomial> z = univariate_polynomial(x, 0, {});
-    RCP<const UnivariatePolynomial> o = univariate_polynomial(x, 0, {{0, 1_z}});
-    RCP<const UnivariatePolynomial> mo = univariate_polynomial(x, 0, {{0, -1_z}});
-    RCP<const UnivariatePolynomial> i = univariate_polynomial(x, 0, {{0, 6_z}});
-    RCP<const UnivariatePolynomial> s = univariate_polynomial(x, 1, {{1, 1_z}});
-    RCP<const UnivariatePolynomial> m1 = univariate_polynomial(x, 1, {{1, 6_z}});
-    RCP<const UnivariatePolynomial> m2 = univariate_polynomial(x, 3, {{3, 5_z}});
-    RCP<const UnivariatePolynomial> po = univariate_polynomial(x, 5, {{5, 1_z}});
-    RCP<const UnivariatePolynomial> poly = univariate_polynomial(x, 2, {{0, 1_z}, {1, 2_z}, {2, 1_z}});
+    RCP<const UnivariatePolynomial> z = univariate_polynomial(x, {});
+    RCP<const UnivariatePolynomial> o = univariate_polynomial(x, {{0, 1_z}});
+    RCP<const UnivariatePolynomial> mo = univariate_polynomial(x, {{0, -1_z}});
+    RCP<const UnivariatePolynomial> i = univariate_polynomial(x, {{0, 6_z}});
+    RCP<const UnivariatePolynomial> s = univariate_polynomial(x, {{1, 1_z}});
+    RCP<const UnivariatePolynomial> m1 = univariate_polynomial(x, {{1, 6_z}});
+    RCP<const UnivariatePolynomial> m2 = univariate_polynomial(x, {{3, 5_z}});
+    RCP<const UnivariatePolynomial> po = univariate_polynomial(x, {{5, 1_z}});
+    RCP<const UnivariatePolynomial> poly = univariate_polynomial(x, {{0, 1_z}, {1, 2_z}, {2, 1_z}});
 
     REQUIRE((z->is_zero() and not z->is_one() and not z->is_minus_one() and z->is_integer() and not z->is_symbol() and
 			not z->is_mul() and not z->is_pow()));
