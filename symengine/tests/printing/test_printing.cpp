@@ -245,7 +245,7 @@ TEST_CASE("test_univariate_polynomial(): printing", "[printing]")
     RCP<const Basic> p;
     RCP<const Symbol> x = symbol("x");
 
-    p = univariate_polynomial(x, 0, {{0, 0_z}});
+    p = univariate_polynomial(x, 0, {});
     REQUIRE(p->__str__() == "0");
     //std::cout<<p->__str__()<<std::endl;
     p = univariate_polynomial(x, 0, {{0, 1_z}});

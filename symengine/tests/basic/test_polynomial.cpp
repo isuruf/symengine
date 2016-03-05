@@ -120,7 +120,7 @@ TEST_CASE("Derivative of UnivariatePolynomial", "[UnivariatePolynomial]")
 TEST_CASE("Bool checks specific UnivariatePolynomial cases", "[UnivariatePolynomial]")
 {
     RCP<const Symbol> x  = symbol("x");
-    RCP<const UnivariatePolynomial> z = univariate_polynomial(x, 0, {{0, 0_z}});
+    RCP<const UnivariatePolynomial> z = univariate_polynomial(x, 0, {});
     RCP<const UnivariatePolynomial> o = univariate_polynomial(x, 0, {{0, 1_z}});
     RCP<const UnivariatePolynomial> mo = univariate_polynomial(x, 0, {{0, -1_z}});
     RCP<const UnivariatePolynomial> i = univariate_polynomial(x, 0, {{0, 6_z}});
