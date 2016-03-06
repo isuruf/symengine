@@ -38,7 +38,7 @@ std::size_t UnivariateIntPolynomial::__hash__() const
     seed += hash_string(this->var_->get_name());
     for (const auto &it : this->dict_)
     {
-       std::size_t temp = UNIVARIATEINTPOLYNOMIAL;
+        std::size_t temp = UNIVARIATEINTPOLYNOMIAL;
         hash_combine<unsigned int>(temp, it.first);
         hash_combine<long long int>(temp, mp_get_si(it.second));
         seed += temp;
@@ -159,16 +159,16 @@ bool UnivariatePolynomial::is_zero() const {
 }
 
 bool UnivariateIntPolynomial::is_one() const {
-    if (dict_.size() == 1 and dict_.begin()->second == 1 and
-            dict_.begin()->first == 0)
-        return true;
+    if (dict_.size() == 1)
+        if(dict_.begin()->second == 1 and dict_.begin()->first == 0)
+            return true;
     return false;
 }
 
 bool UnivariateIntPolynomial::is_minus_one() const {
-    if (dict_.size() == 1 and dict_.begin()->second == -1 and
-            dict_.begin()->first == 0)
-        return true;
+    if (dict_.size() == 1)
+        if(dict_.begin()->second == -1 and dict_.begin()->first == 0)
+            return true;
     return false;
 }
 
@@ -181,23 +181,23 @@ bool UnivariatePolynomial::is_integer() const {
 }
 
 bool UnivariateIntPolynomial::is_symbol() const {
-    if (dict_.size() == 1 and dict_.begin()->first == 1 and
-            dict_.begin()->second == 1)
-        return true;
+    if (dict_.size() == 1)
+        if(dict_.begin()->first == 1 and dict_.begin()->second == 1)
+            return true;
     return false;
 }
 
 bool UnivariateIntPolynomial::is_mul() const {
-    if (dict_.size() == 1 and dict_.begin()->first != 0 and
-            dict_.begin()->second != 1 and dict_.begin()->second != 0)
-        return true;
+    if (dict_.size() == 1)
+        if(dict_.begin()->first != 0 and dict_.begin()->second != 1 and dict_.begin()->second != 0)
+            return true;
     return false;
 }
 
 bool UnivariateIntPolynomial::is_pow() const {
-    if (dict_.size() == 1 and dict_.begin()->second == 1 and
-            dict_.begin()->first != 1 and dict_.begin()->first != 0)
-        return true;
+    if (dict_.size() == 1)
+        if(dict_.begin()->second == 1 and dict_.begin()->first != 1 and dict_.begin()->first != 0)
+            return true;
     return false;
 }
 
