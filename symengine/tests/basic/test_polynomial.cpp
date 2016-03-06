@@ -28,7 +28,7 @@ using namespace SymEngine::literals;
 TEST_CASE("Constructor of UnivariateIntPolynomial", "[UnivariateIntPolynomial]")
 {
     RCP<const Symbol> x  = symbol("x");
-    RCP<const UnivariateIntPolynomial> P = univariate_int_polynomial(x,{{0, 1_z}, {1, 2_z}, {2, 1_z}});
+    RCP<const UnivariateIntPolynomial> P = univariate_int_polynomial(x, {{0, 1_z}, {1, 2_z}, {2, 1_z}});
     REQUIRE(P->__str__() == "x**2 + 2*x + 1");
 
     RCP<const UnivariateIntPolynomial> Q = UnivariateIntPolynomial::create(x, {1_z, 0_z, 2_z, 1_z});
@@ -120,7 +120,7 @@ TEST_CASE("Derivative of UnivariateIntPolynomial", "[UnivariateIntPolynomial]")
 TEST_CASE("Bool checks specific UnivariateIntPolynomial cases", "[UnivariateIntPolynomial]")
 {
     RCP<const Symbol> x  = symbol("x");
-    RCP<const UnivariateIntPolynomial> z = univariate_int_polynomial(x, {});
+    RCP<const UnivariateIntPolynomial> z = univariate_int_polynomial(x, {{0, 0_z}});
     RCP<const UnivariateIntPolynomial> o = univariate_int_polynomial(x, {{0, 1_z}});
     RCP<const UnivariateIntPolynomial> mo = univariate_int_polynomial(x, {{0, -1_z}});
     RCP<const UnivariateIntPolynomial> i = univariate_int_polynomial(x, {{0, 6_z}});
