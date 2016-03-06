@@ -44,6 +44,7 @@ using SymEngine::BaseVisitor;
 using SymEngine::StrPrinter;
 using SymEngine::Sin;
 using SymEngine::integer_class;
+using SymEngine::map_uint_mpz;
 
 using namespace SymEngine::literals;
 
@@ -246,7 +247,8 @@ TEST_CASE("test_univariate_int_polynomial(): printing", "[printing]")
     RCP<const Basic> p;
     RCP<const Symbol> x = symbol("x");
 
-    p = univariate_int_polynomial(x, {});
+    map_uint_mpz m;
+    p = univariate_int_polynomial(x, std::move(m));
     REQUIRE(p->__str__() == "0");
     //std::cout<<p->__str__()<<std::endl;
     p = univariate_int_polynomial(x, {{0, 1_z}});
