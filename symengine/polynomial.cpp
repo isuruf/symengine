@@ -14,16 +14,15 @@ UnivariateIntPolynomial::UnivariateIntPolynomial(const RCP<const Symbol> &var, c
 
 bool UnivariateIntPolynomial::is_canonical(const unsigned int &degree_, const map_uint_mpz& dict) const
 {
-    map_uint_mpz ordered(dict.begin(), dict.end());
-    if(ordered.size() != 0){
-        unsigned int prev_degree = (--ordered.end())->first;
+    if (dict.size() != 0){
+        unsigned int prev_degree = (--dict.end())->first;
         if (prev_degree != degree_)
             return false;
     } else if(0 != degree_)
         return false;
     //Check if dictionary contains terms with coeffienct 0
-    for(auto itter = dict.begin(); itter != dict.end(); itter++){
-        if(0 == itter->second)
+    for (auto itter = dict.begin(); itter != dict.end(); itter++){
+        if (0 == itter->second)
 	    return false;
     }
     
@@ -71,8 +70,8 @@ int UnivariateIntPolynomial::compare(const Basic &o) const
 RCP<const UnivariateIntPolynomial> UnivariateIntPolynomial::from_dict(const RCP<const Symbol> &var, map_uint_mpz &&d)
 {
     auto itter = d.begin();
-    while(itter != d.end()){
-        if(integer_class(0) == itter->second){
+    while (itter != d.end()){
+        if (integer_class(0) == itter->second){
 	    auto toErase = itter;
 	    itter++;
 	    d.erase(toErase);
@@ -165,14 +164,16 @@ bool UnivariatePolynomial::is_zero() const {
 }
 
 bool UnivariateIntPolynomial::is_one() const {
-    if (dict_.size() == 1 and dict_.begin()->second == 1 and dict_.begin()->first == 0)
-            return true;
+    if (dict_.size() == 1 and dict_.begin()->second == 1 and
+	    dict_.begin()->first == 0)
+        return true;
     return false;
 }
 
 bool UnivariateIntPolynomial::is_minus_one() const {
-    if (dict_.size() == 1 and dict_.begin()->second == -1 and dict_.begin()->first == 0)
-            return true;
+    if (dict_.size() == 1 and dict_.begin()->second == -1 and
+	    dict_.begin()->first == 0)
+        return true;
     return false;
 }
 
@@ -185,19 +186,22 @@ bool UnivariatePolynomial::is_integer() const {
 }
 
 bool UnivariateIntPolynomial::is_symbol() const {
-    if (dict_.size() == 1 and dict_.begin()->first == 1 and dict_.begin()->second == 1)
-            return true;
+    if (dict_.size() == 1 and dict_.begin()->first == 1 and
+	    dict_.begin()->second == 1)
+        return true;
     return false;
 }
 
 bool UnivariateIntPolynomial::is_mul() const {
-    if (dict_.size() == 1 and dict_.begin()->first != 0 and dict_.begin()->second != 1 and dict_.begin()->second != 0)
+    if (dict_.size() == 1 and dict_.begin()->first != 0 and
+	    dict_.begin()->second != 1 and dict_.begin()->second != 0)
             return true;
     return false;
 }
 
 bool UnivariateIntPolynomial::is_pow() const {
-    if (dict_.size() == 1 and dict_.begin()->second == 1 and dict_.begin()->first != 1 and dict_.begin()->first != 0)
+    if (dict_.size() == 1 and dict_.begin()->second == 1 and
+	    dict_.begin()->first != 1 and dict_.begin()->first != 0)
             return true;
     return false;
 }
