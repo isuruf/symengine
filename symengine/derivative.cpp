@@ -12,6 +12,7 @@
 #include <symengine/polynomial.h>
 #include <symengine/complex_double.h>
 #include <symengine/complex_mpc.h>
+#include <symengine/sets.h>
 
 namespace SymEngine {
 
@@ -48,6 +49,8 @@ static RCP<const Basic> diff(const CLASS &self, \
     DIFF0(LeviCivita)
     DIFF0(Max)
     DIFF0(Min)
+    DIFF0(Interval)
+    DIFF0(EmptySet)
 
 #endif
 
