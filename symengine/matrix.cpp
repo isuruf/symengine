@@ -11,7 +11,6 @@ std::string MatrixBase::__str__() const {
             o << *this->get(i, j) << ", ";
         o << *this->get(i, ncols() - 1) << "]" << std::endl;
     }
-
     return o.str();
 }
 
