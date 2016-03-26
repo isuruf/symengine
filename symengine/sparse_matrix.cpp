@@ -13,6 +13,7 @@ CSRMatrix::CSRMatrix() {}
 CSRMatrix::CSRMatrix(unsigned row, unsigned col)
         : row_(row), col_(col)
 {
+    SYMENGINE_TYPEID_VAR();
     p_ = std::vector<unsigned>(row + 1, 0);
     SYMENGINE_ASSERT(is_canonical());
 }
@@ -21,6 +22,7 @@ CSRMatrix::CSRMatrix(unsigned row, unsigned col, std::vector<unsigned>&& p,
     std::vector<unsigned>&& j, vec_basic&& x)
         : p_{std::move(p)}, j_{std::move(j)}, x_{std::move(x)}, row_(row), col_(col)
 {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical());
 }
 

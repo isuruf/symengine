@@ -10,8 +10,8 @@
 namespace SymEngine {
 
 RealDouble::RealDouble(double i) {
+    SYMENGINE_TYPEID_VAR();
     this->i = i;
-    this->type_code_ = type_code_id;
 }
 
 std::size_t RealDouble::__hash__() const

@@ -4,8 +4,10 @@ namespace SymEngine {
 
 Interval::Interval(const RCP<const Number> &start, const RCP<const Number> &end, const bool left_open, const bool right_open)
     : start_(start), end_(end), left_open_(left_open), right_open_(right_open) {
-        SYMENGINE_ASSERT(Interval::is_canonical(start_, end_, left_open_, right_open_));
-    }
+
+    SYMENGINE_TYPEID_VAR();
+    SYMENGINE_ASSERT(Interval::is_canonical(start_, end_, left_open_, right_open_));
+}
 
 bool Interval::is_canonical(const RCP<const Number> &s, const RCP<const Number> &e, bool left_open, bool right_open) {
     if (is_a<Complex>(*s) or is_a<Complex>(*e))

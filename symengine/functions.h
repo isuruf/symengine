@@ -937,8 +937,7 @@ private:
 public:
     IMPLEMENT_TYPEID(ERF)
     //! Erf Constructor
-    Erf(const RCP<const Basic> &arg): arg_{arg} {
-        SYMENGINE_ASSERT(is_canonical(arg_)) }
+    Erf(const RCP<const Basic> &arg);
     /*! Equality comparator
      * \param o - Object to be compared with
      * \return whether the 2 objects are equal
@@ -1054,9 +1053,7 @@ private:
 public:
     IMPLEMENT_TYPEID(LOGGAMMA)
     //! LogGamma Constructor
-    LogGamma(const RCP<const Basic> &arg): arg_{arg} {
-        SYMENGINE_ASSERT(is_canonical(arg_))
-    }
+    LogGamma(const RCP<const Basic> &arg);
     /*! Equality comparator
      * \param o - Object to be compared with
      * \return whether the 2 objects are equal
@@ -1089,10 +1086,7 @@ private:
 public:
     IMPLEMENT_TYPEID(BETA)
     //! Beta Constructor
-    Beta(const RCP<const Basic> &x, const RCP<const Basic> &y): x_{x}, y_{y} {
-        SYMENGINE_ASSERT(is_canonical(x_, y_))
-        this->type_code_=type_code_id;
-    }
+    Beta(const RCP<const Basic> &x, const RCP<const Basic> &y);
     //! return `Beta` with ordered arguments
     static RCP<const Beta> from_two_basic(const RCP<const Basic> &x, const RCP<const Basic> &y);
     /*! Equality comparator
@@ -1128,10 +1122,7 @@ private:
 public:
     IMPLEMENT_TYPEID(POLYGAMMA)
     //! PolyGamma Constructor
-    PolyGamma(const RCP<const Basic> &n, const RCP<const Basic> &x): n_{n}, x_{x} {
-        SYMENGINE_ASSERT(is_canonical(n_, x_))
-        this->type_code_=type_code_id;
-    }
+    PolyGamma(const RCP<const Basic> &n, const RCP<const Basic> &x);
     /*! Equality comparator
      * \param o - Object to be compared with
      * \return whether the 2 objects are equal

@@ -14,8 +14,8 @@ namespace SymEngine {
 Pow::Pow(const RCP<const Basic> &base, const RCP<const Basic> &exp)
     : base_{base}, exp_{exp}
 {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(*base, *exp))
-    this->type_code_ = type_code_id;
 }
 
 bool Pow::is_canonical(const Basic &base, const Basic &exp) const
@@ -270,8 +270,8 @@ RCP<const Basic> exp(const RCP<const Basic> &x)
 Log::Log(const RCP<const Basic> &arg)
     : arg_{arg}
 {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(*arg))
-    this->type_code_=type_code_id;
 }
 
 bool Log::is_canonical(const Basic &arg) const

@@ -12,8 +12,8 @@ namespace SymEngine {
 Mul::Mul(const RCP<const Number> &coef, map_basic_basic&& dict)
     : coef_{coef}, dict_{std::move(dict)}
 {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(coef, dict_))
-    this->type_code_=type_code_id;
 }
 
 bool Mul::is_canonical(const RCP<const Number> &coef,

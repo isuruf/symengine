@@ -7,8 +7,8 @@ namespace SymEngine {
 Rational::Rational(rational_class i)
     : i{i}
 {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(this->i))
-    this->type_code_ = type_code_id;
 }
 
 bool Rational::is_canonical(const rational_class &i) const

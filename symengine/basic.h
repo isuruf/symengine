@@ -86,8 +86,10 @@ enum TypeID {
 #include "basic-methods.inc"
 
 class Basic : public EnableRCPFromThis<Basic> {
+#ifdef WITH_SYMENGINE_TYPEID_VAR
 protected:
     TypeID type_code_;
+#endif
 private:
     //! Private variables
     // The hash_ is defined as mutable, because its value is initialized to 0
@@ -100,7 +102,11 @@ private:
     mutable std::size_t hash_; // This holds the hash value
 #endif // WITH_SYMENGINE_THREAD_SAFE
 public:
+#ifdef WITH_SYMENGINE_TYPEID_VAR
     inline TypeID get_type_code() const { return type_code_; };
+#else
+    virtual TypeID get_type_code() const = 0;
+#endif
     //! Constructor
     Basic() : hash_{0} {}
     //! Destructor must be explicitly defined as virtual here to avoid problems
@@ -258,9 +264,21 @@ void hash_combine(std::size_t& seed, const T& v);
 #include "basic-inl.h"
 #include "cwrapper.h"
 
+
+#ifndef WITH_SYMENGINE_TYPEID_VAR
+#define SYMENGINE_TYPEID_VIRTUAL() \
+virtual TypeID get_type_code() const { return type_code_id; };
+#define SYMENGINE_TYPEID_VAR() 
+#else
+#define SYMENGINE_TYPEID_VIRTUAL()
+#define SYMENGINE_TYPEID_VAR() this->type_code_=type_code_id;
+#endif
+
 // Macro to define the type_code_id variable and its getter method
-#define IMPLEMENT_TYPEID(ID)\
+#define IMPLEMENT_TYPEID(ID) \
 /*! Type_code_id shared by all instances */ \
 const static TypeID type_code_id = ID; \
-SYMENGINE_INCLUDE_METHODS()
+SYMENGINE_TYPEID_VIRTUAL() \
+SYMENGINE_INCLUDE_METHODS(;)
+
 #endif

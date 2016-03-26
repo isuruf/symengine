@@ -7,8 +7,8 @@ namespace SymEngine {
 Complex::Complex(rational_class real, rational_class imaginary)
     : real_{real}, imaginary_{imaginary}
 {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(this->real_, this->imaginary_))
-    this->type_code_ = type_code_id;
 }
 
 bool Complex::is_canonical(const rational_class &real, const rational_class &imaginary) const

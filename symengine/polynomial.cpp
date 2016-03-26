@@ -8,9 +8,9 @@ namespace SymEngine {
 
 UnivariateIntPolynomial::UnivariateIntPolynomial(const RCP<const Symbol> &var, const unsigned int &degree, map_uint_mpz&& dict) :
      degree_{degree}, var_{var}, dict_{std::move(dict)} {
-    
+
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(degree_, dict_))
-    this->type_code_ = type_code_id;
 }
 
 UnivariateIntPolynomial::UnivariateIntPolynomial(const RCP<const Symbol> &var, const std::vector<integer_class> &v) : var_{var} {
@@ -18,8 +18,8 @@ UnivariateIntPolynomial::UnivariateIntPolynomial(const RCP<const Symbol> &var, c
         if (v[i] != 0)
             dict_add_term(dict_, v[i], i);
     degree_ = v.size() - 1;
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(degree_, dict_))
-    this->type_code_ = type_code_id;
 }
 
 bool UnivariateIntPolynomial::is_canonical(const unsigned int &degree_, const map_uint_mpz& dict) const {
@@ -336,6 +336,7 @@ RCP<const UnivariateIntPolynomial> mul_poly(RCP<const UnivariateIntPolynomial> a
 
 UnivariatePolynomial::UnivariatePolynomial(const RCP<const Symbol> &var, const unsigned int &degree, const map_int_Expr&& dict) :
      degree_{degree}, var_{var}, dict_{std::move(dict)} {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(degree_, dict_))
 }
 
@@ -344,6 +345,7 @@ UnivariatePolynomial::UnivariatePolynomial(const RCP<const Symbol> &var, const s
         if (v[i] != 0)
             dict_add_term(dict_, v[i], i);
     degree_ = v.size() - 1;
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(is_canonical(degree_, dict_))
 }
 

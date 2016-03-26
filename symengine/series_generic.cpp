@@ -11,17 +11,19 @@ namespace SymEngine {
 
 UnivariateSeries::UnivariateSeries(const RCP<const Symbol> &var, const unsigned int &precision, const RCP<const UnivariateIntPolynomial> &poly) :
         var_{var}, poly_{std::move(poly)} , prec_{precision} {
+    SYMENGINE_TYPEID_VAR();
 }
 
 UnivariateSeries::UnivariateSeries(const RCP<const Symbol> &var, const unsigned int &precision, const unsigned int &max, map_uint_mpz&& dict) :
         var_{var}, prec_{precision} {
-
+    SYMENGINE_TYPEID_VAR();
     poly_ = univariate_int_polynomial(var_, std::move(dict));
 }
 
 UnivariateSeries::UnivariateSeries(const RCP<const Symbol> &var, const unsigned int &precision, const map_uint_mpz& dict) :
         var_{var}, prec_{precision} {
 
+    SYMENGINE_TYPEID_VAR();
     map_uint_mpz dict_trunc;
     unsigned int max = 0;
     std::copy_if(dict.begin(), dict.end(), std::inserter(dict_trunc, dict_trunc.end()),
@@ -39,7 +41,7 @@ UnivariateSeries::UnivariateSeries(const RCP<const Symbol> &var, const unsigned 
 
 UnivariateSeries::UnivariateSeries(const RCP<const Symbol> &var, const unsigned int &precision, const std::vector<integer_class> &v) :
         var_{var}, prec_{precision} {
-
+    SYMENGINE_TYPEID_VAR();
     std::vector<integer_class> vtrunc;
     std::copy_if(v.begin(), v.end(), std::back_inserter(vtrunc),
         [&](decltype(v[0]) i) { return i < prec_; } );

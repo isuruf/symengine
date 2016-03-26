@@ -6,7 +6,7 @@ namespace SymEngine {
 
 URatPSeriesFlint::URatPSeriesFlint(fp_t p, const std::string varname, const unsigned degree)
         : SeriesBase(std::move(p), varname, degree) {
-
+    SYMENGINE_TYPEID_VAR();
 }
 RCP<const URatPSeriesFlint> URatPSeriesFlint::series(const RCP<const Basic> &t, const std::string &x, unsigned int prec) {
     fp_t p("2  0 1");

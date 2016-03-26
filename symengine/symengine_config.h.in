@@ -52,6 +52,9 @@
 /* Define if the C++ compiler supports std::unordered_map<>::reserve() */
 #cmakedefine HAVE_SYMENGINE_RESERVE
 
+/* Define if you want type id to be stored in Basic */
+#cmakedefine WITH_SYMENGINE_TYPEID_VAR
+
 #define SYMENGINE_GMPXX 0
 #define SYMENGINE_PIRANHA 1
 #define SYMENGINE_FLINT 2

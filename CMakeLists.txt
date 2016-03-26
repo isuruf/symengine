@@ -351,6 +351,10 @@ set(BUILD_TESTS yes
 set(WITH_SYMENGINE_TEUCHOS no
     CACHE BOOL "Build with teuchos")
 
+# TypeID Var
+set(WITH_SYMENGINE_TYPEID_VAR no
+    CACHE BOOL "Build with TypeID stored in Basic")
+
 # OpenMp
 set(WITH_OPENMP no
     CACHE BOOL "Build with OpenMP")

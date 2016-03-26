@@ -12,12 +12,14 @@ DenseMatrix::DenseMatrix() {}
 DenseMatrix::DenseMatrix(unsigned row, unsigned col)
         : row_(row), col_(col)
 {
+    SYMENGINE_TYPEID_VAR();
     m_ = std::vector<RCP<const Basic>>(row*col);
 }
 
 DenseMatrix::DenseMatrix(unsigned row, unsigned col, const vec_basic &l)
         : m_{l}, row_(row), col_(col)
 {
+    SYMENGINE_TYPEID_VAR();
     SYMENGINE_ASSERT(m_.size() == row*col)
 }
 

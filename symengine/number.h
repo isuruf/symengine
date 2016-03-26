@@ -149,7 +149,10 @@ public:
     virtual RCP<const Basic> abs(const Basic &) const = 0;
 };
 
-inline NumberWrapper::NumberWrapper(){this->type_code_=type_code_id;}
+inline NumberWrapper::NumberWrapper()
+{
+    SYMENGINE_TYPEID_VAR();
+}
 } // SymEngine
 
 #endif

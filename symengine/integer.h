@@ -174,11 +174,10 @@ bool perfect_power(const Integer &n);
 //! Integer Absolute value
 RCP<const Integer> iabs(const Integer &n);
 
-<<<<<<< HEAD
-inline Integer::Integer(mpz_class i) : i{i} {this->type_code_=type_code_id;}
-=======
-inline Integer::Integer(integer_class i) : i{std::move(i_)} {this->type_code_=type_code_id;}
->>>>>>> b4f4e74f04696fa39373a30f74c7bfc5a8f003da
+inline Integer::Integer(integer_class i_) : i{std::move(i_)}
+{
+    SYMENGINE_TYPEID_VAR();
+}
 
 } // SymEngine
 

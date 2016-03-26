@@ -26,7 +26,9 @@ public:
 
 class EmptySet : public Set {
 private:
-    EmptySet() {};
+    EmptySet() {
+        SYMENGINE_TYPEID_VAR();
+    };
 public:
     IMPLEMENT_TYPEID(EMPTYSET)
     //EmptySet(EmptySet const&) = delete;
