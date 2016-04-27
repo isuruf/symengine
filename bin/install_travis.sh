@@ -42,7 +42,6 @@ fi
 export SOURCE_DIR=`pwd`
 export our_install_dir="$HOME/our_usr"
 mkdir -p $our_install_dir
-cd $our_install_dir
 
 if [[ "${TRAVIS_OS_NAME}" != "osx" ]]; then
     if [[ "${TRAVIS}" != "true" ]]; then
