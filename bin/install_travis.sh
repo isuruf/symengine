@@ -99,7 +99,9 @@ if [[ "${WITH_MPC}" == "yes" ]]; then
 fi
 if [[ "${WITH_PIRANHA}" == "yes" ]]; then
     git clone https://github.com/bluescarni/piranha;
-    cd piranha && mkdir build && cd build;
+    cd piranha;
+    git checkout -b cmake_try_compile_fix origin/cmake_try_compile_fix;
+    mkdir build && cd build;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$our_install_dir -DBUILD_TESTS=no ../ && make -j8 install && cd ../..;
 fi
 cd $SOURCE_DIR;
