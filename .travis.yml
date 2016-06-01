@@ -131,34 +131,9 @@ matrix:
     - env: BUILD_TYPE="Debug"
       compiler: gcc
       os: osx
-    - env: BUILD_TYPE="Release"
+    - env: BUILD_TYPE="Release" TEST_CLANG_FORMAT="yes"
       compiler: gcc
       os: osx
-    - env: BUILD_TYPE="Release" TEST_CLANG_FORMAT="yes"
-      compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-precise-3.7
-          packages:
-          - g++-4.7
-          - libgmp-dev
-          - clang-format-3.7
-  allow_failures:
-    - env: BUILD_TYPE="Release" TEST_CLANG_FORMAT="yes"
-      compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-precise-3.7
-          packages:
-          - g++-4.7
-          - libgmp-dev
-          - clang-format-3.7
 
 install:
   - source bin/install_travis.sh

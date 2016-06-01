@@ -103,4 +103,9 @@ if [[ "${WITH_PIRANHA}" == "yes" ]]; then
     cd piranha && mkdir build && cd build;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$our_install_dir -DBUILD_TESTS=no ../ && make -j8 install && cd ../..;
 fi
+if [[ "${TEST_CLANG_FORMAT}" == "yes" ]]; then
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+        brew install clang-format;
+    fi
+fi
 cd $SOURCE_DIR;
