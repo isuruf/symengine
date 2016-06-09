@@ -1,164 +1,22 @@
 language: cpp
 sudo: false
 compiler:
-  - gcc
-  - clang
 os:
   - linux
-  - osx
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
+    - boost-latest
     packages:
     - libgmp-dev
     - libmpfr-dev
-    - libmpc-dev
     - binutils-dev
-    - g++-4.7
-env:
-  ## All these variables are sent into the bin/test_travis.sh script. See this
-  ## script to know how they are used. Most of them are just passed to cmake,
-  ## so if they are not set, cmake will use a default value. For the rest, the
-  ## bin/test_travis.sh script usually checks for either "yes" or "no" in an if
-  ## statement, so if the variable is not set, the other if branch will get
-  ## executed.
+    - libboost-serialization1.55-dev
+    - libboost-iostreams1.55-dev
+    - g++-4.8
 
-  ## Out of tree builds (default):
-  # Debug build (with BFD)
-  - BUILD_TYPE="Debug" WITH_BFD="yes"
-  # Debug build (with BFD and SYMENGINE_THREAD_SAFE)
-  - BUILD_TYPE="Debug" WITH_BFD="yes" WITH_SYMENGINE_THREAD_SAFE="yes"
-  # Debug build (with BFD) with ECM
-  - BUILD_TYPE="Debug" WITH_BFD="yes" WITH_ECM="yes"
-  # Debug build (with BFD) with PRIMESIEVE
-  - BUILD_TYPE="Debug" WITH_BFD="yes" WITH_PRIMESIEVE="yes"
-  # Debug build (with BFD) with Arb
-  - BUILD_TYPE="Debug" WITH_BFD="yes" WITH_ARB="yes" INTEGER_CLASS="flint"
-  # Debug build (with BFD) with MPC
-  - BUILD_TYPE="Debug" WITH_BFD="yes" WITH_MPC="yes"
-  # Debug build (with BFD) with MPC
-  - BUILD_TYPE="Debug" WITH_BFD="yes" WITH_MPFR="yes" INTEGER_CLASS="gmp"
-  # Debug build shared lib (with BFD)
-  - BUILD_TYPE="Debug" WITH_BFD="yes" BUILD_SHARED_LIBS="yes"
-  # Release build (with BFD)
-  - WITH_BFD="yes"
-  # Release build (with BFD and SHARED_LIBS)
-  - WITH_BFD="yes" BUILD_SHARED_LIBS="yes"
-
-  ## In-tree builds (we just check a few configurations to make sure they work):
-  # Debug build:
-  - BUILD_TYPE="Debug" WITH_BFD="yes" TEST_IN_TREE="yes"
-
-matrix:
-  exclude:
-    - compiler: clang
-    - os: osx
-  include:
-    - env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_LATEST_GCC="yes" WITH_COVERAGE="yes" WITH_MPC="yes"
-      compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          packages:
-          - libgmp-dev
-          - libmpfr-dev
-          - libmpc-dev
-          - binutils-dev
-          - g++-5
-    - env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_PIRANHA="yes" WITH_BENCHMARKS_NONIUS="yes" WITH_COVERAGE="yes" TEST_IN_TREE="yes" WITH_FLINT="yes" WITH_MPC="yes"
-      compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - boost-latest
-          packages:
-          - libgmp-dev
-          - libmpfr-dev
-          - libmpc-dev
-          - binutils-dev
-          - libboost-serialization1.55-dev
-          - libboost-iostreams1.55-dev
-          - g++-4.8
-    - env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_PIRANHA="yes" INTEGER_CLASS="piranha"
-      compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - boost-latest
-          packages:
-          - libgmp-dev
-          - libmpfr-dev
-          - binutils-dev
-          - libboost-serialization1.55-dev
-          - libboost-iostreams1.55-dev
-          - g++-4.8
-    - env: BUILD_TYPE="Debug" WITH_BFD="yes"
-      compiler: clang
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          packages:
-          - clang
-          - libstdc++-4.8-dev
-          - libgmp-dev
-          - binutils-dev
-    - env: BUILD_TYPE="Release"
-      compiler: clang
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          packages:
-          - clang
-          - libstdc++-4.8-dev
-          - libgmp-dev
-    - env: BUILD_TYPE="Debug"
-      compiler: clang
-      os: osx
-    - env: BUILD_TYPE="Release"
-      compiler: clang
-      os: osx
-    - env: BUILD_TYPE="Debug"
-      compiler: gcc
-      os: osx
-    - env: BUILD_TYPE="Release"
-      compiler: gcc
-      os: osx
-    - env: BUILD_TYPE="Release" TEST_CLANG_FORMAT="yes"
-      compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-precise-3.7
-          packages:
-          - g++-4.7
-          - libgmp-dev
-          - clang-format-3.7
-  allow_failures:
-    - env: BUILD_TYPE="Release" TEST_CLANG_FORMAT="yes"
-      compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-precise-3.7
-          packages:
-          - g++-4.7
-          - libgmp-dev
-          - clang-format-3.7
+env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_PIRANHA="yes" INTEGER_CLASS="piranha"
 
 install:
   - source bin/install_travis.sh
