@@ -230,6 +230,9 @@ bool is_a(const Basic &b);
 template <class T>
 bool is_a_sub(const Basic &b);
 
+//! Returns true if `b` is of type Symbolic.
+bool is_a_Symbolic(const Basic &b);
+
 //! Returns true if `a` and `b` are exactly the same type `T`.
 bool is_same_type(const Basic &a, const Basic &b);
 
@@ -247,6 +250,22 @@ void as_numer_denom(const RCP<const Basic> &x,
 */
 std::ostream &operator<<(std::ostream &out, const SymEngine::Basic &p);
 
+// Macro to define the type_code_id variable and its getter method
+#define IMPLEMENT_TYPEID(ID)                                                   \
+    /*! Type_code_id shared by all instances */                                \
+    const static TypeID type_code_id = ID;                                     \
+    /*! Virtual function that gives the type_code_id of the object */          \
+    virtual TypeID get_type_code() const                                       \
+    {                                                                          \
+        return type_code_id;                                                   \
+    };                                                                         \
+    SYMENGINE_INCLUDE_METHODS(;)
+
+class Symbolic : public Basic
+{
+    IMPLEMENT_TYPEID(SYMBOLIC);
+};
+
 } // SymEngine
 
 //! Specialise `std::hash` for Basic.
@@ -259,15 +278,4 @@ struct hash<SymEngine::Basic>;
 //! Inline members and functions
 #include "basic-inl.h"
 
-// Macro to define the type_code_id variable and its getter method
-#define IMPLEMENT_TYPEID(ID)                                                   \
-    /*! Type_code_id shared by all instances */                                \
-    const static TypeID type_code_id = ID;                                     \
-    /*! Virtual function that gives the type_code_id of the object */          \
-    virtual TypeID get_type_code() const                                       \
-    {                                                                          \
-        return type_code_id;                                                   \
-    };                                                                         \
-    SYMENGINE_INCLUDE_METHODS(;)
-
-#endif
+#endif // SYMENGINE_BASIC_H
