@@ -11,13 +11,13 @@ namespace SymEngine
 // `ex` is the optional parameter for expanding the given `basic` or not.
 template <typename P>
 RCP<const P> from_basic(const RCP<const Basic> &basic,
-                        const RCP<const Basic> &gen, bool ex = false);
+                        const RCP<const Basic> &gen, bool ex);
 // convert a `basic`, to a UPoly `P` (eg. UIntPoly, UExprPoly, UIntPolyFlint)
 // after finding out the generator automatically. Throws, if number
 // of generators found != 1, or poly construction not possible.
 // `ex` is the optional parameter for expanding the given `basic` or not.
 template <typename P>
-RCP<const P> from_basic(const RCP<const Basic> &basic, bool ex = false);
+RCP<const P> from_basic(const RCP<const Basic> &basic, bool ex);
 
 template <typename T, typename P>
 enable_if_t<std::is_same<T, UExprDict>::value, T>
