@@ -263,7 +263,6 @@ std::ostream &operator<<(std::ostream &out, const SymEngine::Basic &p);
 
 class Symbolic : public Basic
 {
-    IMPLEMENT_TYPEID(SYMBOLIC);
 };
 
 } // SymEngine

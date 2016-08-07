@@ -12,7 +12,7 @@
 namespace SymEngine
 {
 
-class Function : public Basic
+class Function : public Symbolic
 {
 };
 
@@ -557,7 +557,7 @@ public:
  *  Derivative(f, [x, y, ...]) represents a derivative of `f` with respect to
  *  `x`, `y`, and so on.
  * */
-class Derivative : public Basic
+class Derivative : public Symbolic
 {
 private:
     RCP<const Basic> arg_; //! The expression to be differentiated
@@ -609,7 +609,7 @@ public:
  *  Subs(f, {x1 : x2, y1: y2, ...}) represents `f` after substituting
  *  `x1` with `x2`, `y1` with `y2`, and so on.
  * */
-class Subs : public Basic
+class Subs : public Symbolic
 {
 public:
     RCP<const Basic> arg_;
