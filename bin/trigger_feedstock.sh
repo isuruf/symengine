@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 if [[ "${TRIGGER_FEEDSTOCK}" != "yes" ]]; then
     exit 0;
 fi
