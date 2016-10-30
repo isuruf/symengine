@@ -79,11 +79,16 @@ if [[ "${WITH_LLVM}" != "" ]]; then
     cmake_line="$cmake_line -DWITH_LLVM=${WITH_LLVM} -DLLVM_DIR=${LLVM_DIR}"
 fi
 
-if [[ "${CC}" == "clang"* ]] && [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-    export CXXFLAGS=""
-else
-    export CXXFLAGS="-Werror"
+if [[ "${CC}" != "clang"* ]] || [[ "${TRAVIS_OS_NAME}" != "linux" ]]; then
+    export CXXFLAGS="${CXXFLAGS} -Werror"
 fi
+
+if [[ "${SANITIZE_ADDRESS}" == "yes" ]]; then
+    export CXXFLAGS="${CXXFLAGS} -fsanitize=address"
+    export CFLAGS="${CFLAGS} -fsanitize=address"
+    export LDFLAGS="${LDFLAGS} -fsanitize=address"
+fi
+
 cmake $cmake_line ${SOURCE_DIR}
 
 echo "Current directory:"

@@ -114,7 +114,7 @@ matrix:
           - g++-4.8
           - cmake
           - cmake-data
-    - env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_LLVM="yes"
+    - env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_LLVM="yes" SANITIZE_ADDRESS="yes"
       compiler: clang
       os: linux
       addons:
