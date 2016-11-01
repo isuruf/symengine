@@ -114,7 +114,7 @@ matrix:
           - g++-4.8
           - cmake
           - cmake-data
-    - env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_LLVM="yes" SANITIZE_ADDRESS="yes"
+    - env: BUILD_TYPE="Debug" WITH_BFD="yes" WITH_LLVM="yes"
       compiler: clang
       os: linux
       addons:
@@ -142,7 +142,7 @@ matrix:
           - clang
           - libstdc++-4.8-dev
           - libgmp-dev
-    - env: BUILD_TYPE="Debug"
+    - env: BUILD_TYPE="Debug" SANITIZE_ADDRESS="yes"
       compiler: clang
       os: osx
     - env: BUILD_TYPE="Release"
