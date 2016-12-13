@@ -2590,6 +2590,10 @@ TEST_CASE("LogGamma: functions", "[functions]")
 
 TEST_CASE("Lowergamma: functions", "[functions]")
 {
+    RCP<const Symbol> s = symbol("s");
+    RCP<const Symbol> x = symbol("x");
+    RCP<const Symbol> y = symbol("y");
+    RCP<const Symbol> _xi_1 = symbol("_xi_1");
     RCP<const Basic> i2 = integer(2);
     RCP<const Basic> i3 = integer(3);
     RCP<const Basic> im1 = integer(-1);
@@ -2608,10 +2612,38 @@ TEST_CASE("Lowergamma: functions", "[functions]")
     r1 = lowergamma(mul(i2, i3), i2);
     r2 = sub(integer(120), mul(integer(872), exp(mul(im1, i2))));
     REQUIRE(eq(*expand(r1), *r2));
+
+    r1 = lowergamma(i2, i3)->diff(x);
+    REQUIRE(eq(*r1, *zero));
+
+    r1 = lowergamma(s, x)->diff(y);
+    REQUIRE(eq(*r1, *zero));
+
+    r1 = lowergamma(i2, x)->diff(x);
+    r2 = mul(x, exp(mul(im1, x)));
+    REQUIRE(eq(*r1, *r2));
+
+    r1 = lowergamma(one, x)->diff(x);
+    r2 = exp(mul(im1, x));
+    REQUIRE(eq(*r1, *r2));
+
+    r1 = lowergamma(s, x)->diff(s);
+    r2 = Derivative::create(lowergamma(s, x), {s});
+    REQUIRE(eq(*r1, *r2));
+
+    r1 = uppergamma(pow(s, i2), x)->diff(s);
+    r2 = mul(mul(i2, s),
+             Subs::create(Derivative::create(uppergamma(_xi_1, x), {_xi_1}),
+                          {{_xi_1, pow(s, i2)}}));
+    REQUIRE(eq(*r1, *r2));
 }
 
 TEST_CASE("Uppergamma: functions", "[functions]")
 {
+    RCP<const Symbol> s = symbol("s");
+    RCP<const Symbol> x = symbol("x");
+    RCP<const Symbol> y = symbol("y");
+    RCP<const Symbol> _xi_1 = symbol("_xi_1");
     RCP<const Basic> i2 = integer(2);
     RCP<const Basic> i3 = integer(3);
     RCP<const Basic> im1 = integer(-1);
@@ -2629,6 +2661,30 @@ TEST_CASE("Uppergamma: functions", "[functions]")
 
     r1 = uppergamma(mul(i2, i3), i2);
     r2 = mul(integer(872), exp(mul(im1, i2)));
+    REQUIRE(eq(*r1, *r2));
+
+    r1 = uppergamma(i2, i3)->diff(x);
+    REQUIRE(eq(*r1, *zero));
+
+    r1 = uppergamma(s, x)->diff(y);
+    REQUIRE(eq(*r1, *zero));
+
+    r1 = uppergamma(i2, x)->diff(x);
+    r2 = mul(mul(x, exp(mul(im1, x))), im1);
+    REQUIRE(eq(*r1, *r2));
+
+    r1 = uppergamma(one, x)->diff(x);
+    r2 = mul(exp(mul(im1, x)), im1);
+    REQUIRE(eq(*r1, *r2));
+
+    r1 = uppergamma(s, x)->diff(s);
+    r2 = Derivative::create(uppergamma(s, x), {s});
+    REQUIRE(eq(*r1, *r2));
+
+    r1 = uppergamma(pow(s, i2), x)->diff(s);
+    r2 = mul(mul(i2, s),
+             Subs::create(Derivative::create(uppergamma(_xi_1, x), {_xi_1}),
+                          {{_xi_1, pow(s, i2)}}));
     REQUIRE(eq(*r1, *r2));
 }
 
