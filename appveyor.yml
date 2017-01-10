@@ -42,6 +42,7 @@ environment:
       PLATFORM: x64
 
 install:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 # Download MPIR
 - if [%COMPILER%]==[MSVC15] set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 - if [%COMPILER%]==[MSVC15] call bin\appveyor-download.cmd https://raw.githubusercontent.com/symengine/dependencies/fd912ad34c848e7a7a9dab4628f836ab167b9e59/mpir-2.7.0.zip
@@ -107,4 +108,4 @@ on_success:
 # `remmina` program in Ubuntu, use the login information that the line below
 # prints into the log.
 #on_finish:
-#- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
