@@ -60,100 +60,10 @@ public:
         return *this;
     }
 
-    std::string __str__(const std::string name) const
-    {
-        std::ostringstream o;
-        bool first = true;
-        for (auto it = dict_.rbegin(); it != dict_.rend(); ++it) {
-            std::string t;
-            // if exponent is 0, then print only coefficient
-            if (it->first == 0) {
-                if (first) {
-                    o << it->second;
-                } else {
-                    t = detail::poly_print(it->second);
-                    if (t[0] == '-') {
-                        o << " - " << t.substr(1);
-                    } else {
-                        o << " + " << t;
-                    }
-                }
-                first = false;
-                continue;
-            }
-            // if the coefficient of a term is +1 or -1
-            if (it->second == 1 or it->second == -1) {
-                // in cases of -x, print -x
-                // in cases of x**2 - x, print - x
-                if (first) {
-                    if (it->second == -1)
-                        o << "-";
-                } else {
-                    if (down_cast<const Integer &>(*it->second.get_basic())
-                            .as_integer_class()
-                        < 0) {
-                        o << " "
-                          << "-"
-                          << " ";
-                    } else {
-                        o << " "
-                          << "+"
-                          << " ";
-                    }
-                }
-            }
-            // if the coefficient of a term is 0, skip
-            else if (it->second == 0)
-                continue;
-            // same logic is followed as above
-            else {
-                // in cases of -2*x, print -2*x
-                // in cases of x**2 - 2*x, print - 2*x
-                if (first) {
-                    o << detail::poly_print(it->second) << "*";
-                } else {
-                    t = detail::poly_print(it->second);
-                    if (t[0] == '-') {
-                        o << " - " << t.substr(1);
-                    } else {
-                        o << " + " << t;
-                    }
-                    o << "*";
-                }
-            }
-            o << name;
-            // if exponent is not 1, print the exponent;
-            if (it->first > 1) {
-                o << "**" << it->first;
-            } else if (it->first < 0) {
-                o << "**(" << it->first << ")";
-            }
-            // corner cases of only first term handled successfully, switch the
-            // bool
-            first = false;
-        }
-        return o.str();
-    }
+    std::string __str__(const std::string name) const;
 
     // const umap_int_basic get_basic() const
-    const RCP<const Basic> get_basic(std::string var) const
-    {
-        RCP<const Symbol> x = symbol(var);
-        umap_basic_num dict;
-        RCP<const Number> coeff = zero;
-        for (const auto &it : dict_) {
-            if (it.first != 0) {
-                auto term
-                    = SymEngine::mul(it.second.get_basic(),
-                                     SymEngine::pow(x, integer(it.first)));
-                Add::coef_dict_add_term(outArg(coeff), dict, one, term);
-            } else {
-                Add::coef_dict_add_term(outArg(coeff), dict, one,
-                                        it.second.get_basic());
-            }
-        }
-        return Add::from_dict(coeff, std::move(dict));
-    }
+    RCP<const Basic> get_basic(std::string var) const;
 
     int compare(const UExprDict &other) const
     {

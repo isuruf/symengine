@@ -24,6 +24,77 @@ hash_t UIntPoly::__hash__() const
     return seed;
 }
 
+UIntDict UIntDict::mul(const UIntDict &a, const UIntDict &b)
+{
+    int mul = 1;
+
+    unsigned int N = bit_length(std::min(a.degree() + 1, b.degree() + 1))
+                     + bit_length(a.max_abs_coef())
+                     + bit_length(b.max_abs_coef());
+
+    integer_class full = integer_class(1), temp, res;
+    full <<= N;
+    integer_class thresh = full / 2;
+    integer_class mask = full - 1;
+    integer_class s_val = a.eval_bit(N) * b.eval_bit(N);
+    if (s_val < 0)
+        mul = -1;
+    s_val = mp_abs(s_val);
+
+    unsigned int deg = 0, carry = 0;
+    UIntDict r;
+
+    while (s_val != 0 or carry != 0) {
+        mp_and(temp, s_val, mask);
+        if (temp < thresh) {
+            res = mul * (temp + carry);
+            if (res != 0)
+                r.dict_[deg] = res;
+            carry = 0;
+        } else {
+            res = mul * (temp - full + carry);
+            if (res != 0)
+                r.dict_[deg] = res;
+            carry = 1;
+        }
+        s_val >>= N;
+        deg++;
+    }
+    return r;
+}
+
+int UIntDict::compare(const UIntDict &other) const
+{
+    if (dict_.size() != other.dict_.size())
+        return (dict_.size() < other.dict_.size()) ? -1 : 1;
+    return unified_compare(dict_, other.dict_);
+}
+
+integer_class UIntDict::max_abs_coef() const
+{
+    integer_class curr(mp_abs(dict_.begin()->second));
+    for (const auto &it : dict_) {
+        if (mp_abs(it.second) > curr)
+            curr = mp_abs(it.second);
+    }
+    return curr;
+}
+
+integer_class UIntDict::eval_bit(const unsigned int &x) const
+{
+    unsigned int last_deg = dict_.rbegin()->first;
+    integer_class result(0);
+
+    for (auto it = dict_.rbegin(); it != dict_.rend(); ++it) {
+        result <<= x * (last_deg - (*it).first);
+        result += (*it).second;
+        last_deg = (*it).first;
+    }
+    result <<= x * last_deg;
+
+    return result;
+}
+
 bool divides_upoly(const UIntPoly &a, const UIntPoly &b,
                    const Ptr<RCP<const UIntPoly>> &out)
 {
