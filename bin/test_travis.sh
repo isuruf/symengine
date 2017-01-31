@@ -124,5 +124,15 @@ ${CXX} -std=c++0x $compile_flags expand1.cpp $link_flags
 export LD_LIBRARY_PATH=$our_install_dir/lib:$LD_LIBRARY_PATH
 ./a.out
 
+cd $SOURCE_DIR
+
+wget https://raw.githubusercontent.com/jedbrown/git-fat/83ab2b75a001c7833b969237505803d8d235cb84/git-fat
+binary=`python git-fat find 1000000`
+if [[ ! -z "$binary" ]]; then
+    echo "Files with size greater than 1MB found";
+    echo "$binary";
+    exit 0;
+fi
+
 echo "Checking whether all header files are installed:"
 python $SOURCE_DIR/symengine/utilities/tests/test_make_install.py $our_install_dir/include/symengine/ $SOURCE_DIR/symengine
