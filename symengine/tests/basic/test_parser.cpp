@@ -42,10 +42,41 @@ using SymEngine::down_cast;
 
 using namespace SymEngine::literals;
 
+void parse_and_print(const std::string &x)
+{
+    RCP<const Basic> a = parse(x);
+    std::cout << *a << std::endl;
+    std::cout << a->hash() << std::endl;
+}
+
 TEST_CASE("Parsing: integers, basic operations", "[parser]")
 {
     std::string s;
     RCP<const Basic> res;
+
+    parse_and_print("(-x_10 + y*(12.5 + x_10))*(-x_11 + y*(14. + x_11))/y**2");
+    parse_and_print("(-x_10 + y*(12.5 + x_10))*(-x_11 + y*(14. + x_11))");
+    parse_and_print("(-x_10 + y*(12.5 + x_10))");
+    parse_and_print("(-x_11 + y*(14. + x_11))");
+    parse_and_print("(y*(12.5 + x_10))");
+    parse_and_print("(y*(14. + x_11))");
+    parse_and_print("(12.5 + x_10)");
+    parse_and_print("(14. + x_11)");
+    parse_and_print("12.5");
+    parse_and_print("14.");
+
+    parse_and_print("(-x_10 + y*(12 + x_10))*(-x_11 + y*(14 + x_11))/y**2");
+    parse_and_print("(-x_10 + y*(12 + x_10))*(-x_11 + y*(14 + x_11))");
+    parse_and_print("(-x_10 + y*(12 + x_10))");
+    parse_and_print("(-x_11 + y*(14 + x_11))");
+    parse_and_print("(y*(12 + x_10))");
+    parse_and_print("(y*(14 + x_11))");
+    parse_and_print("(12 + x_10)");
+    parse_and_print("(14 + x_11)");
+    parse_and_print("12");
+    parse_and_print("14");
+
+    throw std::runtime_error("asd");
 
     s = "-3-5";
     res = parse(s);
