@@ -17,8 +17,12 @@ RealDouble::RealDouble(double i)
 
 hash_t RealDouble::__hash__() const
 {
-    std::hash<double> hash_fn;
-    return hash_fn(i);
+    union {
+        hash_t h;
+        double d;
+    } u;
+    u.d = i;
+    return u.h;
 }
 
 bool RealDouble::__eq__(const Basic &o) const
