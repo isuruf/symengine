@@ -13,9 +13,9 @@ namespace SymEngine
 {
 //! ComplexBase Class for deriving all complex classes
 class ComplexBase : public Number
-{
+      {
 public:
-    virtual RCP<const Number> real_part() const = 0;
+    virtual        RCP<const Number> real_part() const = 0;
     virtual RCP<const Number> imaginary_part() const = 0;
 };
 
@@ -23,7 +23,7 @@ public:
 inline bool is_a_Complex(const Basic &b)
 {
     return (b.get_type_code() == COMPLEX || b.get_type_code() == COMPLEX_MPC
-            || b.get_type_code() == COMPLEX_DOUBLE);
+                                                   || b.get_type_code() == COMPLEX_DOUBLE);
 }
 
 //! Complex Class

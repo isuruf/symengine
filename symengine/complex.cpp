@@ -23,7 +23,7 @@ bool Complex::is_canonical(const rational_class &real,
         return false;
     // if 'real' or `imaginary` are not in canonical form:
     if (get_num(re) != get_num(real))
-        return false;
+                                                               return false;
     if (get_den(re) != get_den(real))
         return false;
     if (get_num(im) != get_num(imaginary))
