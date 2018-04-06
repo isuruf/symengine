@@ -190,18 +190,16 @@ void LLVMDoubleVisitor::init(const vec_basic &inputs, const vec_basic &outputs,
     auto F = get_function_type(context.get());
 
     // Add a basic block to the function. As before, it automatically
-    // inserts
-    // because of the last argument.
+    // inserts because of the last argument.
     llvm::BasicBlock *BB = llvm::BasicBlock::Create(*context, "EntryBlock", F);
 
     // Create a basic block builder with default parameters.  The builder
-    // will
-    // automatically append instructions to the basic block `BB'.
+    // will automatically append instructions to the basic block `BB'.
     llvm::IRBuilder<> _builder = llvm::IRBuilder<>(BB);
     builder = reinterpret_cast<IRBuilder *>(&_builder);
     builder->SetInsertPoint(BB);
     auto fmf = llvm::FastMathFlags();
-    // fmf.setUnsafeAlgebra();
+    // fmf.setFast();
     builder->setFastMathFlags(fmf);
 
     // Load all the symbols and create references

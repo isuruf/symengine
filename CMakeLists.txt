@@ -108,6 +108,8 @@ set(INTEGER_CLASS "gmp"
 set(WITH_VIRTUAL_TYPEID no CACHE BOOL "Use virtual TypeID getter")
 set(WITH_SYMENGINE_VIRTUAL_TYPEID False)
 
+set(BUILD_SHARED_LIBS no CACHE BOOL "Build shared libraries")
+
 # Piranha
 set(WITH_PIRANHA no CACHE BOOL "Build with Piranha")
 
@@ -359,6 +361,9 @@ if (WITH_LLVM)
             endif()
         endif()
     endforeach()
+    if (NOT BUILD_SHARED_LIBS)
+        set(SYMENGINE_LLVM_SHARED_DEFAULT True)
+    endif ()
     set(SYMENGINE_LLVM_SHARED ${SYMENGINE_LLVM_SHARED_DEFAULT}
         CACHE INTERNAL "Link to llvm in SymEngineConfig.cmake")
     set(LIBS ${LIBS} ${llvm_libs})
@@ -366,14 +371,6 @@ if (WITH_LLVM)
     set(HAVE_SYMENGINE_LLVM yes)
     set(PKGS ${PKGS} "LLVM")
 endif()
-
-# TODO: Detect this automatically
-set(SYMENGINE_LINK_LLVM_STATIC no
-    CACHE BOOL "If set to yes, make LLVM a private dependency.")
-
-if (SYMENGINE_LINK_LLVM_STATIC)
-    unset(SYMENGINE_LLVM_COMPONENTS)
-endif ()
 
 # BENCHMARKS
 set(BUILD_BENCHMARKS yes
