@@ -10,20 +10,21 @@ environment:
 
   matrix:
     - BUILD_TYPE: Release
+      COMPILER: MinGW-w64
+      PLATFORM: x64
+      WITH_MPC: yes
+    - BUILD_TYPE: Release
       COMPILER: MSVC15
       PLATFORM: x64
       LIB_TYPE: dll
-      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+      CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
       WITH_MPFR: yes
       WITH_MPC: yes
       WITH_LLVM: yes
     - BUILD_TYPE: Release
-      COMPILER: MinGW-w64
-      PLATFORM: x64
-    - BUILD_TYPE: Release
       COMPILER: MSVC15
       PLATFORM: Win32
-      CONDA_INSTALL_LOCN: C:\\Miniconda35
+      CONDA_INSTALL_LOCN: C:\\Miniconda36
       LIB_TYPE: dll
       WITH_MPFR: yes
       WITH_MPC: yes
@@ -34,7 +35,7 @@ environment:
     - BUILD_TYPE: Debug
       COMPILER: MSVC15
       PLATFORM: Win32
-      CONDA_INSTALL_LOCN: C:\\Miniconda35
+      CONDA_INSTALL_LOCN: C:\\Miniconda36
       LIB_TYPE: lib
     - BUILD_TYPE: Debug
       COMPILER: MinGW
@@ -45,7 +46,7 @@ environment:
       COMPILER: MSVC15
       PLATFORM: x64
       LIB_TYPE: lib
-      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+      CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
     - BUILD_TYPE: Debug
       COMPILER: MinGW-w64
       PLATFORM: x64
@@ -75,9 +76,12 @@ install:
 - if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://raw.githubusercontent.com/symengine/dependencies/57834d6007065cdd71964c96b397505b2b4ce78a/x86_64-4.8.5-release-win32-seh-rt_v4-rev0.7z" -FileName mw64.7z
 - if [%COMPILER%]==[MinGW-w64] 7z x -oC:\ mw64.7z > NUL
 - if [%COMPILER%]==[MinGW-w64] set PATH=C:\mingw64\bin;%PATH%
-# Download pre-compiled gmp binaries
-- if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://raw.githubusercontent.com/symengine/dependencies/57834d6007065cdd71964c96b397505b2b4ce78a/gmp-6.0.0-x86_64-w64-mingw32.7z" -FileName gmp.7z
-- if [%COMPILER%]==[MinGW-w64] 7z x -oC:\mingw64 gmp.7z > NUL
+- if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://github.com/JuliaMath/GMPBuilder/releases/download/v6.1.2-2/GMP.v6.1.2.x86_64-w64-mingw32.tar.gz" -FileName gmp.tar.gz
+- if [%COMPILER%]==[MinGW-w64] tar -zxf gmp.tar.gz -C C:\mingw64
+- if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://github.com/JuliaMath/MPFRBuilder/releases/download/v4.0.1/MPFRBuilder.x86_64-w64-mingw32.tar.gz" -FileName mpfr.tar.gz
+- if [%COMPILER%]==[MinGW-w64] tar -zxf mpfr.tar.gz -C C:\mingw64
+- if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://github.com/isuruf/MPCBuilder/releases/download/v1.1.0/mpc.v1.1.0.x86_64-w64-mingw32.tar.gz" -FileName mpc.tar.gz
+- if [%COMPILER%]==[MinGW-w64] tar -zxf mpc.tar.gz -C C:\mingw64
 
 build_script:
 - mkdir build
@@ -86,7 +90,7 @@ build_script:
 - if [%COMPILER%]==[MSVC15] if [%PLATFORM%]==[Win32] cmake -G "Visual Studio 14 2015" -DCMAKE_PREFIX_PATH=%CONDA_PREFIX%\Library ..
 - if [%COMPILER%]==[MSVC15] if [%PLATFORM%]==[x64] cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=%CONDA_PREFIX%\Library ..
 - if [%COMPILER%]==[MinGW] cmake -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\MinGW -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
-- if [%COMPILER%]==[MinGW-w64] cmake -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\mingw64 -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
+- if [%COMPILER%]==[MinGW-w64] cmake -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH=C:\mingw64 -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DSYMENGINE_THREAD_SAFE=yes -DBUILD_FOR_DISTRIBUTION=yes ..
 
 - if [%LIB_TYPE%]==[dll] cmake -DINTEGER_CLASS=gmp ..
 - if not [%LIB_TYPE%]==[lib] cmake -DBUILD_SHARED_LIBS=yes ..
