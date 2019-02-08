@@ -11,3 +11,5 @@ dependencies:
   - arb
   - llvmdev
   - notebook
+  - gcc_linux-64  # [linux64]
+  - gxx_linux-64  # [linux64]
