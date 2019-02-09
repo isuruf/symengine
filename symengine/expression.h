@@ -57,17 +57,21 @@ public:
     {
     }
 
+    explicit Expression(const std::string &s);
+
     template <typename T>
-    Expression(RCP<const T> &&o,
-               typename std::enable_if<std::is_base_of<Basic, T>::value>::type
-                   * = nullptr)
+    explicit Expression(
+        RCP<const T> &&o,
+        typename std::enable_if<std::is_base_of<Basic, T>::value>::type
+            * = nullptr)
         : m_basic(o)
     {
     }
     template <typename T>
-    Expression(const RCP<const T> &o,
-               typename std::enable_if<std::is_base_of<Basic, T>::value>::type
-                   * = nullptr)
+    explicit Expression(
+        const RCP<const T> &o,
+        typename std::enable_if<std::is_base_of<Basic, T>::value>::type
+            * = nullptr)
         : m_basic(o)
     {
     }
@@ -168,14 +172,19 @@ public:
     }
 };
 
-inline Expression pow_ex(const Expression &base, const Expression &exp)
+inline Expression pow(const Expression &base, const Expression &exp)
 {
-    return pow(base.get_basic(), exp.get_basic());
+    return Expression(SymEngine::pow(base.get_basic(), exp.get_basic()));
+}
+
+inline Expression sin(const Expression &base)
+{
+    return Expression(SymEngine::sin(base.get_basic()));
 }
 
 inline Expression expand(const Expression &arg)
 {
-    return expand(arg.get_basic());
+    return Expression(expand(arg.get_basic()));
 }
 
 inline bool unified_eq(const Expression &a, const Expression &b)

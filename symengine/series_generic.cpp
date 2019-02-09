@@ -136,7 +136,7 @@ Expression UnivariateSeries::find_cf(const UExprDict &s, const UExprDict &var,
 
 Expression UnivariateSeries::root(Expression &c, unsigned n)
 {
-    return pow_ex(c, 1 / Expression(n));
+    return SymEngine::pow(c, 1 / Expression(n));
 }
 
 UExprDict UnivariateSeries::diff(const UExprDict &s, const UExprDict &var)
@@ -181,67 +181,67 @@ UExprDict UnivariateSeries::subs(const UExprDict &s, const UExprDict &var,
 
 Expression UnivariateSeries::sin(const Expression &c)
 {
-    return SymEngine::sin(c.get_basic());
+    return Expression(SymEngine::sin(c.get_basic()));
 }
 
 Expression UnivariateSeries::cos(const Expression &c)
 {
-    return SymEngine::cos(c.get_basic());
+    return Expression(SymEngine::cos(c.get_basic()));
 }
 
 Expression UnivariateSeries::tan(const Expression &c)
 {
-    return SymEngine::tan(c.get_basic());
+    return Expression(SymEngine::tan(c.get_basic()));
 }
 
 Expression UnivariateSeries::asin(const Expression &c)
 {
-    return SymEngine::asin(c.get_basic());
+    return Expression(SymEngine::asin(c.get_basic()));
 }
 
 Expression UnivariateSeries::acos(const Expression &c)
 {
-    return SymEngine::acos(c.get_basic());
+    return Expression(SymEngine::acos(c.get_basic()));
 }
 
 Expression UnivariateSeries::atan(const Expression &c)
 {
-    return SymEngine::atan(c.get_basic());
+    return Expression(SymEngine::atan(c.get_basic()));
 }
 
 Expression UnivariateSeries::sinh(const Expression &c)
 {
-    return SymEngine::sinh(c.get_basic());
+    return Expression(SymEngine::sinh(c.get_basic()));
 }
 
 Expression UnivariateSeries::cosh(const Expression &c)
 {
-    return SymEngine::cosh(c.get_basic());
+    return Expression(SymEngine::cosh(c.get_basic()));
 }
 
 Expression UnivariateSeries::tanh(const Expression &c)
 {
-    return SymEngine::tanh(c.get_basic());
+    return Expression(SymEngine::tanh(c.get_basic()));
 }
 
 Expression UnivariateSeries::asinh(const Expression &c)
 {
-    return SymEngine::asinh(c.get_basic());
+    return Expression(SymEngine::asinh(c.get_basic()));
 }
 
 Expression UnivariateSeries::atanh(const Expression &c)
 {
-    return SymEngine::atanh(c.get_basic());
+    return Expression(SymEngine::atanh(c.get_basic()));
 }
 
 Expression UnivariateSeries::exp(const Expression &c)
 {
-    return SymEngine::exp(c.get_basic());
+    return Expression(SymEngine::exp(c.get_basic()));
 }
 
 Expression UnivariateSeries::log(const Expression &c)
 {
-    return SymEngine::log(c.get_basic());
+    return Expression(SymEngine::log(c.get_basic()));
 }
 
 } // SymEngine

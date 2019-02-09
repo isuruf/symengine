@@ -231,12 +231,12 @@ public:
 
     void bvisit(const Rational &x)
     {
-        dict = UExprDict(x.rcp_from_this());
+        dict = UExprDict(Expression(x.rcp_from_this()));
     }
 
     void dict_set(unsigned int pow, const Basic &x)
     {
-        dict = UExprDict({{pow, x.rcp_from_this()}});
+        dict = UExprDict({{pow, Expression(x.rcp_from_this())}});
     }
 };
 
@@ -524,12 +524,14 @@ public:
     void bvisit(const Rational &x)
     {
         Vec v(gens.size(), 0);
-        dict = MExprPoly::container_from_dict(gens, {{v, x.rcp_from_this()}});
+        dict = MExprPoly::container_from_dict(
+            gens, {{v, Expression(x.rcp_from_this())}});
     }
 
     void dict_set(vec_int pow, const Basic &x)
     {
-        dict = MExprPoly::container_from_dict(gens, {{pow, x.rcp_from_this()}});
+        dict = MExprPoly::container_from_dict(
+            gens, {{pow, Expression(x.rcp_from_this())}});
     }
 };
 

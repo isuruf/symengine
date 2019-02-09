@@ -51,6 +51,7 @@ using SymEngine::ComplexInf;
 using SymEngine::Nan;
 using SymEngine::EulerGamma;
 using SymEngine::atoms;
+using SymEngine::Expression;
 
 using namespace SymEngine::literals;
 
@@ -188,13 +189,13 @@ TEST_CASE("Symbol dict: Basic", "[basic]")
     b = {{0, 1_z}, {1, 1_z}, {2, 3_z}};
     REQUIRE(unified_compare(a, b) == 1);
 
-    map_int_Expr adict = {{0, 1}, {1, 2}, {2, x}};
-    map_int_Expr bdict = {{0, 1}, {1, 2}, {2, x}};
+    map_int_Expr adict = {{0, 1}, {1, 2}, {2, Expression(x)}};
+    map_int_Expr bdict = {{0, 1}, {1, 2}, {2, Expression(x)}};
     REQUIRE(unified_compare(adict, bdict) == 0);
-    bdict = {{0, 1}, {1, 1}, {2, x}};
+    bdict = {{0, 1}, {1, 1}, {2, Expression(x)}};
     REQUIRE(unified_compare(adict, bdict) != 0);
     REQUIRE(unified_compare(adict, bdict) == -unified_compare(bdict, adict));
-    adict = {{0, 1}, {1, 1}, {3, x}};
+    adict = {{0, 1}, {1, 1}, {3, Expression(x)}};
     REQUIRE(unified_compare(adict, bdict) != 0);
     REQUIRE(unified_compare(adict, bdict) == -unified_compare(bdict, adict));
     bdict = {{0, 1}, {1, 3}};
