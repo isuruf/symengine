@@ -108,10 +108,12 @@ if [[ "${WITH_SANITIZE}" != "" ]]; then
 	    export MSAN_OPTIONS=halt_on_error=1,external_symbolizer_path=/usr/lib/llvm-7/bin/llvm-symbolizer
             # for reference: https://github.com/google/sanitizers/wiki/MemorySanitizerLibcxxHowTo#instrumented-libc
             LLVM_ORG_VER=7.0.1  # should match llvm-X-dev package.
+            export CC=clang-7
+            export CXX=clang++-7
             curl -Ls https://github.com/llvm/llvm-project/archive/llvmorg-${LLVM_ORG_VER}.tar.gz | tar xz -C /tmp
-            ( mkdir /tmp/build_libcxx && cd /tmp/build_libcxx && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_SANITIZER=Memory -DCMAKE_C_COMPILER=clang-7 -DCMAKE_CXX_COMPILER=clang++-7 \
+            ( mkdir /tmp/build_libcxx && cd /tmp/build_libcxx && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_SANITIZER=Memory \
                                                                        -DCMAKE_INSTALL_PREFIX=/opt/libcxx_msan /tmp/llvm-project-llvmorg-${LLVM_ORG_VER}/libcxx && make install )
-            ( mkdir /tmp/build_libcxxabi && cd /tmp/build_libcxxabi && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_SANITIZER=Memory -DCMAKE_C_COMPILER=clang-7 -DCMAKE_CXX_COMPILER=clang++-7 \
+            ( mkdir /tmp/build_libcxxabi && cd /tmp/build_libcxxabi && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_SANITIZER=Memory \
                                                                        -DCMAKE_INSTALL_PREFIX=/opt/libcxx_msan /tmp/llvm-project-llvmorg-${LLVM_ORG_VER}/libcxxabi && make install )
             export CXXFLAGS="$CXXFLAGS -stdlib=libc++ -I/opt/libcxx_msan/include -I/opt/libcxx_msan/include/c++/v1"
             export LDFLAGS="$LDFLAGS -Wl,-rpath,/opt/libcxx_msan/lib -L/opt/libcxx_msan/lib -lc++abi"
