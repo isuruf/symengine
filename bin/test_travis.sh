@@ -104,6 +104,8 @@ if [[ "${WITH_SANITIZE}" != "" ]]; then
 	    export ASAN_OPTIONS=symbolize=1,detect_leaks=1,external_symbolizer_path=/usr/lib/llvm-7/bin/llvm-symbolizer
 	elif [[ "${WITH_SANITIZE}" == "undefined" ]]; then
 	    export UBSAN_OPTIONS=print_stacktrace=1,halt_on_error=1,external_symbolizer_path=/usr/lib/llvm-7/bin/llvm-symbolizer
+	elif [[ "${WITH_SANITIZE}" == "memory" ]]; then
+	    export MSAN_OPTIONS=halt_on_error=1,external_symbolizer_path=/usr/lib/llvm-7/bin/llvm-symbolizer
 	else
 	    2>&1 echo "Unknown sanitize option: ${WITH_SANITIZE}"
 	    exit 1
