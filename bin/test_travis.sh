@@ -105,7 +105,7 @@ if [[ "${WITH_SANITIZE}" != "" ]]; then
 	elif [[ "${WITH_SANITIZE}" == "undefined" ]]; then
 	    export UBSAN_OPTIONS=print_stacktrace=1,halt_on_error=1,external_symbolizer_path=/usr/lib/llvm-7/bin/llvm-symbolizer
 	elif [[ "${WITH_SANITIZE}" == "memory" ]]; then
-	    export MSAN_OPTIONS=halt_on_error=1,external_symbolizer_path=/usr/lib/llvm-7/bin/llvm-symbolizer
+	    export MSAN_OPTIONS=abort_on_error=1,external_symbolizer_path=/usr/lib/llvm-7/bin/llvm-symbolizer
             # for reference: https://github.com/google/sanitizers/wiki/MemorySanitizerLibcxxHowTo#instrumented-libc
             LLVM_ORG_VER=7.0.1  # should match llvm-X-dev package.
             export CC=clang-7
