@@ -188,6 +188,7 @@ before_install:
      rvm get head || true
    fi
 install:
+  - find /usr -iname "*llvm*"
   - source bin/install_travis.sh
 script:
   - bin/test_travis.sh
