@@ -78,7 +78,7 @@ if [[ "${WITH_BENCHMARKS_NONIUS}" == "yes" ]]; then
 fi
 
 if [[ "${WITH_PIRANHA}" == "yes" ]]; then
-    conda_pkgs="$conda_pkgs piranha=0.8 cmake=3.10.0"
+    conda_pkgs="$conda_pkgs piranha=0.8 cmake"
 fi
 
 if [[ "${WITH_PRIMESIEVE}" == "yes" ]]; then
@@ -108,8 +108,12 @@ if [[ "${WITH_LLVM}" == "7.0" ]]; then
 elif [[ "${WITH_LLVM}" == "8.0" ]]; then
     export LLVM_DIR=/usr/lib/llvm-8/share/llvm/
 elif [[ ! -z "${WITH_LLVM}" ]]; then
-    conda_pkgs="$conda_pkgs llvmdev=${WITH_LLVM} cmake=3.10.0"
-    export LLVM_DIR=$our_install_dir/share/llvm/
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+        export LLVM_DIR=/usr/lib/llvm-3.8/share/llvm/
+    else
+        conda_pkgs="$conda_pkgs llvmdev=${WITH_LLVM}"
+        export LLVM_DIR=$our_install_dir/share/llvm/
+    fi
 fi
 
 if [[ "${WITH_ECM}" == "yes" ]]; then
