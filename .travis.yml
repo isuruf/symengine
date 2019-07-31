@@ -29,7 +29,9 @@ env:
   matrix:
   ## Out of tree builds (default):
   # Debug build (with BFD and INTEGER_CLASS from boostmp)
-  - BUILD_TYPE="Debug" WITH_BFD="yes" INTEGER_CLASS="boostmp" WITH_BENCHMARKS_NONIUS="yes"
+  - BUILD_TYPE="Debug" WITH_BFD="yes" INTEGER_CLASS="boostmp"
+  # Debug build shared lib (with BFD)
+  - BUILD_TYPE="Debug" WITH_BFD="yes" BUILD_SHARED_LIBS="yes" WITH_BENCHMARKS_NONIUS="yes"
 
 matrix:
   exclude:
