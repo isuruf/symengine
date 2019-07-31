@@ -109,7 +109,7 @@ elif [[ "${WITH_LLVM}" == "8.0" ]]; then
     export LLVM_DIR=/usr/lib/llvm-8/share/llvm/
 elif [[ ! -z "${WITH_LLVM}" ]]; then
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-        export LLVM_DIR=/usr/lib/llvm-3.8/share/llvm/
+        export LLVM_DIR=/usr/share/llvm-${WITH_LLVM}/
     else
         conda_pkgs="$conda_pkgs llvmdev=${WITH_LLVM}"
         export LLVM_DIR=$our_install_dir/share/llvm/
