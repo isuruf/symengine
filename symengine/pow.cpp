@@ -87,6 +87,50 @@ int Pow::compare(const Basic &o) const
         return base_cmp;
 }
 
+bool get_ipi_shift(const RCP<const Basic> &arg, const Ptr<RCP<const Number>> &n,
+                   const Ptr<RCP<const Basic>> &x)
+{
+    ipi = mul(I, pi);
+    if (is_a<Add>(*arg)) {
+        const Add &s = down_cast<const Add &>(*arg);
+        RCP<const Basic> coef = s.get_coef();
+        auto size = s.get_dict().size();
+        // arg should be of form `x + n*I*pi`
+        // `n` is a Number
+        // `x` is an `Expression`
+        bool found = false;
+        RCP<const Basic> temp;
+        *x = coef;
+        for (const auto &p : s.get_dict()) {
+            if (eq(*p.first, *ipi) and is_a_Number(*p.second)) {
+                found = true;
+                *n = p.second;
+            } else {
+                *x = add(mul(p.first, p.second), *x);
+            }
+        }
+        if (found)
+            return true;
+        else // No term with `pi` found
+            return false;
+    } else if (is_a<Mul>(*arg)) {
+        // `arg` is of the form `k*pi*I/12`
+        const Mul &s = down_cast<const Mul &>(*arg);
+        auto p = s.get_dict().begin();
+        // dict should contain symbol `I*pi` only
+        if (s.get_dict().size() == 1 and eq(*p->first, *ipi)
+            and eq(*p->second, *one) and is_a_Number(*s.get_coef())) {
+            *n = s.get_coef();
+            *x = zero;
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 RCP<const Basic> pow(const RCP<const Basic> &a, const RCP<const Basic> &b)
 {
     if (is_zero(*b)) {
@@ -156,6 +200,29 @@ RCP<const Basic> pow(const RCP<const Basic> &a, const RCP<const Basic> &b)
             down_cast<const Mul &>(*a).power_num(
                 outArg(coef), d, rcp_static_cast<const Number>(b));
             return Mul::from_dict(coef, std::move(d));
+        }
+    }
+    if (eq(*a, *E)) {
+        RCP<const Basic> x;
+        RCP<const Number> orig_n;
+        RCP<const Number> n;
+        // b = x + n*I*pi
+        if (get_ipi_shift(b, outArg(orig_n), outArg(x))) {
+            n = orig_n;
+            if (n.is_negative() or not subnum(n, two).is_negative()) {
+                n = subnum(n, mulnum(two, rcp_static_cast<const Number>(
+                                              floor(divnum(n, two)))));
+            }
+            if (not subnum(n, half).is_negative()) {
+                n = subnum(n, mulnum(two, rcp_static_cast<const Number>(
+                                              ceiling(divnum(n, two)))));
+            }
+            if (not subnum(n, one).is_negative()) {
+                return neg(pow(E, add(x, mul(mul(subnum(n, one), pi), I))));
+            }
+            if (neq(*n, *orig_n)) {
+                return pow(E, add(x, mul(mul(n, pi), I)));
+            }
         }
     }
     if (is_a<Pow>(*a) and is_a<Integer>(*b)) {

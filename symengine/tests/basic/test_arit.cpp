@@ -1005,6 +1005,48 @@ TEST_CASE("Pow: arit", "[arit]")
 
     r1 = pow(one, Nan);
     REQUIRE(eq(*r1, *Nan));
+
+    r1 = pow(E, mul(I, pi));
+    CHECK(eq(*r1, *im1));
+
+    r1 = pow(E, mul(i2, mul(I, pi)));
+    CHECK(eq(*r1, *one));
+
+    r1 = pow(E, mul(i3, mul(I, pi)));
+    CHECK(eq(*r1, *im1));
+
+    r1 = pow(E, mul(neg(i1), mul(I, pi)));
+    CHECK(eq(*r1, *im1));
+
+    r1 = pow(E, mul(neg(i2), mul(I, pi)));
+    CHECK(eq(*r1, *one));
+
+    r1 = pow(E, mul(neg(i3), mul(I, pi)));
+    CHECK(eq(*r1, *im1));
+
+    r1 = pow(E, add(x, mul(im1, mul(I, pi))));
+    CHECK(eq(*r1, *neg(pow(E, x))));
+
+    r1 = pow(E, add(x, mul(i2, mul(I, pi))));
+    CHECK(eq(*r1, *pow(E, x)));
+
+    r1 = pow(E, add(x, mul(neg(i3), mul(I, pi))));
+    CHECK(eq(*r1, *neg(pow(E, x))));
+
+    r1 = pow(E, add(x, mul(real_double(0.25), mul(I, pi))));
+    REQUIRE(is_a<Pow>(*r1));
+    CHECK(eq(*rcp_static_cast<const Pow>(r1).get_exp(),
+             add(x, mul(real_double(0.25), mul(I, pi)))));
+
+    r1 = pow(E, add(x, mul(real_double(1.25), mul(I, pi))));
+    REQUIRE(is_a<Pow>(*neg(r1)));
+    CHECK(eq(*rcp_static_cast<const Pow>(neg(r1)).get_exp(),
+             add(x, mul(real_double(0.25), mul(I, pi)))));
+
+    r1 = pow(E, add(x, mul(real_double(-2.25), mul(I, pi))));
+    REQUIRE(is_a<Pow>(*r1));
+    CHECK(eq(*rcp_static_cast<const Pow>(r1).get_exp(),
+             add(x, mul(real_double(0.25), mul(I, pi)))));
 }
 
 TEST_CASE("Log: arit", "[arit]")
