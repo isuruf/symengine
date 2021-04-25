@@ -12,30 +12,30 @@
 #include <symengine/real_double.h>
 #include <symengine/functions.h>
 
+using SymEngine::add;
 using SymEngine::Basic;
+using SymEngine::cos;
+using SymEngine::div;
+using SymEngine::expand;
+using SymEngine::I;
+using SymEngine::iaddnum;
+using SymEngine::integer;
+using SymEngine::Integer;
+using SymEngine::mul;
+using SymEngine::Number;
+using SymEngine::one;
+using SymEngine::pi;
+using SymEngine::pow;
 using SymEngine::RCP;
 using SymEngine::rcp_static_cast;
 using SymEngine::RCPBasicKeyLess;
-using SymEngine::vec_basic;
-using SymEngine::integer;
-using SymEngine::Integer;
-using SymEngine::Number;
+using SymEngine::real_double;
+using SymEngine::sin;
+using SymEngine::sub;
 using SymEngine::symbol;
 using SymEngine::Symbol;
-using SymEngine::sin;
-using SymEngine::cos;
-using SymEngine::I;
-using SymEngine::pi;
-using SymEngine::add;
-using SymEngine::mul;
-using SymEngine::pow;
-using SymEngine::div;
-using SymEngine::one;
-using SymEngine::expand;
-using SymEngine::sub;
+using SymEngine::vec_basic;
 using SymEngine::zero;
-using SymEngine::real_double;
-using SymEngine::iaddnum;
 
 double R1();
 double R2();
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     SymEngine::print_stack_on_segfault();
     std::cout << "Time for R1 : \t " << std::setw(15) << std::setprecision(9)
               << std::fixed << R1() << std::endl;
-    std::cout << "Time for R2 : \t " << std::setw(15) << std::setprecision(9)
+    /*std::cout << "Time for R2 : \t " << std::setw(15) << std::setprecision(9)
               << std::fixed << R2() << std::endl;
     std::cout << "Time for R3 : \t " << std::setw(15) << std::setprecision(9)
               << std::fixed << R3() << std::endl;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     std::cout << "Time for S3 : \t " << std::setw(15) << std::setprecision(9)
               << std::fixed << S3() << std::endl;
     std::cout << "Time for S3a : \t " << std::setw(15) << std::setprecision(9)
-              << std::fixed << S3a() << std::endl;
+              << std::fixed << S3a() << std::endl;*/
 
     return 0;
 }
@@ -86,7 +86,8 @@ double R1()
     RCP<const Basic> g;
     RCP<const Basic> h = div(I, integer(2));
     auto t1 = std::chrono::high_resolution_clock::now();
-    g = expand(f(f(f(f(f(f(f(f(f(f(h)))))))))));
+    RCP<const Basic> real, imag;
+    as_real_imag(f(f(f(f(f(f(f(f(f(f(h)))))))))), outArg(real), outArg(imag));
     auto t2 = std::chrono::high_resolution_clock::now();
     return std::chrono::duration<double>(t2 - t1).count();
 }
