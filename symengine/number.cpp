@@ -53,7 +53,13 @@ RCP<const Number> round(const Number &x)
     }
     // Computed exactly from floor, with ties to even
     RCP<const Number> self = x.rcp_from_this_cast<const Number>();
-    RCP<const Number> floored = rcp_static_cast<const Number>(floor(self));
+    RCP<const Basic> f = floor(self);
+    if (not is_a<Integer>(*f)) {
+        // e.g. a NumberWrapper, whose floor is not known
+        throw NotImplementedError("round is not implemented for "
+                                  + x.__str__());
+    }
+    RCP<const Number> floored = rcp_static_cast<const Number>(f);
     RCP<const Number> diff = subnum(subnum(self, floored), rational(1, 2));
     if (diff->is_positive()) {
         return addnum(floored, one);

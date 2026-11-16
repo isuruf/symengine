@@ -457,6 +457,9 @@ TEST_CASE("Test NumberWrapper", "[number]")
     double d1 = eval_double(*r);
     REQUIRE(std::abs(d1 - 11.4142135623730951) < 1e-12);
     REQUIRE(n->__str__() == "10");
+    // SymEngine cannot round a number type it does not know
+    CHECK_THROWS_AS(SymEngine::round(*n), SymEngine::NotImplementedError);
+    CHECK_THROWS_AS(SymEngine::round(*n, 2), SymEngine::NotImplementedError);
 
 #ifdef HAVE_SYMENGINE_MPFR
     mpfr_class aa(100);
